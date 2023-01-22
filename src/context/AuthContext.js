@@ -1,7 +1,7 @@
-import React, {createContext, useEffect, useState} from 'react';
-import jwt_decode from "jwt-decode";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import React, { createContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 
 
 export const AuthContext = createContext ({});
@@ -20,16 +20,12 @@ function AuthContextProvider ({children}) {
 
         if (storedToken) {
             const decodedToken = jwt_decode(storedToken);
-            if (Math.floor(Date.now() / 1000) < decodedToken.exp) {
+
                 console.log("De gebruiker is nog steeds ingelogd 🔓");
                 void fetchUserData(storedToken, decodedToken.id);
-            } else {
-                console.log("De token is verlopen");
-                localStorage.removeItem('token');
             }
-        } else {
+         else {
             setAuth( {
-                ...auth,
                 isAuth: false,
                 user: null,
                 status: "done"
@@ -46,7 +42,7 @@ function AuthContextProvider ({children}) {
     }
         async function fetchUserData(jwt, id, redirect) {
             try {
-                const response = await axios.get('http://localhost:3000/', {
+                const response = await axios.get(`http://localhost:3000/600/users/${id}`, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${jwt}`,
@@ -70,7 +66,8 @@ function AuthContextProvider ({children}) {
             catch (error) {
                 console.error(error);
                 setAuth({
-                    ...auth,
+                    isAuth: false,
+                    user: null,
                     status: "done"
                 })
             }
@@ -104,4 +101,4 @@ function AuthContextProvider ({children}) {
     );
 }
 
-export default AuthContext;
+export default AuthContextProvider;

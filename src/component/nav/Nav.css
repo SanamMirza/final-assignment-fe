@@ -1,0 +1,91 @@
+/*header {*/
+/*    background-color: dodgerblue;*/
+/*}*/
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    color: black;
+}
+
+.menu-icon > path {
+    fill: #f16724;
+}
+
+.nav-container {
+    padding-inline: 2em;
+    margin: 0 auto;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+nav ul {
+    display: flex;
+    gap: 2em;
+}
+
+nav li {
+    list-style-type: none;
+}
+
+nav a {
+    color: #f16724;
+}
+
+nav button {
+    background-color: transparent;
+    border: none;
+    color: black;
+
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+
+    padding: 0;
+
+    cursor: pointer;
+}
+
+.active {
+    text-decoration: none;
+}
+
+.link--active {
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+}
+
+.dropdown{
+    position: absolute;
+    top: 58px;
+    left: 5px;
+}
+
+.dropdown-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: fit-content;
+    list-style-type: none;
+    padding: 0px;
+    background-color:#f6f9fc;
+    z-index: 2;
+}
+
+.dropdown-content a{
+    padding: 0px;
+    margin: 0px 32px;
+}
+
+.d-none{
+    display: none;
+}
+
+.d-block{
+    display: block;
+}

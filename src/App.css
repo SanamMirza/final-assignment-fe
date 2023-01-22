@@ -22,6 +22,9 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  position: relative;
+  width: 100%;
+  height: 100vh;
 }
 
 .App-link {
@@ -35,4 +38,25 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.footer-container{
+  display: flex;
+  width: 100%;
+  background-color: #005999;
+  color: white;
+}
+
+.footer-container div{
+  flex-basis: 33%;
+}
+
+.footer-container div:first-child{
+  margin-left: 10px;
+}
+
+.divider{
+  border-top: 0px solid #bbb;
+  width: 50%;
+  margin-left: 0px;
 }

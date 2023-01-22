@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
-import AuthContext from "../../context/AuthContext";
+import {AuthContext} from "../../context/AuthContext";
 import axios from "axios";
+import './Login.css'
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -15,14 +16,14 @@ function Login() {
                 email: "email",
                 password: "password",
             })
-            login(response.data.accessToken)
+            login(response.data.jwt)
         } catch (error) {
             console.error(error);
         }
     }
 
     return (
-        <main className="container">
+        <main className="login-container">
             <h1>Inloggen</h1>
             <form onSubmit={handleLogin}>
                 <label htmlFor="email-field">
@@ -47,7 +48,7 @@ function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </label>
-                <button
+                <button className="login-button"
                     type="submit"
                 >
                     Inloggen
