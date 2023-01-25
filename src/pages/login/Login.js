@@ -16,8 +16,8 @@ function Login() {
         toggleError(false);
         try {
             const response = await axios.post('http://localhost:8081/authenticate', {
-                username: "username",
-                password: "password",
+                username: username,
+                password: password,
             });
             console.log(response.data);
             login(response.data.jwt);

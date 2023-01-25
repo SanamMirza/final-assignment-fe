@@ -5,7 +5,7 @@ import AuthContext from "../../context/AuthContext";
 
 function Account() {
     const [accountData, setAccountData] = useState({});
-    const {user} = useContext(AuthContext);
+    // const {user : username} = useContext(AuthContext);
 
 
     useEffect(()=>{
@@ -34,8 +34,8 @@ function Account() {
     return (
         <main className="container">
     <h1>Account</h1>
-            <p>Welkom <span>{user}</span></p>
-            <p>Aangevraagde producten{accountData}</p>
+            <p>Welkom</p>
+            <p>Aangevraagde producten</p>
 
         </main>
     );
