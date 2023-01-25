@@ -12,7 +12,6 @@ import Verhuizing from "./pages/product/verhuizing/Verhuizing";
 import Parkeervergunning from "./pages/product/parkeer/Parkeervergunning";
 import Subsidie from "./pages/product/subsidie/Subsidie";
 import Nav from './component/nav/Nav';
-import {Navigation} from "react-calendar";
 import Overzicht from "./pages/product/overzicht/Overzicht";
 import Nieuws from "./pages/nieuws/Nieuws";
 import Melding from "./pages/melding/Melding";
@@ -20,6 +19,8 @@ import Bestuur from "./pages/bestuur/Bestuur";
 
 function App() {
     const {isAuth} = useContext(AuthContext);
+
+
 
   return (
     <>
@@ -29,7 +30,7 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<div className="page"><Login/></div>}/>
-        <Route path="/appointment" element={<Appointment/>}/>
+        <Route path="/appointment" element={isAuth ? <Appointment/> : <Navigate to="/register"/>}/>
         <Route path="/account" element={isAuth ? <Account/> : <Navigate to="/"/>}/>
         <Route path="/product/paspoort" element={<Paspoort/>}/>
         <Route path="/product/verhuizing" element={<Verhuizing/>}/>

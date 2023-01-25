@@ -51,7 +51,7 @@ nav button {
     cursor: pointer;
 }
 
-.active {
+.default {
     text-decoration: none;
 }
 

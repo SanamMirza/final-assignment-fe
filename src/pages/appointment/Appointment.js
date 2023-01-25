@@ -21,7 +21,7 @@ function Appointment() {
         try {
             setError('');
             toggleLoading(true);
-            const result = await axios.get('http://localhost:3000/appointment');
+            const result = await axios.get('http://localhost:8081/appointments');
             console.log(result.data);
         }
         catch(error) {

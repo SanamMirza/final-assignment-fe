@@ -1,0 +1,54 @@
+.register-container {
+    margin: 16px auto;
+    padding: 23px 16px;
+    text-align: center;
+    background-color: white;
+    width: 20%;
+    height: fit-content;
+    position: relative;
+    border-radius: 5px;
+    border: 1px lightgray solid;
+    display: block;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.register-icon {
+    border-radius: 50%;
+    width: 40%;
+    text-align: center;
+}
+
+.register-button{
+    margin-top: 36px;
+    width: 15.45em;
+    background-color: #f16724 !important;
+    color: white !important;
+}
+
+label{
+    text-align: left;
+    display: flex !important;
+    margin-top: 20px;
+    flex-direction: column;
+}
+
+label > input{
+    margin-left: 0px !important;
+    width: 100%;
+}
+
+.horizontal-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.horizontal-row > label:nth-child(1){
+    width: 50%;
+    margin-right: 2.5%;
+}
+
+.horizontal-row > label:nth-child(2){
+    width: 50%;
+    margin-left: 2.5%;
+}

@@ -33,9 +33,9 @@ header {
     font-size: 15px;
 }
 
-main{
-    background-color: #f16724;
-}
+/*main{*/
+/*    background-color: #f16724;*/
+/*}*/
 
 input, select, button, textarea{
     color: #f16724 !important;
@@ -100,7 +100,6 @@ input, select, button, textarea{
     height: 200px;
     width: 150px;
     color: whitesmoke;
-    border-color: lightsalmon;
     font-size: 15px;
     /*flex-direction: row;*/
     align-items: center;
@@ -122,24 +121,12 @@ input, select, button, textarea{
     text-decoration-line: none;
 }
 
-a{
-    color: #f16724;
-}
-
-.tekst-container {
-    display: flex;
-    width: 100%;
-    color: white;
-    margin-left: 10px;
-}
+/*a{*/
+/*    color: #f16724;*/
+/*}*/
 
 p {
-    display: block;
-    flex-basis: 33%;
-    margin: 10px;
-    padding: 10px;
-    border: solid 1px;
-    border-color: #005999;
+    color: #f16724;
 }
 
 

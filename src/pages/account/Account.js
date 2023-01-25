@@ -4,8 +4,8 @@ import AuthContext from "../../context/AuthContext";
 
 
 function Account() {
-    const [privateContent, setPrivateContent] = useState({});
-    const {user : {username}} = useContext(AuthContext);
+    const [accountData, setAccountData] = useState({});
+    const {user} = useContext(AuthContext);
 
 
     useEffect(()=>{
@@ -15,18 +15,17 @@ function Account() {
         async function fetchPrivateData() {
 
             try {
-                const response = await axios.get('http://localhost:3000/account', {
+                const response = await axios.get('http://localhost:8081/accounts', {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${storedToken}`
-                    }
-                })
-                setPrivateContent(response.data)
-                console.log(response)
-
+                    },
+                });
+                setAccountData(response.data);
+                console.log(response);
             }
             catch (error) {
-                console.error(error)
+                console.error(error);
             }
         }
         void fetchPrivateData();
@@ -35,8 +34,8 @@ function Account() {
     return (
         <main className="container">
     <h1>Account</h1>
-            {/*<p>Welkom <span>{username}</span></p>*/}
-            <p>Aangevraagde producten{privateContent}</p>
+            <p>Welkom <span>{user}</span></p>
+            <p>Aangevraagde producten{accountData}</p>
 
         </main>
     );

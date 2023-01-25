@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-
 export const AuthContext = createContext ({});
 
 function AuthContextProvider ({children}) {
@@ -21,35 +20,32 @@ function AuthContextProvider ({children}) {
         if (storedToken) {
             const decodedToken = jwt_decode(storedToken);
 
-                console.log("De gebruiker is nog steeds ingelogd 🔓");
-                void fetchUserData(storedToken, decodedToken.id);
-            }
-         else {
+                void fetchUserData(storedToken, decodedToken.sub);
+        } else {
             setAuth( {
                 isAuth: false,
                 user: null,
                 status: "done"
-            });
+            })
         }
-    }, []);
+    }, [])
 
     function login(jwt) {
         console.log("De gebruiker is ingelogd 🔓");
         localStorage.setItem('token', jwt);
         const decodedToken = jwt_decode(jwt);
 
-        void fetchUserData(jwt, decodedToken.id, "/account");
+        void fetchUserData(jwt, decodedToken.sub, "/account");
     }
         async function fetchUserData(jwt, id, redirect) {
             try {
-                const response = await axios.get(`http://localhost:3000/600/users/${id}`, {
+                const response = await axios.get(`http://localhost:8081/users/${id}`, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${jwt}`,
                     }
                 });
                 setAuth({
-                    ...auth,
                     isAuth: true,
                     user: {
                         email: response.data.email,
@@ -66,8 +62,7 @@ function AuthContextProvider ({children}) {
             catch (error) {
                 console.error(error);
                 setAuth({
-                    isAuth: false,
-                    user: null,
+                    ...auth,
                     status: "done"
                 })
             }
@@ -75,10 +70,9 @@ function AuthContextProvider ({children}) {
 
 
     function logout() {
-        console.log("de gebruiker is uitgelogd 🔒")
+        console.log("De gebruiker is uitgelogd 🔒")
         localStorage.removeItem('token')
         setAuth({
-            ...auth,
             isAuth: false,
             user: null,
             status: "done"

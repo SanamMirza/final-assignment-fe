@@ -4,7 +4,7 @@
 /*}*/
 
 .page {
-    height: 100vh;
+    height: fit-content;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -12,16 +12,39 @@
 }
 
 .login-container {
+    margin: 16px auto;
+    padding: 23px 16px;
+    text-align: center;
     background-color: white;
-    width: 70%;
-    height: 50%;
+    width: 20%;
+    height: fit-content;
     position: relative;
-    border-radius: 1em;
-    box-shadow: 0 0.188em 1.550em rgb(156, 156, 156);
-    display: flex;
-    flex-direction: column;
+    border-radius: 5px;
+    border: 1px lightgray solid;
+    display: block;
     align-items: center;
     justify-content: space-around;
+}
+
+.login-form{
+    text-align: left;
+}
+
+.login-pfp{
+    border-radius: 50%;
+    width: 40%;
+    text-align: center;
+}
+
+.form-input-field{
+    margin-left: 0px;
+}
+
+.login-button{
+    margin-top: 36px;
+    width: 15.45em;
+    background-color: #f16724 !important;
+    color: white !important;
 }
 
 /*input {*/

@@ -12,13 +12,14 @@ function Verhuizing(props) {
     async function formSubmit(e) {
         e.preventDefault()
         try {
-            const response = await axios.post('http://localhost:3000/login', {
+            const response = await axios.post('http://localhost:3000/verhuizing', {
                 firstName: firstName,
                 lastName: lastName,
                 address: address,
                 zipcode: zipcode,
                 houseNumber: houseNumber,
-            })
+            });
+            console.log(response.data)
         } catch(error) {
             console.error(error);
         }
