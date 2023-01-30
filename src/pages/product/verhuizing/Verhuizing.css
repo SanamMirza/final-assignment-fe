@@ -4,21 +4,36 @@ body {
    font-family: "Poppins", sans-serif;
 }
 
-.outer-container{
-   display: flex;
-   flex-wrap: wrap;
-   flex-direction: column;
-   justify-content: center;
+.outer-container {
+   margin: 16px auto;
+   padding: 23px 16px;
+   text-align: center;
+   background-color: white;
+   width: 45%;
+   height: fit-content;
+   position: relative;
+   border-radius: 5px;
+   border: 1px lightgray solid;
+   display: block;
    align-items: center;
-
+   justify-content: space-around;
 }
 
-fieldset {
-   border: solid 1px #ccc;
-   min-width: 200px;
-   margin: 20px;
-   border-radius: 8px;
-}
+/*.outer-container{*/
+/*   display: flex;*/
+/*   flex-wrap: wrap;*/
+/*   flex-direction: column;*/
+/*   justify-content: center;*/
+/*   align-items: center;*/
+
+/*}*/
+
+/*fieldset {*/
+/*   border: solid 1px #ccc;*/
+/*   min-width: 200px;*/
+/*   margin: 20px;*/
+/*   border-radius: 8px;*/
+/*}*/
 
 form {
    display: flex;
@@ -45,3 +60,16 @@ input   {
    align-items: center;
 
 }
+
+input {
+   height:30px;
+}
+
+.button{
+   margin-top: 36px;
+   width: 15.45em;
+   height: 35px;
+   background-color: #f16724 !important;
+   color: white !important;
+}
+

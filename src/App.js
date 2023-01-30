@@ -16,6 +16,7 @@ import Overzicht from "./pages/product/overzicht/Overzicht";
 import Nieuws from "./pages/nieuws/Nieuws";
 import Melding from "./pages/melding/Melding";
 import Bestuur from "./pages/bestuur/Bestuur";
+import Admin from "./pages/admin/Admin";
 
 function App() {
     const {isAuth} = useContext(AuthContext);
@@ -24,14 +25,16 @@ function App() {
 
   return (
     <>
+
         <Nav />
 
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<div className="page"><Login/></div>}/>
-        <Route path="/appointment" element={isAuth ? <Appointment/> : <Navigate to="/register"/>}/>
+        <Route path="/appointment" element={<Appointment/>}/>
         <Route path="/account" element={isAuth ? <Account/> : <Navigate to="/"/>}/>
+        <Route path="/admin" element={<Admin/>}/>
         <Route path="/product/paspoort" element={<Paspoort/>}/>
         <Route path="/product/verhuizing" element={<Verhuizing/>}/>
         <Route path="/product/parkeervergunning" element={<Parkeervergunning/>}/>
@@ -45,7 +48,7 @@ function App() {
 
         <footer className="footer-container">
             <div className="contact-info">
-                <h4>Contact informatie</h4>
+                <h5>Contact informatie
                 <hr className="divider" />
                 <ul>
                     <li>
@@ -55,16 +58,25 @@ function App() {
 
                     </li>
                 </ul>
+                </h5>
             </div>
             <div>
-                <h4>Contact informatie</h4>
+                <h5>Contact informatie
                 <hr className="divider" />
-                <div>block 2</div>
+                <div>block 2</div></h5>
             </div>
             <div>
-                <h4>Contact informatie</h4>
+                <h5>Contact informatie
                 <hr className="divider" />
-                Final assignment web application made by S.J. Mirza © 2023
+                    <div>block 3</div></h5>
+            </div>
+            <div>
+                <h5>Contact informatie
+                    <hr className="divider" />
+                    <div>block 4</div></h5>
+            </div>
+            <div className="footer-name">
+                <p>Final assignment web application made by S.J. Mirza © 2023</p>
             </div>
         </footer>
     </>

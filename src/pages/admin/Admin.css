@@ -1,12 +1,3 @@
-
-.page {
-    height: fit-content;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .login-container {
     margin: 16px auto;
     padding: 23px 16px;
@@ -22,7 +13,7 @@
     justify-content: space-around;
 }
 
-.login-form{
+.login-admin{
     text-align: left;
 }
 
@@ -47,5 +38,3 @@ input {
     background-color: #f16724 !important;
     color: white !important;
 }
-
-

@@ -5,8 +5,9 @@ import './Login.css'
 import {Link} from "react-router-dom";
 
 function Login() {
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [error, toggleError] = useState(false);
     const {login} = useContext(AuthContext)
 
@@ -16,6 +17,7 @@ function Login() {
         toggleError(false);
         try {
             const response = await axios.post('http://localhost:8081/authenticate', {
+                email: email,
                 username: username,
                 password: password,
             });
@@ -33,6 +35,18 @@ function Login() {
             <h1>Inloggen</h1>
             <form className="login-form" onSubmit={handleLogin}>
                 <label htmlFor="email-field">
+                    Email adres:
+                    <input
+                        type="text"
+                        id="email-field"
+                        className="form-input-field"
+                        name="email"
+                        placeholder="Email-adres"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </label>
+                <label htmlFor="username-field">
                     Gebruikersnaam:
                     <input
                         type="text"
@@ -63,7 +77,7 @@ function Login() {
                     Inloggen
                 </button>
             </form>
-            <p>Heb je nog geen account? <Link to="/register"> Regisreer</Link> je dan eerst.</p>
+            <p>Heb je nog geen account? <Link to="/register"> Registreer</Link> je dan eerst.</p>
         </main>
     )
 }

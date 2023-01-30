@@ -29,19 +29,25 @@ header {
 }
 
 .search-button{
+    margin-top: 0px;
+    height: 52px;
+    width: 115px;
     border: #f16724 solid 1px;
-    font-size: 15px;
+    background-color: #f16724;
+    color: white !important;
 }
 
-/*main{*/
-/*    background-color: #f16724;*/
-/*}*/
+
+main{
+    background: rgb(241,187,36);
+    background: linear-gradient(0deg, rgba(241,187,36,1) 0%, rgba(241,103,36,1) 100%);
+}
 
 input, select, button, textarea{
     color: #f16724 !important;
 }
 
-.outer-container {
+.home-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -69,6 +75,7 @@ input, select, button, textarea{
 
 .flex-container article img{
     height: 100px;
+    flex-wrap: wrap;
 }
 
 .first-row article{
@@ -97,11 +104,13 @@ input, select, button, textarea{
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-wrap: wrap;
     height: 200px;
     width: 150px;
     color: whitesmoke;
     font-size: 15px;
-    /*flex-direction: row;*/
     align-items: center;
     justify-content: center;
     row-gap: 10px;
@@ -112,12 +121,9 @@ input, select, button, textarea{
     rgba(0, 0, 0, 0.07) 0px 8px 16px,
     rgba(0, 0, 0, 0.07) 0px 16px 32px,
     rgba(0, 0, 0, 0.07) 0px 32px 64px;
-    /*flex-direction: column;*/
     text-align: center;
     margin: 7px;
     padding: 30px;
-    flex-shrink: 1;
-    flex-grow: 0;
     text-decoration-line: none;
 }
 

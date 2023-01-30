@@ -28,10 +28,11 @@ function Verhuizing(props) {
             return (
                 <body className="outer-container">
                     <h1>Verhuizing</h1>
+                    <img src="https://media.istockphoto.com/id/1288083160/vector/happy-family-moving-into-new-house-flat-vector-illustration.jpg?s=170667a&w=0&k=20&c=6Q9wfa-kTLMxk6O_8D1pTmyaBDQzTbICXpSv7TtWo3g=" alt="verhuizing"/>
                     <h2>Geef hier uw verhuizing door</h2>
                     <section className="inner-container">
                     <form onSubmit={formSubmit}>
-                        <fieldset>
+                        {/*<fieldset>*/}
                         <label htmlFor="firstname-field">
                             Voornaam
                             <input
@@ -77,10 +78,10 @@ function Verhuizing(props) {
                                 placeholder="Nieuw huisnummer"
                                 onChange={(e) => setHouseNumber(e.target.value)}/>
                         </label>
-                        <button type="submit">
+                        <button className="button" type="submit">
                             Versturen
                         </button>
-                        </fieldset>
+                        {/*</fieldset>*/}
                     </form>
                     </section>
                 </body>

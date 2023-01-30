@@ -6,6 +6,7 @@ import './Appointment.css';
 
 
 function Appointment() {
+
     const [subjects, setSubjects] = useState('');
     const [dateState, setDateState] = useState(new Date());
     const [time, setTime] = useState('');
@@ -14,6 +15,19 @@ function Appointment() {
 
     const changeDate = (e) => {
         setDateState(e)
+    }
+
+    const handleChange = (e) => {
+        const {value} = e.target;
+        setSubjects ({
+            subjects: "",
+            time: ""
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(subjects);
     }
 
     useEffect(()=> {
@@ -36,7 +50,10 @@ function Appointment() {
         <div>
             <h1>Maak hier een afspraak</h1>
             Afspraak:
-            <select 
+            <form onSubmit={handleSubmit}>
+                  <label htmlFor="subject">
+                      Product:
+            <select className="product-selection"
                 name="appointment-subject" 
                 id="subject"
                 value={subjects}
@@ -58,6 +75,13 @@ function Appointment() {
                     Parkeervergunning aanvragen
                 </option>
             </select>
+                  </label>
+                <label className="time-selection">
+                    Time:
+                    <input className="time" type="time"
+                    name="time"
+                    value={time}/>
+                </label>
             <Calendar onChange={setDateState} value={dateState}/>
             <select
                 name="appointment-date"
@@ -68,13 +92,12 @@ function Appointment() {
                 <option value="dates">
 
                 </option>
-
             </select>
-                <button
+                <button className="button"
                     type="submit">
                     Maak afspraak
                 </button>
-
+        </form>
         </div>
     );
 }

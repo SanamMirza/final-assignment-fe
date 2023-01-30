@@ -4,13 +4,13 @@ import axios from "axios";
 import './Register.css'
 import {AuthContext} from "../../context/AuthContext";
 
-function Register(props) {
+function Register() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [address, setAddress] = useState("");
+    const [street, setStreet] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [houseNumber, setHouseNumber] =useState("");
-    const [telephoneNumber, setTelephoneNumber] = useState();
+    const [telephoneNumber, setTelephoneNumber] = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -23,14 +23,21 @@ function Register(props) {
 
 
 
-    async function registerUser(e) {
-        e.preventDefault();
-        console.log("De gebruiker is ingelogd 👤")
+    async function registerUser(data) {
+        data.preventDefault();
+        console.log("Data in register 👤");
+        console.log(data);
         toggleError(false);
         toggleLoading(true);
 
         try {
             const result = await axios.post('http://localhost:8081/accounts', {
+                firstname: firstName,
+                lastname: lastName,
+                street: street,
+                housenumber: houseNumber,
+                zipcode: zipcode,
+                telephone: telephoneNumber,
                 email: email,
                 password: password,
                 username: username,
@@ -68,24 +75,24 @@ function Register(props) {
                                 onChange={(e) => setFirstName(e.target.value)}/>
                         </label>
                         <label htmlFor="lastname-field">
-                            Familienaam:
+                            Achternaam:
                             <input
                                 type="text"
                                 id="lastname-field"
                                 value={lastName}
-                                placeholder="Familienaam"
+                                placeholder="Achternaam"
                                 onChange={(e) => setLastName(e.target.value)}/>
                         </label>
                     </div>
                     <div className="horizontal-row">
-                        <label htmlFor="address-field">
+                        <label htmlFor="street-field">
                             Straatnaam:
                             <input
                                 type="text"
-                                id="address-field"
-                                value={address}
+                                id="street-field"
+                                value={street}
                                 placeholder="Straatnaam"
-                                onChange={(e) => setAddress(e.target.value)}/>
+                                onChange={(e) => setStreet(e.target.value)}/>
                         </label>
                         <label htmlFor="housenumber-field">
                             Huisnummer:
@@ -110,13 +117,11 @@ function Register(props) {
                         <label htmlFor="telephoneNumber-field">
                             Telefoonnummer:
                             <input
-                                type="number"
+                                type="tel"
                                 id="telephoneNumber-field"
-                                name="telephoneNumber"
                                 value={telephoneNumber}
                                 placeholder="Telefoonnummer"
-                                onChange={(e) => setTelephoneNumber(e.target.value)}
-                            />
+                                onChange={(e) => setTelephoneNumber(e.target.value)}/>
                         </label>
                     </div>
 
@@ -129,7 +134,7 @@ function Register(props) {
                             id="email-field"
                             name="email"
                             value={email}
-                            placeholder="email-adres"
+                            placeholder="Email-adres"
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </label>
@@ -140,7 +145,7 @@ function Register(props) {
                                 id="username-field"
                                 name="username"
                                 value={username}
-                                placeholder="gebruikersnaam"
+                                placeholder="Gebruikersnaam"
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </label>
@@ -151,7 +156,7 @@ function Register(props) {
                             id="password-field"
                             name="password"
                             value={password}
-                            placeholder="wachtwoord"
+                            placeholder="Wachtwoord"
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </label>

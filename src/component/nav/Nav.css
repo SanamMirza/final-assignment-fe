@@ -1,17 +1,17 @@
-/*header {*/
-/*    background-color: dodgerblue;*/
-/*}*/
+
 
 .menu-icon {
     width: 40px;
     height: 40px;
-    color: black;
 }
 
 .menu-icon > path {
     fill: #f16724;
 }
 
+.logo {
+    margin-right: 235px;
+}
 .nav-container {
     padding-inline: 2em;
     margin: 0 auto;
@@ -55,7 +55,7 @@ nav button {
     text-decoration: none;
 }
 
-.link--active {
+.link-active {
     text-underline-offset: 4px;
     text-decoration-thickness: 2px;
 }
@@ -73,7 +73,7 @@ nav button {
     width: fit-content;
     list-style-type: none;
     padding: 0px;
-    background-color:#f6f9fc;
+    background-color: #fffefc;
     z-index: 2;
 }
 

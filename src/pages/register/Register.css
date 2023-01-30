@@ -3,7 +3,7 @@
     padding: 23px 16px;
     text-align: center;
     background-color: white;
-    width: 20%;
+    width: 45%;
     height: fit-content;
     position: relative;
     border-radius: 5px;
@@ -22,6 +22,7 @@
 .register-button{
     margin-top: 36px;
     width: 15.45em;
+    height: 35px;
     background-color: #f16724 !important;
     color: white !important;
 }
@@ -36,6 +37,7 @@ label{
 label > input{
     margin-left: 0px !important;
     width: 100%;
+    height: 30px;
 }
 
 .horizontal-row{

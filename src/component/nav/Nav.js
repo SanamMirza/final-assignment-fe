@@ -14,30 +14,21 @@ function Nav() {
         function handleDropDown() {
             setDropDown(!dropDown);
         }
-        //
-        // function handleLogout() {
-        //     logout()
-        // }
 
         return (
             <>
                 <nav className="nav-container" onClick={handleDropDown}>
                     <Menu className="menu-icon"/>
-                    <Link to="/"><h3>logo</h3></Link>
+                    <Link to="/"><h3 className="logo">logo</h3></Link>
                     <ul>
                         <li>
-                            <NavLink to="/" className={({isActive}) => isActive ? "link--active" : "default"}>
+                            <NavLink to="/" className={({isActive}) => isActive ? "link-active" : "default"}>
                                 Home
                             </NavLink>
                         </li>
-                        {/*<li>*/}
-                        {/*    <NavLink to="/account" className={({isActive}) => isActive ? "link--active" : "link"}>*/}
-                        {/*        Account*/}
-                        {/*    </NavLink>*/}
-                        {/*</li>*/}
                         <li>
-                            <NavLink to="/appointment" className={({isActive}) => isActive ? "link--active" : "default"}>
-                                Appointment
+                            <NavLink to="/admin" className={({isActive}) => isActive ? "link--active" : "default"}>
+                                Admin
                             </NavLink>
                         </li>
 
