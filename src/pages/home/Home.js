@@ -6,15 +6,21 @@ import './Home.css'
 
 
 function Home() {
-    const [home, setHome] = useState();
+    // const [home, setHome] = useState();
     const [search, setSearch] = useState();
+    // const [data, setData] = useState([{}]);
+    // const searchResult = (data, search) => {
+    //     return data.filter(item => {
+    //         return Object.values(item).join("").toLowerCase().includes(search.toLowerCase());
+    //     });
+    // };
 
     useEffect(() => {
         async function fetchData() {
           try {
               const result = await axios.get('http://localhost:3000/');
               console.log(result);
-              setHome(result.data)
+              // setHome(result.data)
           }
           catch(error) {
               console.error(error);
@@ -27,14 +33,25 @@ function Home() {
         setSearch(e.target.value);
     }
 
+
     return (
         <>
             <header>
                 <img className="header-img" src="https://cdn.webshopapp.com/shops/334194/files/399100706/1280x1000x3/oude-amsterdamse-huizen-met-weerspiegeling-in-wate.jpg" alt="img" />
+
                 <div className="search-bar-container">
-                    <input className="search-bar" placeholder="Zoek..." value={search} onChange={handleSearch}/>
+                    <input className="search-bar"
+                           type="text"
+                           placeholder="Zoek..."
+                           value={search} onChange={handleSearch}/>
+                    {/*{searchResult(data, search).map(item => ( `*/}
+                    {/*    <p>${data.appointment}</p>`*/}
+
+                    {/*))}*/}
                     <button className="search-button" type="button">Zoek</button>
                 </div>
+
+
             </header>
             <main>
                 <section className="home-container">

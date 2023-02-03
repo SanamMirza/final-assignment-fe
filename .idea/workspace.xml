@@ -5,27 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7569bfd-60c8-4e39-a971-5987343e9906" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/admin/Admin.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/bestuur/Bestuur.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/support-agent.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/AdminAccount.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/AdminLogin.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/contact-form/Contact.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/contact-form/Contact.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/page-not-found/PageNotFound.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/component/nav/Nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/nav/Nav.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/component/nav/Nav.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/nav/Nav.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/AuthContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/account/Account.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/account/Account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/admin/Admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/admin/Admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/admin/Admin.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/appointment/Appointment.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/appointment/Appointment.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/appointment/Appointment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/appointment/Appointment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/bestuur/Bestuur.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/bestuur/Bestuur.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/Home.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/Login.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/Login.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/product/verhuizing/Verhuizing.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/verhuizing/Verhuizing.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/product/parkeer/Parkeervergunning.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/parkeer/Parkeervergunning.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/product/paspoort/Paspoort.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/paspoort/Paspoort.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/product/subsidie/Subsidie.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/subsidie/Subsidie.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/product/verhuizing/Verhuizing.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/verhuizing/Verhuizing.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/register/Register.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/register/Register.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/register/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/register/Register.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,8 +37,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -62,7 +63,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/sanam/WebstormProjects/final-assignment/src/assets",
+    "last_opened_file_path": "C:/Users/sanam/WebstormProjects/frontend-javascript-country-information-prt1",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -70,7 +71,7 @@
     "node.js.selected.package.standard": "",
     "nodejs_interpreter_path": "node",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "settings.editor.selected.configurable": "duplicates.index",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -79,11 +80,11 @@
       <recent name="C:\Users\sanam\WebstormProjects\final-assignment\src\assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\sanam\WebstormProjects\final-assignment\src\pages" />
       <recent name="C:\Users\sanam\WebstormProjects\final-assignment\src\assets" />
       <recent name="C:\Users\sanam\WebstormProjects\final-assignment\src\pages\product\subsidie" />
       <recent name="C:\Users\sanam\WebstormProjects\final-assignment\src\pages\product\paspoort" />
       <recent name="C:\Users\sanam\WebstormProjects\final-assignment\src\pages\product\parkeer" />
-      <recent name="C:\Users\sanam\WebstormProjects\final-assignment\src\component\nav" />
     </key>
   </component>
   <component name="RunManager" selected="npm.npm start">
@@ -122,7 +123,8 @@
       <updated>1673732537885</updated>
       <workItem from="1673732539468" duration="34610000" />
       <workItem from="1674038481367" duration="32754000" />
-      <workItem from="1674310193159" duration="95036000" />
+      <workItem from="1674310193159" duration="115538000" />
+      <workItem from="1675156003590" duration="85120000" />
     </task>
     <servers />
   </component>

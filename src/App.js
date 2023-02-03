@@ -1,5 +1,5 @@
 import './App.css';
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Link, Navigate, Route, Routes} from "react-router-dom";
 import Home from "../../final-assignment/src/pages/home/Home";
 import Appointment from "../../final-assignment/src/pages/appointment/Appointment";
 import Login from "./pages/login/Login";
@@ -16,7 +16,9 @@ import Overzicht from "./pages/product/overzicht/Overzicht";
 import Nieuws from "./pages/nieuws/Nieuws";
 import Melding from "./pages/melding/Melding";
 import Bestuur from "./pages/bestuur/Bestuur";
-import Admin from "./pages/admin/Admin";
+import Admin from "./pages/admin/AdminLogin";
+import Contact from "./pages/contact-form/Contact";
+
 
 function App() {
     const {isAuth} = useContext(AuthContext);
@@ -43,7 +45,7 @@ function App() {
         <Route path="/nieuws" element={<Nieuws/>}/>
         <Route path="/melding" element={<Melding/>}/>
         <Route path="/bestuur" element={<Bestuur/>}/>
-
+        <Route path="/contact" element={<Contact/>}/>
       </Routes>
 
         <footer className="footer-container">
@@ -54,7 +56,7 @@ function App() {
                     <li>
                         <p>Gemeentestraat 1</p>
                         <p>1111 GG Gemeente</p>
-                        <img src="./../assets/phone-icon.svg" alt="phone"/> <p>020 23 23 233</p>
+                        <p>020 23 23 233</p>
 
                     </li>
                 </ul>
@@ -63,19 +65,48 @@ function App() {
             <div>
                 <h5>Contact informatie
                 <hr className="divider" />
-                <div>block 2</div></h5>
+                    <ul>
+                        <li>
+                            <p>Gemeentestraat 1</p>
+                            <p>1111 GG Gemeente</p>
+                            <p>020 23 23 233</p>
+
+                        </li>
+                    </ul>
+                    </h5>
             </div>
             <div>
                 <h5>Contact informatie
                 <hr className="divider" />
-                    <div>block 3</div></h5>
+                    <ul>
+                        <li>
+                            <p>Gemeentestraat 1</p>
+                            <p>1111 GG Gemeente</p>
+                            <p>020 23 23 233</p>
+
+                        </li>
+                    </ul>
+                </h5>
             </div>
             <div>
                 <h5>Contact informatie
                     <hr className="divider" />
                     <div>block 4</div></h5>
+                <p>klik <Link to="/contact">hier</Link> om naar het contact formulier te gaan</p>
+
             </div>
-            <div className="footer-name">
+            <div>
+            <h5>Contact informatie
+                <hr className="divider" />
+                <ul>
+                    <li>
+                        <p>Gemeentestraat 1</p>
+                        <p>1111 GG Gemeente</p>
+                        <p>020 23 23 233</p>
+
+                    </li>
+                </ul>
+            </h5>
                 <p>Final assignment web application made by S.J. Mirza © 2023</p>
             </div>
         </footer>

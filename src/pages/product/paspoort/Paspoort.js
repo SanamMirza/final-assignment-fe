@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 
 function Paspoort(props) {
     return (
@@ -17,6 +18,8 @@ function Paspoort(props) {
                 <p>voor personen tot 18 jaar: € 37,95</p>
                 <p>voor personen van 18 jaar en ouder: € 70,35</p>
                 <p>Wilt u met spoed een paspoort of identiteitskaart aanvragen? Dan betaalt u € 53,00 extra.</p>
+
+            <p>Klik <Link to="/appointment">hier</Link> om een afspraak in te plannen.</p>
         </div>
     );
 }

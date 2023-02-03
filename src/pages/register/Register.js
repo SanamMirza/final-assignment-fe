@@ -19,30 +19,27 @@ function Register() {
     const [loading, toggleLoading] = useState(false);
     const [error, toggleError] = useState(false);
     const navigate = useNavigate();
-    const {login} = useContext(AuthContext);
 
 
 
-    async function registerUser(data) {
-        data.preventDefault();
+    async function registerUser(e) {
+        e.preventDefault();
         console.log("Data in register 👤");
-        console.log(data);
+        console.log(firstName, lastName, street, houseNumber, zipcode, telephoneNumber, email, username)
         toggleError(false);
         toggleLoading(true);
 
         try {
-            const result = await axios.post('http://localhost:8081/accounts', {
-                firstname: firstName,
-                lastname: lastName,
-                street: street,
-                housenumber: houseNumber,
-                zipcode: zipcode,
-                telephone: telephoneNumber,
+            const result = await axios.post(`http://localhost:8081/accounts`, {
+                firstName: firstName,
+                lastName: lastName,
+                address: `${street}, ${houseNumber}, ${zipcode}`,
+                telephoneNumber: telephoneNumber,
                 email: email,
                 password: password,
                 username: username,
             });
-            login(result.data.accesToken);
+            console.log(result.data)
 
             toggleRegisterSuccess(true);
 
@@ -57,7 +54,6 @@ function Register() {
         }
         toggleLoading(false);
     }
-
 
     return (
             <main className="register-container">
@@ -124,9 +120,6 @@ function Register() {
                                 onChange={(e) => setTelephoneNumber(e.target.value)}/>
                         </label>
                     </div>
-
-
-
                     <label htmlFor="email-field">
                         Email:
                         <input

@@ -4,12 +4,13 @@ import axios from "axios";
 import './Login.css'
 import {Link} from "react-router-dom";
 
+
 function Login() {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, toggleError] = useState(false);
-    const {login} = useContext(AuthContext)
+    const {login, isAuth} = useContext(AuthContext)
 
 
     async function handleLogin(e) {
@@ -33,6 +34,8 @@ function Login() {
         <main className="login-container">
             <img src="https://cdn-icons-png.flaticon.com/512/6522/6522516.png" className="login-pfp" alt="template-profile-picture" />
             <h1>Inloggen</h1>
+            {isAuth ? <p>U bent al ingelogd</p>
+                :
             <form className="login-form" onSubmit={handleLogin}>
                 <label htmlFor="email-field">
                     Email adres:
@@ -65,7 +68,7 @@ function Login() {
                         id="password-field"
                         className="form-input-field"
                         name="password"
-                        placeholder="wachtwoord"
+                        placeholder="Wachtwoord"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
@@ -76,10 +79,11 @@ function Login() {
                 >
                     Inloggen
                 </button>
-            </form>
-            <p>Heb je nog geen account? <Link to="/register"> Registreer</Link> je dan eerst.</p>
+                <p>Heb je nog geen account? <Link to="/register"> Registreer</Link> je dan eerst.</p>
+            </form>}
+
         </main>
-    )
+    );
 }
 
 

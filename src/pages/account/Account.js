@@ -1,17 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {AuthContext} from "../../context/AuthContext";
-
+import './Account.css';
 
 function Account() {
     const [accountData, setAccountData] = useState({});
+    const storedToken = localStorage.getItem('token');
     const {user} = useContext(AuthContext);
-
 
 
     useEffect(()=>{
 
-        const storedToken = localStorage.getItem('token')
 
         async function fetchPrivateData() {
 
@@ -34,23 +33,23 @@ function Account() {
 
     return (
         <>
-        <div className="container">
-    <h1>Account pagina</h1>
-            <p>Welkom <span>{user.username}</span></p>
-            {Object.keys(accountData).length > 0 &&
-                <section>
-                    <p>Uw gegevens:</p>
-                    <p>Voornaam: <span>{accountData[0].firstName}</span></p>
-                    <p>Achternaam: <span>{accountData[0].lastName}</span></p>
-                    <p>Adres: <span>{accountData[0].address}</span></p>
-                    <p>Telefoonnummer: <span>{accountData[0].telephoneNumber}</span></p>
-                    <p>Email: <span>{accountData[0].emailAddress}</span></p>
+        <main className="outer-container">
 
-            <p>Aangevraagde producten</p>
-                    <p>Afspraken: <span>{accountData[0].appointments}</span></p>
+            {Object.keys(accountData).length > 0 &&
+                <section className="private-container">
+                    <h1>Account pagina</h1>
+                <h3>Welkom <span>{user.username}</span></h3>
+                    <h3>Uw gegevens:</h3>
+                    <h3>Voornaam: <span>{user.firstName}</span></h3>
+                    <h3>Achternaam: <span>{user.lastName}</span></h3>
+                    <h3>Adres: <span>{user.address}</span></h3>
+                    <h3>Telefoonnummer: <span>{user.telephoneNumber}</span></h3>
+                    <h3>Email: <span>{user.email}</span></h3>
+
+                    <h3>Afspraken: <span>{user.appointments}</span></h3>
                 </section>
             }
-        </div>
+        </main>
                 </>
     );
 }

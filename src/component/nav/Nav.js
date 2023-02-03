@@ -1,13 +1,14 @@
 import React, {useContext, useState} from 'react';
 import {AuthContext} from "../../context/AuthContext";
-import {Link, NavLink, useNavigate} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import './Nav.css'
 import {ReactComponent as Menu} from '../../assets/menu-icon.svg';
+
 
 function Nav() {
     const {isAuth, logout} = useContext(AuthContext)
     const [dropDown, setDropDown] = useState(false)
-    // const navigate = useNavigate();
+
 
 
 
@@ -17,9 +18,24 @@ function Nav() {
 
         return (
             <>
-                <nav className="nav-container" onClick={handleDropDown}>
-                    <Menu className="menu-icon"/>
-                    <Link to="/"><h3 className="logo">logo</h3></Link>
+                <nav className="nav-container" >
+                    <Menu className="menu-icon" onClick={handleDropDown}/>
+                    <div className="dropdown" >
+                        <div className={dropDown ? "d-block" : "d-none"}>
+                            <div className="dropdown-content">
+                                <Link to="/appointment">Afspraken</Link>
+                                <Link to="/product/overzicht">Producten en Diensten</Link>
+                                <Link to="/melding">Melding</Link>
+                                <Link to="/nieuws">Nieuws</Link>
+                                <Link to="/bestuur">Bestuur en Organisatie</Link>
+                                <Link to="/account">mijnAccount</Link>
+                                <Link to="/register">Registreren</Link>
+                                <Link to="/login">Inloggen</Link>
+                                <Link to="/contact">Contact</Link>
+                            </div>
+                        </div>
+                    </div>
+
                     <ul>
                         <li>
                             <NavLink to="/" className={({isActive}) => isActive ? "link-active" : "default"}>
@@ -50,23 +66,17 @@ function Nav() {
                             Registreren
                             </NavLink>
                             </li>
-                            </div>
-                        }
+                            </div>}
+
+                        {isAuth &&
+                        <li>
+                          <NavLink to="/account" className={({isActive}) => isActive ? "link--active" : "default"}>
+                            Account
+                          </NavLink>
+                        </li>}
+
                     </ul>
                 </nav>
-                <div className="dropdown">
-                    <div className={dropDown ? "d-block" : "d-none"}>
-                        <div className="dropdown-content">
-                            <Link to="/appointment">Afspraken</Link>
-                            <Link to="/product/overzicht">Producten en Diensten</Link>
-                            <Link to="/melding">Melding</Link>
-                            <Link to="/nieuws">Nieuws</Link>
-                            <Link to="/bestuur">Bestuur en Organisatie</Link>
-                            <Link to="/register">Registreren</Link>
-                            <Link to="/login">Inloggen</Link>
-                        </div>
-                    </div>
-                </div>
             </>
 
         );
