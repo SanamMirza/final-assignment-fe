@@ -31,7 +31,6 @@ function AuthContextProvider ({children}) {
     }, [])
 
     function login(jwt) {
-        console.log("De gebruiker is ingelogd 🔓");
         localStorage.setItem('token', jwt);
         const decodedToken = jwt_decode(jwt);
 
@@ -46,7 +45,6 @@ function AuthContextProvider ({children}) {
                     Authorization: `Bearer ${jwt}`,
                 },
             });
-            console.log(response.data)
             setAuth({
                 isAuth: true,
                 user: {
@@ -56,15 +54,14 @@ function AuthContextProvider ({children}) {
                         address: response.data.accountDto.address,
                         telephoneNumber: response.data.accountDto.telephoneNumber,
                         email: response.data.email,
-                        appointment: response.data.accountDto.appointment,
-                        id: response.data.accountDto.id,
+                        appointments: response.data.accountDto.appointments,
+                        id: response.data.id,
                     },
                 status: "done",
             })
             if (redirect) {
                 navigate(redirect)
             }
-            console.log(response)
         }
         catch (error) {
             console.error(error);
@@ -78,7 +75,6 @@ function AuthContextProvider ({children}) {
 
 
     function logout() {
-        console.log("De gebruiker is uitgelogd 🔒")
         localStorage.removeItem('token')
         setAuth({
             isAuth: false,
@@ -94,6 +90,7 @@ function AuthContextProvider ({children}) {
         status: auth.status,
         login: login,
         logout: logout,
+        fetchUserData,
 
     };
 

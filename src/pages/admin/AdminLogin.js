@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import './Admin.css';
 import axios from "axios";
 import {AuthContext} from "../../context/AuthContext";
-import {useNavigate} from "react-router-dom";
+import FormInput from "../../component/form-field/FormInput";
 
 
 function AdminLogin() {
@@ -23,8 +23,6 @@ function AdminLogin() {
                 username:username,
                 password:password,
             });
-            console.log(response.data);
-            login(response.data.jwt);
 
         }catch(error){
             console.error(error);
@@ -40,42 +38,30 @@ function AdminLogin() {
                 <img src="https://cdn-icons-png.flaticon.com/512/6522/6522516.png" className="login-pfp" alt="template-profile-picture"/>
                 <h1>Inloggen voor medewerkers</h1>
                 <form className="admin-login" onSubmit={handleAdminLogin}>
-                    <label htmlFor="email-field">
-                        Emailadres:
-                        <input
-                            type="text"
-                            id="email-field"
-                            className="form-input-field"
-                            name="email"
-                            placeholder="Email-adres"
-                            value={email}
-                            onChange={(e)=>setEmail(e.target.value)}
-                        />
-                    </label>
-                    <label htmlFor="username-field">
+                    <FormInput name="email-field"
+                               type="text"
+                               id="email-field"
+                               value={email}
+                               placeholder="Email"
+                               clickHandler={(e) => setEmail(e.target.value)}>
+                        Email:
+                    </FormInput>
+                    <FormInput name="username-field"
+                               type="text"
+                               id="username-field"
+                               value={username}
+                               placeholder="Gebruikersnaam"
+                               clickHandler={(e) => setUsername(e.target.value)}>
                         Gebruikersnaam:
-                        <input
-                            type="text"
-                            id="username-field"
-                            className="form-input-field"
-                            name="username"
-                            placeholder="Gebruikersnaam"
-                            value={username}
-                            onChange={(e)=>setUsername(e.target.value)}
-                        />
-                    </label>
-                    <label htmlFor="password-field">
+                    </FormInput>
+                    <FormInput name="password-field"
+                               type="password"
+                               id="password-field"
+                               value={password}
+                               placeholder="Wachtwoord"
+                               clickHandler={(e) => setPassword(e.target.value)}>
                         Wachtwoord:
-                        <input
-                            type="password"
-                            id="password-field"
-                            className="form-input-field"
-                            name="password"
-                            placeholder="wachtwoord"
-                            value={password}
-                            onChange={(e)=>setPassword(e.target.value)}
-                        />
-                    </label>
+                    </FormInput>
                     {error&&<p className="error">Combinatie van gebruikers naam en wachtwoord is onjuist</p>}
                     <button className="button login-button"
                         type="submit"

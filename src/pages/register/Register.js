@@ -1,8 +1,9 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-import './Register.css'
-import {AuthContext} from "../../context/AuthContext";
+import './Register.css';
+import '../../component/form-field/FormInput';
+import FormInput from "../../component/form-field/FormInput";
 
 function Register() {
     const [firstName, setFirstName] = useState("");
@@ -24,13 +25,11 @@ function Register() {
 
     async function registerUser(e) {
         e.preventDefault();
-        console.log("Data in register 👤");
-        console.log(firstName, lastName, street, houseNumber, zipcode, telephoneNumber, email, username)
         toggleError(false);
         toggleLoading(true);
 
         try {
-            const result = await axios.post(`http://localhost:8081/accounts`, {
+            const result = await axios.post(`http://localhost:8081/users`, {
                 firstName: firstName,
                 lastName: lastName,
                 address: `${street}, ${houseNumber}, ${zipcode}`,
@@ -39,7 +38,6 @@ function Register() {
                 password: password,
                 username: username,
             });
-            console.log(result.data)
 
             toggleRegisterSuccess(true);
 
@@ -61,98 +59,84 @@ function Register() {
                 <h1>Registreren</h1>
                 <form onSubmit={registerUser} className="registeration-form">
                     <div className="horizontal-row">
-                        <label htmlFor="firstname-field">
-                            Voornaam:
-                            <input
-                                type="text"
-                                id="firstname-field"
-                                value={firstName}
-                                placeholder="Voornaam"
-                                onChange={(e) => setFirstName(e.target.value)}/>
-                        </label>
-                        <label htmlFor="lastname-field">
-                            Achternaam:
-                            <input
-                                type="text"
-                                id="lastname-field"
-                                value={lastName}
-                                placeholder="Achternaam"
-                                onChange={(e) => setLastName(e.target.value)}/>
-                        </label>
-                    </div>
-                    <div className="horizontal-row">
-                        <label htmlFor="street-field">
-                            Straatnaam:
-                            <input
-                                type="text"
-                                id="street-field"
-                                value={street}
-                                placeholder="Straatnaam"
-                                onChange={(e) => setStreet(e.target.value)}/>
-                        </label>
-                        <label htmlFor="housenumber-field">
-                            Huisnummer:
-                            <input
-                                type="text"
-                                id="housenumber-field"
-                                value={houseNumber}
-                                placeholder="Huisnummer"
-                                onChange={(e) => setHouseNumber(e.target.value)}/>
-                        </label>
-                    </div>
-                    <div className="horizontal-row">
-                        <label htmlFor="zipcode-field">
-                            Postcode:
-                            <input
-                                type="text"
-                                id="zipcode-field"
-                                value={zipcode}
-                                placeholder="Postcode"
-                                onChange={(e) => setZipcode(e.target.value)}/>
-                        </label>
-                        <label htmlFor="telephoneNumber-field">
-                            Telefoonnummer:
-                            <input
-                                type="tel"
-                                id="telephoneNumber-field"
-                                value={telephoneNumber}
-                                placeholder="Telefoonnummer"
-                                onChange={(e) => setTelephoneNumber(e.target.value)}/>
-                        </label>
-                    </div>
-                    <label htmlFor="email-field">
-                        Email:
-                        <input
+                        <FormInput name="firstname-field"
                             type="text"
-                            id="email-field"
-                            name="email"
-                            value={email}
-                            placeholder="Email-adres"
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </label>
-                        <label htmlFor="username-field">
-                            Gebruikersnaam:
-                            <input
-                                type="text"
-                                id="username-field"
-                                name="username"
-                                value={username}
-                                placeholder="Gebruikersnaam"
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                        </label>
-                    <label htmlFor="password-field">
+                            id="firstname-field"
+                            value={firstName}
+                            placeholder="Voornaam"
+                            clickHandler={(e) => setFirstName(e.target.value)}>
+                            Voornaam:
+                        </FormInput>
+                        <FormInput name="lastname-field"
+                            type="text"
+                            id="lastname-field"
+                            value={lastName}
+                            placeholder="Achternaam"
+                            clickHandler={(e) => setLastName(e.target.value)}>
+                            Achternaam:
+                        </FormInput>
+                    </div>
+                    <div className="horizontal-row">
+                        <FormInput name="street-field"
+                                   type="text"
+                                   id="street-field"
+                                   value={street}
+                                   placeholder="Straat"
+                                   clickHandler={(e) => setStreet(e.target.value)}>
+                            Straat:
+                        </FormInput>
+                        <FormInput name="housenumber-field"
+                                   Achternaam
+                                   type="text"
+                                   id="housenumber-field"
+                                   value={houseNumber}
+                                   placeholder="Huisnummer"
+                                   clickHandler={(e) => setHouseNumber(e.target.value)}>
+                            Huisnummer:
+                        </FormInput>
+                    </div>
+                    <div className="horizontal-row">
+                        <FormInput name="zipcode-field"
+                                   type="text"
+                                   id="zipcode-field"
+                                   value={zipcode}
+                                   placeholder="Postcode"
+                                   clickHandler={(e) => setZipcode(e.target.value)}>
+                            Postcode:
+                        </FormInput>
+                        <FormInput name="telephone-field"
+                                   type="text"
+                                   id="telephone-field"
+                                   value={telephoneNumber}
+                                   placeholder="Telefoonnummer"
+                                   clickHandler={(e) => setTelephoneNumber(e.target.value)}>
+                            Telefoonnummer:
+                        </FormInput>
+                    </div>
+                    <FormInput name="email-field"
+                               type="text"
+                               id="email-field"
+                               value={email}
+                               placeholder="Email"
+                               clickHandler={(e) => setEmail(e.target.value)}>
+                        Email:
+                    </FormInput>
+                    <FormInput name="username-field"
+                               type="text"
+                               id="username-field"
+                               value={username}
+                               placeholder="Gebruikersnaam"
+                               clickHandler={(e) => setUsername(e.target.value)}>
+                        Gebruikersnaam:
+                    </FormInput>
+                    <FormInput name="password-field"
+                               type="password"
+                               id="password-field"
+                               value={password}
+                               placeholder="Wachtwoord"
+                               clickHandler={(e) => setPassword(e.target.value)}>
                         Wachtwoord:
-                        <input
-                            type="password"
-                            id="password-field"
-                            name="password"
-                            value={password}
-                            placeholder="Wachtwoord"
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </label>
+                    </FormInput>
                     <button className="button register-button"
                         type="submit"
                     >

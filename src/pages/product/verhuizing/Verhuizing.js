@@ -4,6 +4,7 @@ import './Verhuizing.css'
 import jwt_decode from "jwt-decode";
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../../context/AuthContext";
+import FormInput from "../../../component/form-field/FormInput";
 
 
 function Verhuizing() {
@@ -12,33 +13,27 @@ function Verhuizing() {
     const [address, setAddress] = useState("");
     const [houseNumber, setHouseNumber] =useState("");
     const [zipcode, setZipcode] = useState("");
-    const [plaats, setPlaats] = useState("");
+    const [city, setCity] = useState("");
     const[email,setEmail]=useState("");
     const [addSucces, toggleAddSuccess] = useState(false);
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
-    const {isAuth} = useContext(AuthContext);
+    const {isAuth, user} = useContext(AuthContext);
     const storedToken = localStorage.getItem('token');
 
-    // function submit(jwt) {
-    //     console.log("Formulier is verzonden");
-    //
-    //
-    //     void formSubmit(jwt, b);
-    // }
 
 
-    async function formSubmit() {
-        // e.preventDefault();
+    async function formSubmit(e) {
+        e.preventDefault();
         const jwt = localStorage.getItem('token');
-        const id = jwt_decode(jwt);
-        console.log(firstName, lastName, address, houseNumber,zipcode, plaats)
+        const decodedToken = jwt_decode(jwt);
+        const id = decodedToken.sub;
 
         try {
-            const response = await axios.put(`http://localhost:8081/accounts${id}`, {
+            const response = await axios.put(`http://localhost:8081/accounts/${user.id}`, {
                 firstName: firstName,
                 lastName: lastName,
-                address: `${address}, ${houseNumber}, ${zipcode}, ${plaats}`,
+                address: `${address}, ${houseNumber}, ${zipcode}, ${city}`,
             },
                 {
                     headers: {
@@ -46,7 +41,6 @@ function Verhuizing() {
                         "Authorization": `Bearer ${jwt}`,
                     }})
 
-            console.log(response.data)
             toggleAddSuccess(true);
 
         } catch(error) {
@@ -56,7 +50,6 @@ function Verhuizing() {
 
     function handleDoc(e) {
         const uploadedFile = e.target.files[0];
-        console.log(uploadedFile);
         setFile(uploadedFile);
         setPreviewUrl(URL.createObjectURL(uploadedFile));
     }
@@ -68,15 +61,14 @@ function Verhuizing() {
         formData.append("file", file);
 
         try {
-            const response = await axios.post(`http://localhost:8081/docs/multiple/upload`, formData,
+            const response = await axios.post(`http://localhost:8081/docs/single/upload`, formData,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         "Authorization": `Bearer ${storedToken}`,
                     },
                 })
-            console.log("Document")
-            console.log(response);
+            toggleAddSuccess(true)
         } catch (e) {
             console.error(e)
         }
@@ -91,72 +83,62 @@ function Verhuizing() {
                     {isAuth ?
                     <section className="inner-container">
                     <form onSubmit={formSubmit}>
-                        <label htmlFor="firstname-field">
-                            Voornaam
-                            <input
-                                type="text"
-                                id="firstname-field"
-                                value={firstName}
-                                placeholder="Voornaam"
-                                onChange={(e) => setFirstName(e.target.value)}/>
-                        </label>
-                        <label htmlFor="lastname-field">
-                            Achternaam
-                            <input
-                                type="text"
-                                id="lastname-field"
-                                value={lastName}
-                                placeholder="Achternaam"
-                                onChange={(e) => setLastName(e.target.value)}/>
-                        </label>
-                        <label htmlFor="address-field">
-                            Straat
-                            <input
-                                type="text"
-                                id="address-field"
-                                value={address}
-                                placeholder="Nieuw straatnaam"
-                                onChange={(e) => setAddress(e.target.value)}/>
-                        </label>
-                        <label htmlFor="housenumber-field">
-                            Huisnummer
-                            <input
-                                type="text"
-                                id="housenumber-field"
-                                value={houseNumber}
-                                placeholder="Nieuw huisnummer"
-                                onChange={(e) => setHouseNumber(e.target.value)}/>
-                        </label>
-                        <label htmlFor="zipcode-field">
-                            Postcode
-                            <input
-                                type="text"
-                                id="zipcode-field"
-                                value={zipcode}
-                                placeholder="Nieuw postcode"
-                                onChange={(e) => setZipcode(e.target.value)}/>
-                        </label>
-                        <label htmlFor="city-field">
-                            Plaats
-                            <input
-                                type="text"
-                                id="city-field"
-                                value={plaats}
-                                placeholder="Nieuw plaatsnaam"
-                                onChange={(e) => setPlaats(e.target.value)}/>
-                        </label>
-                        <label htmlFor="email-field">
-                            Emailadres:
-                            <input
-                                type="text"
-                                id="email-field"
-                                className="form-input-field"
-                                name="email"
-                                placeholder="Email-adres"
-                                value={email}
-                                onChange={(e)=>setEmail(e.target.value)}
-                            />
-                        </label>
+                        <FormInput name="firstname-field"
+                                   type="text"
+                                   id="firstname-field"
+                                   value={firstName}
+                                   placeholder="Voornaam"
+                                   clickHandler={(e) => setFirstName(e.target.value)}>
+                            Voornaam:
+                        </FormInput>
+                        <FormInput name="lastname-field"
+                                   type="text"
+                                   id="lastname-field"
+                                   value={lastName}
+                                   placeholder="Achternaam"
+                                   clickHandler={(e) => setLastName(e.target.value)}>
+                            Achternaam:
+                        </FormInput>
+                        <FormInput name="address-field"
+                                   type="text"
+                                   id="address-field"
+                                   value={address}
+                                   placeholder="Straat"
+                                   clickHandler={(e) => setAddress(e.target.value)}>
+                            Straat:
+                        </FormInput>
+                        <FormInput name="housenumber-field"
+                                   type="text"
+                                   id="housenumber-field"
+                                   value={houseNumber}
+                                   placeholder="Huisnummer"
+                                   clickHandler={(e) => setHouseNumber(e.target.value)}>
+                            Huisnummer:
+                        </FormInput>
+                        <FormInput name="zipcode-field"
+                                   type="text"
+                                   id="zipcode-field"
+                                   value={zipcode}
+                                   placeholder="Postcode"
+                                   clickHandler={(e) => setZipcode(e.target.value)}>
+                            Postcode:
+                        </FormInput>
+                        <FormInput name="city-field"
+                                   type="text"
+                                   id="city-field"
+                                   value={city}
+                                   placeholder="Plaats"
+                                   clickHandler={(e) => setCity(e.target.value)}>
+                            Plaats:
+                        </FormInput>
+                        <FormInput name="email-field"
+                                   type="text"
+                                   id="email-field"
+                                   value={email}
+                                   placeholder="Email"
+                                   clickHandler={(e) => setEmail(e.target.value)}>
+                            Email:
+                        </FormInput>
                             <p>Upload hier uw huurovereneenkomst of koopakte</p>
                             <label htmlFor="doc-upload">
                              Kies uw bestand:
@@ -175,3 +157,4 @@ function Verhuizing() {
         }
 
 export default Verhuizing;
+

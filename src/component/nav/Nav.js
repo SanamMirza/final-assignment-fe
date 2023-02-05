@@ -22,7 +22,7 @@ function Nav() {
                     <Menu className="menu-icon" onClick={handleDropDown}/>
                     <div className="dropdown" >
                         <div className={dropDown ? "d-block" : "d-none"}>
-                            <div className="dropdown-content">
+                            <div className="dropdown-content" onClick={handleDropDown}>
                                 <Link to="/appointment">Afspraken</Link>
                                 <Link to="/product/overzicht">Producten en Diensten</Link>
                                 <Link to="/melding">Melding</Link>

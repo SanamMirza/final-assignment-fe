@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-function Paspoort(props) {
+function Paspoort() {
     return (
         <div>
             <h1>Paspoort aanvragen</h1>

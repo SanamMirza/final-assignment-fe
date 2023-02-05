@@ -5,27 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7569bfd-60c8-4e39-a971-5987343e9906" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/assets/support-agent.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/admin/AdminAccount.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/admin/AdminLogin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/contact-form/Contact.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/contact-form/Contact.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/page-not-found/PageNotFound.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/component/button/Button.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/component/form-field/FormInput.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/component/form-field/FormInput.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/Logo..jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/foto-4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/foto-orange.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/foto-paars.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/phone-icon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/profile-picture..png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/profile-picture.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tekst-img.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/theme-icon.svg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/component/nav/Nav.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/component/nav/Nav.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/context/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/context/AuthContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/account/Account.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/account/Account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/admin/Admin.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/appointment/Appointment.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/appointment/Appointment.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/admin/AdminAccount.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/admin/AdminAccount.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/admin/AdminLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/admin/AdminLogin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/appointment/Appointment.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/appointment/Appointment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/contact-form/Contact.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/contact-form/Contact.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/Home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/product/overzicht/Overzicht.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/overzicht/Overzicht.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/product/parkeer/Parkeervergunning.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/parkeer/Parkeervergunning.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/product/paspoort/Paspoort.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/paspoort/Paspoort.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/product/subsidie/Subsidie.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/subsidie/Subsidie.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/product/verhuizing/Verhuizing.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product/verhuizing/Verhuizing.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/register/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/register/Register.js" afterDir="false" />
     </list>
@@ -67,7 +73,7 @@
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
-    "node.js.selected.package.eslint": "",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.standard": "",
     "nodejs_interpreter_path": "node",
     "nodejs_package_manager_path": "npm",
@@ -124,7 +130,8 @@
       <workItem from="1673732539468" duration="34610000" />
       <workItem from="1674038481367" duration="32754000" />
       <workItem from="1674310193159" duration="115538000" />
-      <workItem from="1675156003590" duration="85120000" />
+      <workItem from="1675156003590" duration="117809000" />
+      <workItem from="1675586853757" duration="9837000" />
     </task>
     <servers />
   </component>

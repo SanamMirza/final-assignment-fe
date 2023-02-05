@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
-import Calendar from "react-calendar";
+import React, {useContext, useState} from 'react';
 import axios from "axios";
 import './Appointment.css';
 import jwt_decode from "jwt-decode";
@@ -16,6 +15,8 @@ function Appointment() {
     const [appointments, setAppointments] = useState("")
     const [loading, toggleLoading] = useState(false);
     const [error, setError] = useState(false);
+    const [appointmentSuccess, setAppointmentSuccess] = useState(false);
+
     const {isAuth, user} = useContext(AuthContext);
 
 
@@ -24,15 +25,12 @@ function Appointment() {
         async function appointmentSubmit(e) {
             e.preventDefault();
             console.log(subject, date, time);
-            console.log("afspraak geboekt")
             const jwt = localStorage.getItem('token');
             const id = jwt_decode(jwt);
-            console.log("jwttest",id)
             setError(false);
             toggleLoading(true);
-
             try {
-                const result = await axios.post(`http://localhost:8081/appointments/${user.id}`, {
+                const result = await axios.post(`http://localhost:8081/appointments/${user.username}`, {
                 subject: subject,
                 appointmentDate: date,
                 appointmentTime: time,
@@ -43,11 +41,9 @@ function Appointment() {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${jwt}`,
                 }});
-                // const response = await axios.put(`http://localhost:8081/appointments/${}${user.username}`)
 
             setAppointments(result.data)
-                console.log("result")
-            console.log(result)
+            setAppointmentSuccess(true)
 
         } catch (error) {
         console.error(error);
@@ -109,8 +105,8 @@ function Appointment() {
                                     <option value="11:00-12:00">
                                         11:00-12:00
                                     </option>
-                                    <option value="11:00-12:00">
-                                        11:00-12:00
+                                    <option value="12:00-13:00">
+                                        12:00-13:00
                                     </option>
                                     <option value="13:00-14:00">
                                         13:00-14:00
@@ -131,24 +127,6 @@ function Appointment() {
                                         value={date}
                                         onChange={(event) => setDate(event.target.value)}
                                 >
-                                    <option value="2023-02-02">
-                                        2023-02-02
-                                    </option>
-                                    <option value="2023-02-03">
-                                        2023-02-03
-                                    </option>
-                                    <option value="2023-02-04">
-                                        2023-02-04
-                                    </option>
-                                    <option value="2023-02-05">
-                                        2023-02-05
-                                    </option>
-                                    <option value="2023-02-06">
-                                        2023-02-06
-                                    </option>
-                                    <option value="2023-02-07">
-                                        2023-02-07
-                                    </option>
                                     <option value="2023-02-08">
                                         2023-02-08
                                     </option>
@@ -158,12 +136,31 @@ function Appointment() {
                                     <option value="2023-02-10">
                                         2023-02-10
                                     </option>
+                                    <option value="2023-02-13">
+                                        2023-02-13
+                                    </option>
+                                    <option value="2023-02-14">
+                                        2023-02-14
+                                    </option>
+                                    <option value="2023-02-15">
+                                        2023-02-15
+                                    </option>
+                                    <option value="2023-02-16">
+                                        2023-02-16
+                                    </option>
+                                    <option value="2023-02-17">
+                                        2023-02-17
+                                    </option>
+                                    <option value="2023-02-18">
+                                        2023-02-18
+                                    </option>
                                 </select>
                             </label>
                             <button className="button"
                                     type="submit">
                                 Maak afspraak
                             </button>
+                            {appointmentSuccess === true && <p>Afspraak is gemaakt.{loading}</p>}
                         </form>
                     :
                     <>

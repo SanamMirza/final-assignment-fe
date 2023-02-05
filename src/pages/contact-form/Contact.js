@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './Contact.css';
 import axios from "axios";
+import FormInput from "../../component/form-field/FormInput";
 
 
 function Contact() {
@@ -8,10 +9,14 @@ function Contact() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [loading, toggleLoading] = useState(false);
+    const [contactSuccess, setContactSuccess] = useState(false);
+
 
     async function handleContactForm(e) {
         e.preventDefault();
         console.log(firstName, lastName, email, message);
+        toggleLoading(true)
         try {
             const response = await axios.post('http://localhost:8081/contact', {
                 firstName: firstName,
@@ -22,13 +27,13 @@ function Contact() {
                     headers: {
                         "Content-Type": "application/json",
                     }});
-
-            console.log(response.data)
+            setContactSuccess(true)
 
         } catch (error) {
             console.error(error);
 
         }
+        toggleLoading(false)
     }
 
     return (
@@ -46,36 +51,30 @@ function Contact() {
         <main className="contact-form">
             <h1>Contact formulier</h1>
             <form onSubmit={handleContactForm}>
-                <label htmlFor="first-name-field">
+                <FormInput name="firstname-field"
+                           type="text"
+                           id="firstname-field"
+                           value={firstName}
+                           placeholder="Voornaam"
+                           clickHandler={(e) => setFirstName(e.target.value)}>
                     Voornaam:
-                    <input type="text"
-                    id="first-name-field"
-                    name="first-name-field"
-                    placeholder="Voornaam"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    />
-                </label>
-                <label htmlFor="last-name-field">
-                    Achternaam:
-                    <input type="text"
-                           id="last-name-field"
-                           name="last-name-field"
-                           placeholder="Achternaam"
+                </FormInput>
+                <FormInput name="lastname-field"
+                           type="text"
+                           id="lastname-field"
                            value={lastName}
-                           onChange={(e) => setLastName(e.target.value)}
-                    />
-                </label>
-                <label htmlFor="email-field">
-                    Naam:
-                    <input type="text"
+                           placeholder="Achternaam"
+                           clickHandler={(e) => setLastName(e.target.value)}>
+                    Achternaam:
+                </FormInput>
+                <FormInput name="email-field"
+                           type="text"
                            id="email-field"
-                           name="email-field"
-                           placeholder="Email"
                            value={email}
-                           onChange={(e) => setEmail(e.target.value)}
-                    />
-                </label>
+                           placeholder="Email"
+                           clickHandler={(e) => setEmail(e.target.value)}>
+                    Email:
+                </FormInput>
                 <label htmlFor="message">
                     Bericht:
                     <textarea
@@ -90,7 +89,7 @@ function Contact() {
                 <button className="button" type="submit">
                     Versturen
                 </button>
-
+                {contactSuccess === true && <p>Uw contact formulier is verzonden.{loading}</p>}
             </form>
         </main>
             </>
