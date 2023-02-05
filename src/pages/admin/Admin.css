@@ -1,0 +1,40 @@
+.login-container {
+    margin: 16px auto;
+    padding: 23px 16px;
+    text-align: center;
+    background-color: white;
+    width: 45%;
+    height: fit-content;
+    position: relative;
+    border-radius: 5px;
+    border: 1px lightgray solid;
+    display: block;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.login-admin{
+    text-align: left;
+}
+
+.login-pfp{
+    border-radius: 50%;
+    width: 40%;
+    text-align: center;
+}
+
+.form-input-field{
+    margin-left: 0px;
+}
+
+input {
+    height:30px;
+}
+
+.login-button{
+    margin-top: 36px;
+    width: 15.45em;
+    height: 35px;
+    background-color: #f16724 !important;
+    color: white !important;
+}

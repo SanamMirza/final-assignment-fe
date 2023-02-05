@@ -1,0 +1,19 @@
+.contact-form {
+    margin: 16px auto;
+    padding: 23px 16px;
+    text-align: center;
+    background-color: white;
+    width: 45%;
+    height: fit-content;
+    position: relative;
+    border-radius: 5px;
+    border: 1px lightgray solid;
+    display: block;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.phone-icon {
+    width: 50px;
+    height: 45px;
+}

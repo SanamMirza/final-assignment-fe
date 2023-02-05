@@ -1,0 +1,29 @@
+
+.product-selection{
+    margin: 10px;
+    padding-left: 25px;
+    width: 200px;
+    height: 35px;
+    /*background-color: whitesmoke;*/
+    color: #f16274;
+}
+
+.time-selection {
+    margin: 10px;
+    padding-left: 45px;
+    width: 200px;
+    height: 35px;
+    /*background-color: whitesmoke;*/
+    color: #f16274;
+}
+
+.date-selection {
+    margin-top: 10px;
+    padding-left: 45px;
+    width: 200px;
+    height: 35px;
+}
+
+ .time {
+    height: 30px;
+}

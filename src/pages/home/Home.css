@@ -1,0 +1,138 @@
+header {
+    flex-shrink: 1;
+    flex-wrap: wrap;
+    background-size: cover;
+    width: 100%;
+    height: 590px;
+    overflow: hidden;
+}
+
+.header-img{
+    width: 100%;
+}
+
+.search-bar-container{
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    left: 0px;
+    top: 430px;
+    width: 100%;
+    text-align: center;
+}
+
+.search-bar{
+    color:white;
+    padding: 10px 20px;
+    font-size: 30px;
+    border: #f16724 solid 1px;
+}
+
+.search-button{
+    margin-top: 0px;
+    height: 52px;
+    width: 115px;
+    border: #f16724 solid 1px;
+    background-color: #f16724;
+    color: white !important;
+}
+
+
+main{
+    background: rgb(241,187,36);
+    background: linear-gradient(0deg, rgba(241,187,36,1) 0%, rgba(241,103,36,1) 100%);
+}
+
+input, select, button, textarea{
+    color: #f16724 !important;
+}
+
+.home-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.inner-container{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    row-gap: 20px;
+}
+
+.flex-container{
+    display: flex;
+    width: 100%;
+}
+
+.flex-container article {
+    flex-basis: 33%;
+    margin: 5%;
+    margin-bottom: 0px;
+    background-color: #f6f9fc;
+}
+
+.flex-container article img{
+    height: 100px;
+    flex-wrap: wrap;
+}
+
+.first-row article{
+    position: absolute;
+    top: 545px;
+    width: 23.5%;
+}
+
+.first-row article:nth-child(2){
+    left: 506px;
+}
+
+.first-row article:nth-child(3){
+    left: 1012px;
+}
+
+.second-row{
+    margin-top: 170px;
+}
+
+.final-row{
+    margin-bottom: 5%;
+}
+
+.article-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-wrap: wrap;
+    height: 200px;
+    width: 150px;
+    color: whitesmoke;
+    font-size: 15px;
+    align-items: center;
+    justify-content: center;
+    row-gap: 10px;
+    gap: 10px 20px;
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px,
+    rgba(0, 0, 0, 0.07) 0px 2px 4px,
+    rgba(0, 0, 0, 0.07) 0px 4px 8px,
+    rgba(0, 0, 0, 0.07) 0px 8px 16px,
+    rgba(0, 0, 0, 0.07) 0px 16px 32px,
+    rgba(0, 0, 0, 0.07) 0px 32px 64px;
+    text-align: center;
+    margin: 7px;
+    padding: 30px;
+    text-decoration-line: none;
+}
+
+/*a{*/
+/*    color: #f16724;*/
+/*}*/
+
+p {
+    color: #f16724;
+}
+
+
