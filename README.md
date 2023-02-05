@@ -1,3 +1,18 @@
+Eindopdracht gemeente applicatie
+Sanam Mirza
+5 februari 2023
+NOVI HOGESCHOOL TE UTRECHT
+BOOTCAMP FULL STACK DEVELOPER
+
+DOCUMENTATIE
+FUNCTIONEEL EN TECHNISCH ONTWERP
+INSTALLATIEHANDLEIDING
+VERANTWOORDINGRAPPORT
+Broncode
+Frontend
+https://github.com/SanamMirza/final-assignment-fe/edit/main
+Backend
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
