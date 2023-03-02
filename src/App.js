@@ -18,6 +18,8 @@ import Melding from "./pages/melding/Melding";
 import Bestuur from "./pages/bestuur/Bestuur";
 import Admin from "./pages/admin/AdminLogin";
 import Contact from "./pages/contact-form/Contact";
+import AdminAccount from "./pages/admin/AdminAccount";
+
 
 
 function App() {
@@ -46,6 +48,7 @@ function App() {
         <Route path="/melding" element={<Melding/>}/>
         <Route path="/bestuur" element={<Bestuur/>}/>
         <Route path="/contact" element={<Contact/>}/>
+        <Route path="/adminaccount" element={<AdminAccount/>}/>
       </Routes>
 
         <footer className="footer">

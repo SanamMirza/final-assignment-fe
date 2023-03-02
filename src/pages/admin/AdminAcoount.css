@@ -1,0 +1,52 @@
+
+table, td, th {
+    border: 1px solid darkcyan;
+}
+
+th {
+    background-color: #f16724;
+    color: white;
+    text-align: left;
+}
+
+td, th {
+    padding: 8px;
+}
+
+td > img {
+    width: 60px;
+    border-radius: 50%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.table-date {
+    min-width: 100px;
+}
+
+.delete{
+    margin-top: 10px;
+    width: 100px;
+    height: 20px;
+    background-color: #f16724 !important;
+    color: white !important;
+}
+
+
+.table-none{
+    display: none;
+}
+
+.table-row{
+    display: table-row;
+}
+
+
+
+
+
+

@@ -4,29 +4,38 @@ import axios from "axios";
 import './Register.css';
 import '../../component/form-field/FormInput';
 import FormInput from "../../component/form-field/FormInput";
+import {useForm} from 'react-hook-form';
 
 function Register() {
+    const {register, handleSubmit, formState: {errors}} = useForm({mode: "onBlur"});
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [street, setStreet] = useState("");
     const [zipcode, setZipcode] = useState("");
-    const [houseNumber, setHouseNumber] =useState("");
+    const [houseNumber, setHouseNumber] = useState("");
     const [telephoneNumber, setTelephoneNumber] = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const [registerSuccess, toggleRegisterSuccess] = useState(false);
+
     const [loading, toggleLoading] = useState(false);
     const [error, toggleError] = useState(false);
     const navigate = useNavigate();
 
+    const postcodeRegex = /^\d{4}[a-zA-Z]{2}$/;
+    const telefoonRegex = /^(?:\+31|0)(?:[1-9](-?\d){8}|6[1-9](-?\d){7})$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
 
-    async function registerUser(e) {
-        e.preventDefault();
+    async function registerUser(data) {
+        console.log(data)
         toggleError(false);
         toggleLoading(true);
+
+        console.log('ERRORS', errors)
 
         try {
             const result = await axios.post(`http://localhost:8081/users`, {
@@ -50,6 +59,7 @@ function Register() {
             console.error(error);
             toggleError(true);
         }
+
         toggleLoading(false);
     }
 
@@ -57,93 +67,160 @@ function Register() {
             <main className="register-container">
                 <img className="register-icon" src="https://as2.ftcdn.net/v2/jpg/01/95/70/73/1000_F_195707316_wGdiWMFQxeFcRqi8YiG3V3pp3KvI3MQp.jpg" alt="register-icon"/>
                 <h1>Registreren</h1>
-                <form onSubmit={registerUser} className="registeration-form">
+                <form onSubmit={handleSubmit(registerUser)} className="registration-form">
                     <div className="horizontal-row">
-                        <FormInput name="firstname-field"
+                        <FormInput
                             type="text"
-                            id="firstname-field"
-                            value={firstName}
+                            name="firstName"
+                            inputId="firstname-field"
+                            inputLabel="Voornaam"
                             placeholder="Voornaam"
-                            clickHandler={(e) => setFirstName(e.target.value)}>
-                            Voornaam:
-                        </FormInput>
-                        <FormInput name="lastname-field"
+                            validationRules={{
+                                required: "Voornaam is verplicht",
+                                minLength: {
+                                    value: 3,
+                                    message: "Naam moet minimaal 3 karakters bevatten"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                            />
+                        <FormInput
                             type="text"
-                            id="lastname-field"
-                            value={lastName}
+                            name="lastName"
+                            inputId="lastname-field"
+                            inputLabel="Achternaam"
                             placeholder="Achternaam"
-                            clickHandler={(e) => setLastName(e.target.value)}>
-                            Achternaam:
-                        </FormInput>
+                            validationRules={{
+                                required: 'Achternaam is verplicht',
+                                minLength: {
+                                    value: 3,
+                                    message: 'Naam moet minimaal 3 karakters bevatten'
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
                     </div>
                     <div className="horizontal-row">
-                        <FormInput name="street-field"
-                                   type="text"
-                                   id="street-field"
-                                   value={street}
-                                   placeholder="Straat"
-                                   clickHandler={(e) => setStreet(e.target.value)}>
-                            Straat:
-                        </FormInput>
-                        <FormInput name="housenumber-field"
-                                   Achternaam
-                                   type="text"
-                                   id="housenumber-field"
-                                   value={houseNumber}
-                                   placeholder="Huisnummer"
-                                   clickHandler={(e) => setHouseNumber(e.target.value)}>
-                            Huisnummer:
-                        </FormInput>
+                        <FormInput
+                            type="text"
+                            name="street"
+                            inputId="street-field"
+                            inputLabel="Straat"
+                            placeholder="Straat"
+                            validationRules={{
+                                required: "Straat is verplicht",
+                                minLength: {
+                                    value: 3,
+                                    message: "Straat moet minimaal 3 karakters bevatten"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInput
+                            type="text"
+                            name="houseNumber"
+                            inputId="houseNumber-field"
+                            inputLabel="Huisnummer"
+                            placeholder="Huisnummer"
+                            validationRules={{
+                                required: "Huisnummer is verplicht",
+                                minLength: {
+                                    value: 1,
+                                    message: "Huisnummer moet minimaal 1 karakter bevatten"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
                     </div>
                     <div className="horizontal-row">
-                        <FormInput name="zipcode-field"
-                                   type="text"
-                                   id="zipcode-field"
-                                   value={zipcode}
-                                   placeholder="Postcode"
-                                   clickHandler={(e) => setZipcode(e.target.value)}>
-                            Postcode:
-                        </FormInput>
-                        <FormInput name="telephone-field"
-                                   type="text"
-                                   id="telephone-field"
-                                   value={telephoneNumber}
-                                   placeholder="Telefoonnummer"
-                                   clickHandler={(e) => setTelephoneNumber(e.target.value)}>
-                            Telefoonnummer:
-                        </FormInput>
+                        <FormInput
+                            type="text"
+                            name="zipcode"
+                            inputId="zipcode-field"
+                            inputLabel="Postcode"
+                            placeholder="Postcode"
+                            validationRules={{
+                                required: "Postcode is verplicht",
+                                pattern: {
+                                    value: postcodeRegex,
+                                    message: "Ongeldig postcode"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInput
+                            type="text"
+                            name="telephone"
+                            inputId="telephone-field"
+                            inputLabel="Telefoonnummer"
+                            placeholder="Telefoonnummer"
+                            validationRules={{
+                                required: "Telefoonnummer is verplicht",
+                                    pattern: {
+                                        value: telefoonRegex,
+                                        message: "Ongeldig telefoonnummer"
+                            }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
                     </div>
-                    <FormInput name="email-field"
-                               type="text"
-                               id="email-field"
-                               value={email}
-                               placeholder="Email"
-                               clickHandler={(e) => setEmail(e.target.value)}>
-                        Email:
-                    </FormInput>
-                    <FormInput name="username-field"
-                               type="text"
-                               id="username-field"
-                               value={username}
-                               placeholder="Gebruikersnaam"
-                               clickHandler={(e) => setUsername(e.target.value)}>
-                        Gebruikersnaam:
-                    </FormInput>
-                    <FormInput name="password-field"
-                               type="password"
-                               id="password-field"
-                               value={password}
-                               placeholder="Wachtwoord"
-                               clickHandler={(e) => setPassword(e.target.value)}>
-                        Wachtwoord:
-                    </FormInput>
+                    <FormInput
+                        type="text"
+                        name="email"
+                        inputId="email-field"
+                        inputLabel="Email"
+                        placeholder="Email"
+                        validationRules={{
+                            required: "Email is verplicht",
+                            pattern: {
+                                value: emailRegex,
+                                message: "Ongeldig emailadres"
+                            }
+                        }}
+                        register={register}
+                        errors={errors}
+                    />
+                    <FormInput
+                        type="text"
+                        name="username"
+                        inputId="username-field"
+                        inputLabel="Gebruikersnaam"
+                        placeholder="Gebruikersnaam"
+                        validationRules={{
+                            required: "Gebruikersnaam is verplicht",
+                            minLength: {
+                                value: 3,
+                                message: "Gebruikersnaam moet minimaal 3 karakters bevatten"
+                            }
+                        }}
+                        register={register}
+                        errors={errors}
+                    />
+                    <FormInput
+                        type="password"
+                        name="password"
+                        inputId="password-field"
+                        inputLabel="Wachtwoord"
+                        placeholder="Wachtwoord"
+                        validationRules={{
+                            required: "Wachtwoord is verplicht",
+                        }}
+                        register={register}
+                        errors={errors}
+                    />
                     <button className="button register-button"
                         type="submit"
                     >
                         Registreren
                     </button>
                     {registerSuccess === true && <p>Registreren is gelukt. Je wordt nu doorgestuurd naar de inlog pagina.{loading}</p>}
-                    {error && <p className="error">Dit account bestaat al. Probeer een ander emailadres</p>}
+                    {error && <h5 className="error">Dit account bestaat al. Probeer een ander emailadres</h5>}
                 </form>
                 <p>Heb je al een account? Je kunt je <Link to="/login">hier</Link> inloggen.</p>
             </main>

@@ -14,8 +14,8 @@ function Verhuizing() {
     const [houseNumber, setHouseNumber] =useState("");
     const [zipcode, setZipcode] = useState("");
     const [city, setCity] = useState("");
-    const[email,setEmail]=useState("");
-    const [addSucces, toggleAddSuccess] = useState(false);
+    const [email,setEmail]=useState("");
+    const [addSuccess, toggleAddSuccess] = useState(false);
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
     const {isAuth, user} = useContext(AuthContext);
@@ -28,6 +28,8 @@ function Verhuizing() {
         const jwt = localStorage.getItem('token');
         const decodedToken = jwt_decode(jwt);
         const id = decodedToken.sub;
+        console.log(firstName, lastName, address)
+        console.log("id")
 
         try {
             const response = await axios.put(`http://localhost:8081/accounts/${user.id}`, {
@@ -40,7 +42,7 @@ function Verhuizing() {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${jwt}`,
                     }})
-
+            console.log(response)
             toggleAddSuccess(true);
 
         } catch(error) {
@@ -59,13 +61,16 @@ function Verhuizing() {
         e.preventDefault()
         const formData = new FormData();
         formData.append("file", file);
+        const jwt = localStorage.getItem('token');
+        const decodedToken = jwt_decode(jwt);
+        const id = decodedToken.sub;
 
         try {
-            const response = await axios.post(`http://localhost:8081/docs/single/upload`, formData,
+            const response = await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
-                        "Authorization": `Bearer ${storedToken}`,
+                        "Authorization": `Bearer ${jwt}`,
                     },
                 })
             toggleAddSuccess(true)
@@ -139,22 +144,39 @@ function Verhuizing() {
                                    clickHandler={(e) => setEmail(e.target.value)}>
                             Email:
                         </FormInput>
+                    </form>
+                            <form onSubmit={sendDoc}>
                             <p>Upload hier uw huurovereneenkomst of koopakte</p>
                             <label htmlFor="doc-upload">
-                             Kies uw bestand:
-                                <input type="file" name="doc-field" id="doc-upload" onChange={handleDoc}/>
-                            </label>
+                            Kies uw bestand:
+                          <input type="file" name="doc-field" id="doc-upload" onChange={handleDoc}/>
+                             </label>
+                                <button className="button" type="submit" >Voeg uw bestand toe aan uw formulier</button>
                             <button className="button" type="submit" value="Submit">
-                            Versturen
-                        </button>
-                            {addSucces === true && <p>Formulier is verzonden!</p>}
-                        </form>
+                                Versturen
+                            </button>
+                                {addSuccess === true && <p><strong>Formulier is verzonden!</strong></p>}
+                            </form>
                     </section>
                         :
-                        <p>U dient ingelogd te zijn om uw verhuizing door te geven. Klik <Link to="/login">hier</Link> om in te loggen</p>}
+                        <p>U dient ingelogd te zijn om uw verhuizing door te geven. Klik <Link to="/login">hier</Link> om in te loggen</p>
+                    }
                 </main>
             );
         }
 
+
 export default Verhuizing;
 
+
+    {/*<form onSubmit={sendDoc}>*/}
+    {/*    <p>Upload hier uw huurovereneenkomst of koopakte</p>*/}
+    {/*    <label htmlFor="doc-upload">*/}
+    {/*        Kies uw bestand:*/}
+    {/*        <input type="file" name="doc-field" id="doc-upload" onChange={handleDoc}/>*/}
+    {/*    </label>*/}
+    {/*    <button className="button" type="submit" value="Submit">*/}
+    {/*        Versturen*/}
+    {/*    </button>*/}
+    {/*    {addSuccess === true && <p>Formulier is verzonden!</p>}*/}
+    {/*</form>*/}

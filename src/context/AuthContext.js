@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
+
 export const AuthContext = createContext ({});
 
 function AuthContextProvider ({children}) {
+
 
     const [auth, setAuth] = useState({
         isAuth: false,
@@ -17,20 +19,28 @@ function AuthContextProvider ({children}) {
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
 
-        if (storedToken) {
-            const decodedToken = jwt_decode(storedToken);
+        if ( storedToken ) {
+            const decodedToken = jwt_decode( storedToken )
 
-            void fetchUserData(storedToken, decodedToken.sub);
+            if ( Math.floor( Date.now() / 1000 ) < decodedToken.exp ) {
+                console.log( "De gebruiker is NOG STEEDS ingelogd 🔓" )
+                void fetchUserData( storedToken, decodedToken.sub )
+            } else  {
+                console.log( "De token is verlopen" )
+                localStorage.removeItem( 'token' )
+            }
         } else {
-            setAuth( {
+            setAuth({
+                ...auth,
                 isAuth: false,
                 user: null,
-                status: "done",
-            });
+                status: "done"
+            })
         }
-    }, [])
+    }, []);
 
     function login(jwt) {
+        console.log( "De gebruiker is ingelogd 🔓" )
         localStorage.setItem('token', jwt);
         const decodedToken = jwt_decode(jwt);
 
@@ -46,22 +56,28 @@ function AuthContextProvider ({children}) {
                 },
             });
             setAuth({
+                ...auth,
                 isAuth: true,
                 user: {
                         username: response.data.username,
                         firstName: response.data.accountDto.firstName,
+                        // authority: response.data.authorities[0].authority,
                         lastName: response.data.accountDto.lastName,
                         address: response.data.accountDto.address,
                         telephoneNumber: response.data.accountDto.telephoneNumber,
                         email: response.data.email,
                         appointments: response.data.accountDto.appointments,
-                        id: response.data.id,
+                        fileUploads: response.data.accountDto.fileUploads,
+                        fileName: response.data.accountDto.fileUploads.fileName,
+                        id: response.data.accountDto.id,
+                        idAppointment: response.data.accountDto.appointments.id,
                     },
                 status: "done",
             })
             if (redirect) {
                 navigate(redirect)
             }
+            console.log(response)
         }
         catch (error) {
             console.error(error);
@@ -75,8 +91,10 @@ function AuthContextProvider ({children}) {
 
 
     function logout() {
+        console.log( "De gebruiker is uitgelogd 🔒" )
         localStorage.removeItem('token')
         setAuth({
+            ...auth,
             isAuth: false,
             user: null,
             status: "done"
@@ -90,7 +108,6 @@ function AuthContextProvider ({children}) {
         status: auth.status,
         login: login,
         logout: logout,
-        fetchUserData,
 
     };
 

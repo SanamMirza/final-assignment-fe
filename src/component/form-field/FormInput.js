@@ -1,17 +1,20 @@
 import React from 'react';
 import './FormInput';
 
-function FormInput({children, type, name, value, placeholder, clickHandler}) {
+
+function FormInput({inputLabel, type, inputId, placeholder, validationRules, register, errors}) {
     return (
-            <label htmlFor={name}>
-                {children}
+        <>
+            <label htmlFor={inputId}>
+                {inputLabel}
                 <input
                     type={type}
-                    id={name}
-                    value={value}
+                    id={inputId}
                     placeholder={placeholder}
-                    onChange={clickHandler}/>
+                    {...register(inputId, validationRules)}/>
             </label>
+            {errors[inputId] && <h6>{errors[inputId].message}</h6>}
+        </>
     );
 }
 
