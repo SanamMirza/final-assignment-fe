@@ -8,25 +8,13 @@ import {useForm} from 'react-hook-form';
 
 function Register() {
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onBlur"});
-
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [street, setStreet] = useState("");
-    const [zipcode, setZipcode] = useState("");
-    const [houseNumber, setHouseNumber] = useState("");
-    const [telephoneNumber, setTelephoneNumber] = useState("");
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-
     const [registerSuccess, toggleRegisterSuccess] = useState(false);
-
     const [loading, toggleLoading] = useState(false);
     const [error, toggleError] = useState(false);
     const navigate = useNavigate();
 
     const postcodeRegex = /^\d{4}[a-zA-Z]{2}$/;
-    const telefoonRegex = /^(?:\+31|0)(?:[1-9](-?\d){8}|6[1-9](-?\d){7})$/;
+    const telefoonRegex = /^[0-9]{10}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
 
@@ -38,16 +26,8 @@ function Register() {
         console.log('ERRORS', errors)
 
         try {
-            const result = await axios.post(`http://localhost:8081/users`, {
-                firstName: firstName,
-                lastName: lastName,
-                address: `${street}, ${houseNumber}, ${zipcode}`,
-                telephoneNumber: telephoneNumber,
-                email: email,
-                password: password,
-                username: username,
-            });
-
+            const result = await axios.post(`http://localhost:8081/users`, data);
+            console.log(result);
             toggleRegisterSuccess(true);
 
             setTimeout(() => {
@@ -171,7 +151,7 @@ function Register() {
                         />
                     </div>
                     <FormInput
-                        type="text"
+                        type="email"
                         name="email"
                         inputId="email-field"
                         inputLabel="Email"

@@ -61,7 +61,7 @@ function AuthContextProvider ({children}) {
                 user: {
                         username: response.data.username,
                         firstName: response.data.accountDto.firstName,
-                        // authority: response.data.authorities[0].authority,
+                        authorities: response.data.authorities[0].authority,
                         lastName: response.data.accountDto.lastName,
                         address: response.data.accountDto.address,
                         telephoneNumber: response.data.accountDto.telephoneNumber,

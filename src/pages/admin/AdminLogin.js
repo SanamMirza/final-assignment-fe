@@ -9,9 +9,6 @@ import {useNavigate} from "react-router-dom";
 
 function AdminLogin() {
     const {register, handleSubmit, formState : {errors}} = useForm({mode: "onBlur"});
-    const[email,setEmail]=useState("");
-    const[username,setUsername]=useState("");
-    const[password,setPassword]=useState("");
     const[error,toggleError]=useState(false);
     const [loading, toggleLoading] = useState(false);
     const [loginSuccess, toggleLoginSuccess] = useState(false);
@@ -21,15 +18,12 @@ function AdminLogin() {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
-    async function handleAdminLogin(){
+    async function handleAdminLogin(data){
+        console.log(data);
         toggleError(false);
         toggleLoading(true);
         try{
-            const response= await axios.post('http://localhost8081/authenticate',{
-                email:email,
-                username:username,
-                password:password,
-            });
+            const response= await axios.post('http://localhost8081/authenticate', data);
             console.log(response);
             login(response.data.jwt);
 

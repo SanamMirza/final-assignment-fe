@@ -2,7 +2,7 @@ import React from 'react';
 import './FormInput';
 
 
-function FormInput({inputLabel, type, inputId, placeholder, validationRules, register, errors}) {
+function FormInput({inputLabel, type, inputId, placeholder, name, validationRules, register, errors}) {
     return (
         <>
             <label htmlFor={inputId}>
@@ -10,6 +10,7 @@ function FormInput({inputLabel, type, inputId, placeholder, validationRules, reg
                 <input
                     type={type}
                     id={inputId}
+                    name={name}
                     placeholder={placeholder}
                     {...register(inputId, validationRules)}/>
             </label>
