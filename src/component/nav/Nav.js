@@ -28,7 +28,6 @@ function Nav() {
                                 <Link to="/melding">Melding</Link>
                                 <Link to="/nieuws">Nieuws</Link>
                                 <Link to="/bestuur">Bestuur en Organisatie</Link>
-                                <Link to="/account">mijnAccount</Link>
                                 <Link to="/register">Registreren</Link>
                                 <Link to="/login">Inloggen</Link>
                                 <Link to="/contact">Contact</Link>
@@ -45,6 +44,11 @@ function Nav() {
                         <li>
                             <NavLink to="/admin" className={({isActive}) => isActive ? "link--active" : "default"}>
                                 Admin
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/adminaccount" className={({isActive}) => isActive ? "link--active" : "default"}>
+                                Admin Account
                             </NavLink>
                         </li>
 
@@ -71,7 +75,7 @@ function Nav() {
                         {isAuth &&
                         <li>
                           <NavLink to="/account" className={({isActive}) => isActive ? "link--active" : "default"}>
-                            Account
+                            mijn Account
                           </NavLink>
                         </li>}
 

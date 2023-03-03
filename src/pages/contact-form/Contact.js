@@ -2,21 +2,26 @@ import React, {useState} from 'react';
 import './Contact.css';
 import axios from "axios";
 import FormInput from "../../component/form-field/FormInput";
+import {useForm} from "react-hook-form";
 
 
 function Contact() {
+    const {register, handleSubmit, formState : {errors}} = useForm({mode: "onBlur"});
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [loading, toggleLoading] = useState(false);
+    const [error, toggleError] = useState(false);
     const [contactSuccess, setContactSuccess] = useState(false);
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
-    async function handleContactForm(e) {
-        e.preventDefault();
-        console.log(firstName, lastName, email, message);
-        toggleLoading(true)
+    async function handleContactForm(data) {
+        console.log(data);
+        toggleError(false);
+        toggleLoading(true);
+
         try {
             const response = await axios.post('http://localhost:8081/contact', {
                 firstName: firstName,
@@ -31,6 +36,7 @@ function Contact() {
 
         } catch (error) {
             console.error(error);
+            toggleError(true);
 
         }
         toggleLoading(false)
@@ -50,31 +56,55 @@ function Contact() {
         </div>
         <main className="contact-form">
             <h1>Contact formulier</h1>
-            <form onSubmit={handleContactForm}>
-                <FormInput name="firstname-field"
-                           type="text"
-                           id="firstname-field"
-                           value={firstName}
-                           placeholder="Voornaam"
-                           clickHandler={(e) => setFirstName(e.target.value)}>
-                    Voornaam:
-                </FormInput>
-                <FormInput name="lastname-field"
-                           type="text"
-                           id="lastname-field"
-                           value={lastName}
-                           placeholder="Achternaam"
-                           clickHandler={(e) => setLastName(e.target.value)}>
-                    Achternaam:
-                </FormInput>
-                <FormInput name="email-field"
-                           type="text"
-                           id="email-field"
-                           value={email}
-                           placeholder="Email"
-                           clickHandler={(e) => setEmail(e.target.value)}>
-                    Email:
-                </FormInput>
+            <form onSubmit={handleSubmit(handleContactForm)}>
+                <FormInput
+                    type="text"
+                    name="firstName"
+                    inputId="firstname-field"
+                    inputLabel="Voornaam"
+                    placeholder="Voornaam"
+                    validationRules={{
+                        required: "Voornaam is verplicht",
+                        minLength: {
+                            value: 3,
+                            message: "Naam moet minimaal 3 karakters bevatten"
+                        }
+                    }}
+                    register={register}
+                    errors={errors}
+                />
+                <FormInput
+                    type="text"
+                    name="lastName"
+                    inputId="lastname-field"
+                    inputLabel="Achternaam"
+                    placeholder="Achternaam"
+                    validationRules={{
+                        required: 'Achternaam is verplicht',
+                        minLength: {
+                            value: 3,
+                            message: 'Naam moet minimaal 3 karakters bevatten'
+                        }
+                    }}
+                    register={register}
+                    errors={errors}
+                />
+                <FormInput
+                    type="text"
+                    name="email"
+                    inputId="email-field"
+                    inputLabel="Email"
+                    placeholder="Email"
+                    validationRules={{
+                        required: "Email is verplicht",
+                        pattern: {
+                            value: emailRegex,
+                            message: "Ongeldig emailadres"
+                        }
+                    }}
+                    register={register}
+                    errors={errors}
+                />
                 <label htmlFor="message">
                     Bericht:
                     <textarea
@@ -89,7 +119,7 @@ function Contact() {
                 <button className="button" type="submit">
                     Versturen
                 </button>
-                {contactSuccess === true && <p>Uw contact formulier is verzonden.{loading}</p>}
+                {contactSuccess === true && <h5>Uw contact formulier is verzonden.{loading}</h5>}
             </form>
         </main>
             </>

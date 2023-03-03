@@ -9,13 +9,14 @@ import {Link} from "react-router-dom";
 
 function Appointment() {
 
-    const [subject, setSubject] = useState('paspoort aanvragen');
+    const [subject, setSubject] = useState("1001");
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
     const [appointments, setAppointments] = useState("")
     const [loading, toggleLoading] = useState(false);
     const [error, setError] = useState(false);
     const [appointmentSuccess, setAppointmentSuccess] = useState(false);
+
 
     const {isAuth, user} = useContext(AuthContext);
 
@@ -26,15 +27,13 @@ function Appointment() {
             e.preventDefault();
             console.log(subject, date, time);
             const jwt = localStorage.getItem('token');
-            const id = jwt_decode(jwt);
+            // const id = jwt_decode(jwt);
             setError(false);
             toggleLoading(true);
             try {
-                const result = await axios.post(`http://localhost:8081/appointments/${user.username}`, {
-                subject: subject,
+                const result = await axios.post(`http://localhost:8081/appointments/${user.username}/${subject}`, {
                 appointmentDate: date,
                 appointmentTime: time,
-                id: id
             },
             {
                 headers: {
@@ -71,19 +70,19 @@ function Appointment() {
                                         value={subject}
                                         onChange={(event) => setSubject(event.target.value)}
                                 >
-                                    <option value="new-passport-id">
+                                    <option value="1001">
                                         Passpoort/ID aanvragen
                                     </option>
-                                    <option value="report-relocation">
+                                    <option value="1005">
                                         Verhuizing doorgeven
                                     </option>
-                                    <option value="apply-for-benefits">
+                                    <option value="1004">
                                         Subsidie aanvragen
                                     </option>
-                                    <option value="apply-for-surcharge">
+                                    <option value="1004">
                                         Toeslagen aanvragen(woon, energie etc)
                                     </option>
-                                    <option value="parking">
+                                    <option value="1002">
                                         Parkeervergunning aanvragen
                                     </option>
                                 </select>
@@ -96,7 +95,7 @@ function Appointment() {
                                         value={time}
                                         onChange={(event) => setTime(event.target.value)}
                                 >
-                                    <option value="09:00:00">
+                                    <option value="09:00-10:00">
                                         09:00-10:00
                                     </option>
                                     <option value="10:00-11:00">
@@ -127,32 +126,32 @@ function Appointment() {
                                         value={date}
                                         onChange={(event) => setDate(event.target.value)}
                                 >
-                                    <option value="2023-02-08">
-                                        2023-02-08
+                                    <option value="27-02-2023">
+                                        27-02-2023
                                     </option>
-                                    <option value="2023-02-09">
-                                        2023-02-09
+                                    <option value="28-02-2023">
+                                        28-02-2023
                                     </option>
-                                    <option value="2023-02-10">
-                                        2023-02-10
+                                    <option value="01-03-2023">
+                                        01-03-2023
                                     </option>
-                                    <option value="2023-02-13">
-                                        2023-02-13
+                                    <option value="02-03-2023">
+                                        02-03-2023
                                     </option>
-                                    <option value="2023-02-14">
-                                        2023-02-14
+                                    <option value="03-03-2023">
+                                        03-03-2023
                                     </option>
-                                    <option value="2023-02-15">
-                                        2023-02-15
+                                    <option value="06-03-2023">
+                                        06-03-2023
                                     </option>
-                                    <option value="2023-02-16">
-                                        2023-02-16
+                                    <option value="07-03-2023">
+                                        07-03-2023
                                     </option>
-                                    <option value="2023-02-17">
-                                        2023-02-17
+                                    <option value="08-03-2023">
+                                        08-03-2023
                                     </option>
-                                    <option value="2023-02-18">
-                                        2023-02-18
+                                    <option value="09-03-2023">
+                                        09-03-2023
                                     </option>
                                 </select>
                             </label>
