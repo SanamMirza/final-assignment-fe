@@ -3,17 +3,16 @@ import './Contact.css';
 import axios from "axios";
 import FormInput from "../../component/form-field/FormInput";
 import {useForm} from "react-hook-form";
+import Button from "../../component/button/Button";
+import PopUp from "../../component/pop-up-message/PopUp";
 
 
 function Contact() {
-    const {register, handleSubmit, formState : {errors}} = useForm({mode: "onBlur"});
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [message, setMessage] = useState("");
+    const {register, handleSubmit, reset, formState : {errors}} = useForm({mode: "onBlur"});
+    const [showPopUp, setShowPopUp] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [error, toggleError] = useState(false);
-    const [contactSuccess, setContactSuccess] = useState(false);
+
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
@@ -23,16 +22,12 @@ function Contact() {
         toggleLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:8081/contact', {
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                message: message,
-            }, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    }});
-            setContactSuccess(true)
+            const response = await axios.post('http://localhost:8081/contact', data);
+
+            console.log(response.data)
+
+            reset();
+            setShowPopUp(true)
 
         } catch (error) {
             console.error(error);
@@ -42,9 +37,13 @@ function Contact() {
         toggleLoading(false)
     }
 
+    function handleClose() {
+        setShowPopUp(false);
+    }
+
     return (
         <>
-        <div>
+        <div className="contact-page">
             <h1>Contact informatie</h1>
             <ul>
                 <li>
@@ -109,17 +108,29 @@ function Contact() {
                     Bericht:
                     <textarea
                               rows="10" cols="50"
-                              id="message"
                               name="message"
                               placeholder="Bericht"
-                              value={message}
-                              onChange={(e) => setMessage(e.target.value)}>
+                              {...register("message", {
+                                  required: {
+                                      maxLength: "500",
+                                      message: "Maximaal 500 karakters"
+                                  }
+                              })}
+                    >
+                        {errors.message && <p>{errors.message.message}</p>}
                     </textarea>
                 </label>
-                <button className="button" type="submit">
-                    Versturen
-                </button>
-                {contactSuccess === true && <h5>Uw contact formulier is verzonden.{loading}</h5>}
+                <Button
+                    className="button"
+                    type="submit"
+                    children="Versturen"
+                />
+                {showPopUp && (
+                    <PopUp
+                        title="Uw formulier is verzonden!"
+                        onClose={handleClose}
+                    />
+                   )}
             </form>
         </main>
             </>

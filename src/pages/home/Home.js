@@ -3,6 +3,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import '../../component/nav/Nav'
 import './Home.css'
+import Button from "../../component/button/Button";
 
 
 function Home() {
@@ -36,7 +37,11 @@ function Home() {
                            type="text"
                            placeholder="Zoek..."
                            value={search} onChange={handleSearch}/>
-                    <button className="search-button" type="button">Zoek</button>
+                    <Button
+                        className="search-button"
+                        type="button"
+                        children="Zoek"
+                    />
                 </div>
 
 

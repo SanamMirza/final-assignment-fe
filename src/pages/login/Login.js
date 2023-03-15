@@ -5,6 +5,7 @@ import './Login.css'
 import {Link, useNavigate} from "react-router-dom";
 import FormInput from "../../component/form-field/FormInput";
 import {useForm} from "react-hook-form";
+import Button from "../../component/button/Button";
 
 
 function Login() {
@@ -28,9 +29,6 @@ function Login() {
 
             login(response.data.jwt);
 
-            // setTimeout(() => {
-            //     navigate('/account');
-            // }, 2000);
 
         } catch (error) {
             console.error(error);
@@ -92,11 +90,11 @@ function Login() {
                     errors={errors}
                 />
                 {error && <h5 className="error-melding">Combinatie van gebruikersnaam en wachtwoord is onjuist</h5> }
-                <button className="button login-button"
+                <Button
+                    className="button"
                     type="submit"
-                >
-                    Inloggen
-                </button>
+                    children="Inloggen"
+                />
                 {loginSuccess === true && <h5>Registreren is gelukt. Je wordt nu doorgestuurd naar de inlog pagina.{loading}</h5>}
                 <p>Heb je nog geen account? <Link to="/register"> Registreer</Link> je dan eerst.</p>
             </form>}

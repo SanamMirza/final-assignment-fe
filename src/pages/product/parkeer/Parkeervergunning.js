@@ -1,10 +1,10 @@
-
+import './Parkeervergunning.css';
 
 function Parkeervergunning() {
 
 
     return (
-        <div>
+        <div className="parking">
             <h1>Parkeervergunning</h1>
 
 

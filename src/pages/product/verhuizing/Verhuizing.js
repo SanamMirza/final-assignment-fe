@@ -5,50 +5,24 @@ import jwt_decode from "jwt-decode";
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../../context/AuthContext";
 import FormInput from "../../../component/form-field/FormInput";
+import {useForm} from "react-hook-form";
+import Button from "../../../component/button/Button";
+import PopUp from "../../../component/pop-up-message/PopUp";
 
 
 function Verhuizing() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [address, setAddress] = useState("");
-    const [houseNumber, setHouseNumber] =useState("");
-    const [zipcode, setZipcode] = useState("");
-    const [city, setCity] = useState("");
-    const [email,setEmail]=useState("");
-    const [addSuccess, toggleAddSuccess] = useState(false);
+    const {register, handleSubmit, reset, formState: {errors}} = useForm({mode: "onBlur"});
+    const [showPopUp, setShowPopUp] = useState(false);
+    const [loading, toggleLoading] = useState(false);
+    const [error, toggleError] = useState(false);
     const [file, setFile] = useState([]);
-    const [previewUrl, setPreviewUrl] = useState('');
+    const [previewUrl, setPreviewUrl] = useState("");
     const {isAuth, user} = useContext(AuthContext);
-    const storedToken = localStorage.getItem('token');
+    // const storedToken = localStorage.getItem('token');
 
 
-
-    async function formSubmit(e) {
-        e.preventDefault();
-        const jwt = localStorage.getItem('token');
-        const decodedToken = jwt_decode(jwt);
-        const id = decodedToken.sub;
-        console.log(firstName, lastName, address)
-        console.log("id")
-
-        try {
-            const response = await axios.put(`http://localhost:8081/accounts/${user.id}`, {
-                firstName: firstName,
-                lastName: lastName,
-                address: `${address}, ${houseNumber}, ${zipcode}, ${city}`,
-            },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${jwt}`,
-                    }})
-            console.log(response)
-            toggleAddSuccess(true);
-
-        } catch(error) {
-            console.error(error);
-        }
-    }
+    const postcodeRegex = /^\d{4}[a-zA-Z]{2}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     function handleDoc(e) {
         const uploadedFile = e.target.files[0];
@@ -56,29 +30,46 @@ function Verhuizing() {
         setPreviewUrl(URL.createObjectURL(uploadedFile));
     }
 
-
-    async function sendDoc(e) {
-        e.preventDefault()
-        const formData = new FormData();
-        formData.append("file", file);
+    const formSubmit = async (data) => {
+        console.log(data)
+        toggleError(false);
+        toggleLoading(true);
         const jwt = localStorage.getItem('token');
         const decodedToken = jwt_decode(jwt);
         const id = decodedToken.sub;
 
         try {
-            const response = await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "Authorization": `Bearer ${jwt}`,
-                    },
-                })
-            toggleAddSuccess(true)
-        } catch (e) {
-            console.error(e)
+            const formData = new FormData();
+            formData.append("file", file);
+            await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
+                  {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "Authorization": `Bearer ${jwt}`,
+                            },
+                  });
+            await axios.put(`http://localhost:8081/accounts/${user.id}`, data, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${jwt}`,
+                }});
+
+            console.log(data, formData)
+            reset();
+            setShowPopUp(true);
+            // setFile(null);
+            setPreviewUrl("");
+
+        } catch(error) {
+            console.error(error);
+            toggleError(true);
         }
+        toggleLoading(false);
     }
 
+    function handleClose() {
+        setShowPopUp(false);
+    }
 
             return (
                 <main className="outer-container">
@@ -87,75 +78,139 @@ function Verhuizing() {
                     <h2>Geef hier uw verhuizing door</h2>
                     {isAuth ?
                     <section className="inner-container">
-                    <form onSubmit={formSubmit}>
-                        <FormInput name="firstname-field"
-                                   type="text"
-                                   id="firstname-field"
-                                   value={firstName}
-                                   placeholder="Voornaam"
-                                   clickHandler={(e) => setFirstName(e.target.value)}>
-                            Voornaam:
-                        </FormInput>
-                        <FormInput name="lastname-field"
-                                   type="text"
-                                   id="lastname-field"
-                                   value={lastName}
-                                   placeholder="Achternaam"
-                                   clickHandler={(e) => setLastName(e.target.value)}>
-                            Achternaam:
-                        </FormInput>
-                        <FormInput name="address-field"
-                                   type="text"
-                                   id="address-field"
-                                   value={address}
-                                   placeholder="Straat"
-                                   clickHandler={(e) => setAddress(e.target.value)}>
-                            Straat:
-                        </FormInput>
-                        <FormInput name="housenumber-field"
-                                   type="text"
-                                   id="housenumber-field"
-                                   value={houseNumber}
-                                   placeholder="Huisnummer"
-                                   clickHandler={(e) => setHouseNumber(e.target.value)}>
-                            Huisnummer:
-                        </FormInput>
-                        <FormInput name="zipcode-field"
-                                   type="text"
-                                   id="zipcode-field"
-                                   value={zipcode}
-                                   placeholder="Postcode"
-                                   clickHandler={(e) => setZipcode(e.target.value)}>
-                            Postcode:
-                        </FormInput>
-                        <FormInput name="city-field"
-                                   type="text"
-                                   id="city-field"
-                                   value={city}
-                                   placeholder="Plaats"
-                                   clickHandler={(e) => setCity(e.target.value)}>
-                            Plaats:
-                        </FormInput>
-                        <FormInput name="email-field"
-                                   type="text"
-                                   id="email-field"
-                                   value={email}
-                                   placeholder="Email"
-                                   clickHandler={(e) => setEmail(e.target.value)}>
-                            Email:
-                        </FormInput>
-                    </form>
-                            <form onSubmit={sendDoc}>
+                    <form onSubmit={handleSubmit(formSubmit)}>
+                        <FormInput
+                            type="text"
+                            name="firstName"
+                            inputId="firstname-field"
+                            inputLabel="Voornaam"
+                            placeholder="Voornaam"
+                            validationRules={{
+                                required: "Voornaam is verplicht",
+                                minLength: {
+                                    value: 3,
+                                    message: "Naam moet minimaal 3 karakters bevatten"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInput
+                            type="text"
+                            name="lastName"
+                            inputId="lastname-field"
+                            inputLabel="Achternaam"
+                            placeholder="Achternaam"
+                            validationRules={{
+                                required: 'Achternaam is verplicht',
+                                minLength: {
+                                    value: 3,
+                                    message: 'Naam moet minimaal 3 karakters bevatten'
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInput
+                            type="text"
+                            name="address"
+                            inputId="street-field"
+                            inputLabel="Straat"
+                            placeholder="Straat"
+                            validationRules={{
+                                required: "Straat is verplicht",
+                                minLength: {
+                                    value: 3,
+                                    message: "Straat moet minimaal 3 karakters bevatten"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInput
+                            type="text"
+                            name="address"
+                            inputId="houseNumber-field"
+                            inputLabel="Huisnummer"
+                            placeholder="Huisnummer"
+                            validationRules={{
+                                required: "Huisnummer is verplicht",
+                                minLength: {
+                                    value: 1,
+                                    message: "Huisnummer moet minimaal 1 karakter bevatten"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInput
+                            type="text"
+                            name="address"
+                            inputId="zipcode-field"
+                            inputLabel="Postcode"
+                            placeholder="Postcode"
+                            validationRules={{
+                                required: "Postcode is verplicht",
+                                pattern: {
+                                    value: postcodeRegex,
+                                    message: "Ongeldig postcode"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInput
+                            type="text"
+                            name="address"
+                            inputId="city-field"
+                            inputLabel="Plaats"
+                            placeholder="Plaats"
+                            validationRules={{
+                                required: "Plaatsnaam is verplicht"
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInput
+                            type="email"
+                            name="email"
+                            inputId="email-field"
+                            inputLabel="Email"
+                            placeholder="Email"
+                            validationRules={{
+                                required: "Email is verplicht",
+                                pattern: {
+                                    value: emailRegex,
+                                    message: "Ongeldig emailadres"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+                        <div>
                             <p>Upload hier uw huurovereneenkomst of koopakte</p>
-                            <label htmlFor="doc-upload">
-                            Kies uw bestand:
-                          <input type="file" name="doc-field" id="doc-upload" onChange={handleDoc}/>
-                             </label>
-                                <button className="button" type="submit" >Voeg uw bestand toe aan uw formulier</button>
-                            <button className="button" type="submit" value="Submit">
-                                Versturen
-                            </button>
-                                {addSuccess === true && <p><strong>Formulier is verzonden!</strong></p>}
+                        <FormInput
+                            type="file"
+                            name="file"
+                            inputId="document"
+                            inputLabel="document"
+                            register={register}
+                            errors={errors}
+                            onChange={handleDoc}
+                        />
+                            {previewUrl && (<img src={previewUrl} alt="Preview" style={{maxWidth: "100px"}}/> )}
+                        </div>
+                                <Button
+                                    className="button"
+                                    type="submit"
+                                    children="Versturen"
+                                />
+                        {showPopUp && (
+                            <PopUp
+                                title="Uw formulier is verzonden!"
+                                onClose={handleClose}
+                            />
+                       )}
                             </form>
                     </section>
                         :
@@ -169,6 +224,36 @@ function Verhuizing() {
 export default Verhuizing;
 
 
+
+
+
+
+// async function sendDoc(e) {
+//     e.preventDefault()
+//     const formData = new FormData();
+//     formData.append("file", file);
+//     const jwt = localStorage.getItem('token');
+//     const decodedToken = jwt_decode(jwt);
+//     const id = decodedToken.sub;
+//
+//     try {
+//         const response = await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
+//             {
+//                 headers: {
+//                     "Content-Type": "multipart/form-data",
+//                     "Authorization": `Bearer ${jwt}`,
+//                 },
+//             })
+//         toggleAddSuccess(true)
+//     } catch (e) {
+//         console.error(e)
+//     }
+// }
+
+
+
+
+
     {/*<form onSubmit={sendDoc}>*/}
     {/*    <p>Upload hier uw huurovereneenkomst of koopakte</p>*/}
     {/*    <label htmlFor="doc-upload">*/}
@@ -180,3 +265,5 @@ export default Verhuizing;
     {/*    </button>*/}
     {/*    {addSuccess === true && <p>Formulier is verzonden!</p>}*/}
     {/*</form>*/}
+{/*</form>*/}
+{/*<form onSubmit={handleSubmit(sendDoc)}>*/}

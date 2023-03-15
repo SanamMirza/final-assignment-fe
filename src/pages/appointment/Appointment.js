@@ -4,18 +4,20 @@ import './Appointment.css';
 import jwt_decode from "jwt-decode";
 import {AuthContext} from "../../context/AuthContext";
 import {Link} from "react-router-dom";
-
+import Button from "../../component/button/Button";
+import PopUp from "../../component/pop-up-message/PopUp";
+import {useForm} from "react-hook-form";
 
 
 function Appointment() {
-
+    const { reset } = useForm();
+    const [showPopUp, setShowPopUp] = useState(false);
     const [subject, setSubject] = useState("1001");
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
     const [appointments, setAppointments] = useState("")
     const [loading, toggleLoading] = useState(false);
     const [error, setError] = useState(false);
-    const [appointmentSuccess, setAppointmentSuccess] = useState(false);
 
 
     const {isAuth, user} = useContext(AuthContext);
@@ -27,7 +29,7 @@ function Appointment() {
             e.preventDefault();
             console.log(subject, date, time);
             const jwt = localStorage.getItem('token');
-            // const id = jwt_decode(jwt);
+
             setError(false);
             toggleLoading(true);
             try {
@@ -42,7 +44,8 @@ function Appointment() {
                 }});
 
             setAppointments(result.data)
-            setAppointmentSuccess(true)
+                reset();
+                setShowPopUp(true);
 
         } catch (error) {
         console.error(error);
@@ -52,7 +55,9 @@ function Appointment() {
     }
 
 
-
+    function handleClose() {
+            setShowPopUp(false);
+    }
 
 
 
@@ -126,40 +131,46 @@ function Appointment() {
                                         value={date}
                                         onChange={(event) => setDate(event.target.value)}
                                 >
-                                    <option value="27-02-2023">
-                                        27-02-2023
+                                    <option value="2023-04-03">
+                                        03-04-2023
                                     </option>
-                                    <option value="28-02-2023">
-                                        28-02-2023
+                                    <option value="2023-04-04">
+                                        04-04-2023
                                     </option>
-                                    <option value="01-03-2023">
-                                        01-03-2023
+                                    <option value="2023-04-05">
+                                        05-04-2023
                                     </option>
-                                    <option value="02-03-2023">
-                                        02-03-2023
+                                    <option value="2023-04-06">
+                                        06-04-2023
                                     </option>
-                                    <option value="03-03-2023">
-                                        03-03-2023
+                                    <option value="2023-04-07">
+                                        07-04-2023
                                     </option>
-                                    <option value="06-03-2023">
-                                        06-03-2023
+                                    <option value="2023-04-10">
+                                        10-04-2023
                                     </option>
-                                    <option value="07-03-2023">
-                                        07-03-2023
+                                    <option value="2023-04-11">
+                                        11-04-2023
                                     </option>
-                                    <option value="08-03-2023">
-                                        08-03-2023
+                                    <option value="2023-04-12">
+                                        12-04-2023
                                     </option>
-                                    <option value="09-03-2023">
-                                        09-03-2023
+                                    <option value="2023-04-13">
+                                        13-04-2023
                                     </option>
                                 </select>
                             </label>
-                            <button className="button"
-                                    type="submit">
-                                Maak afspraak
-                            </button>
-                            {appointmentSuccess === true && <p>Afspraak is gemaakt.{loading}</p>}
+                            <Button
+                                className="button"
+                                type="submit"
+                                children="Maak afspraak"
+                            />
+                            {showPopUp && (
+                                <PopUp
+                                    title="Uw afspraak is gemaakt!"
+                                    onClose={handleClose}
+                                    />
+                                )}
                         </form>
                     :
                     <>

@@ -3,7 +3,7 @@ import './Bestuur.css';
 
 function Bestuur(props) {
     return (
-        <div>
+        <div className="management">
             <h1>Bestuur en Organisatie</h1>
             <p>Hier vindt u alle informatie over de gemeenteraad en het college van B en W. Ook vindt u hier wat politiek actueel is, vacatures, informatie over verkiezingen en gemeentelijke wet- en regelgeving.</p>
 

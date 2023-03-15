@@ -5,6 +5,7 @@ import './Register.css';
 import '../../component/form-field/FormInput';
 import FormInput from "../../component/form-field/FormInput";
 import {useForm} from 'react-hook-form';
+import Button from "../../component/button/Button";
 
 function Register() {
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onBlur"});
@@ -194,12 +195,12 @@ function Register() {
                         register={register}
                         errors={errors}
                     />
-                    <button className="button register-button"
+                    <Button
+                        className="button"
                         type="submit"
-                    >
-                        Registreren
-                    </button>
-                    {registerSuccess === true && <p>Registreren is gelukt. Je wordt nu doorgestuurd naar de inlog pagina.{loading}</p>}
+                        children="Registreren"
+                    />
+                    {registerSuccess === true && <h5>Registreren is gelukt. Je wordt nu doorgestuurd naar de inlog pagina.{loading}</h5>}
                     {error && <h5 className="error">Dit account bestaat al. Probeer een ander emailadres</h5>}
                 </form>
                 <p>Heb je al een account? Je kunt je <Link to="/login">hier</Link> inloggen.</p>

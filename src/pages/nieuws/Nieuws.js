@@ -1,8 +1,9 @@
 import React from 'react';
+import './Nieuws.css';
 
 function Nieuws(props) {
     return (
-        <div>
+        <div className="news-page">
             <h1>Nieuws</h1>
             <img src="https://icons.veryicon.com/png/o/internet--web/web-interface-flat/6606-male-user.png" alt="male" />
 
