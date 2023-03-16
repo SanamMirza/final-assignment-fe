@@ -87,9 +87,9 @@ function Register() {
                         <FormInput
                             type="text"
                             name="address"
-                            inputId="street-field"
+                            inputId="address-field"
                             inputLabel="Straat"
-                            placeholder="Straat"
+                            placeholder="Straat en huisnummer"
                             validationRules={{
                                 required: "Straat is verplicht",
                                 minLength: {
@@ -99,23 +99,8 @@ function Register() {
                             }}
                             register={register}
                             errors={errors}
-                        />
-                        <FormInput
-                            type="text"
-                            name="address"
-                            inputId="houseNumber-field"
-                            inputLabel="Huisnummer"
-                            placeholder="Huisnummer"
-                            validationRules={{
-                                required: "Huisnummer is verplicht",
-                                minLength: {
-                                    value: 1,
-                                    message: "Huisnummer moet minimaal 1 karakter bevatten"
-                                }
-                            }}
-                            register={register}
-                            errors={errors}
-                        />
+                            />
+
                     </div>
                     <div className="horizontal-row">
                         <FormInput
@@ -134,9 +119,10 @@ function Register() {
                             register={register}
                             errors={errors}
                         />
+
                         <FormInput
                             type="text"
-                            name="telephone"
+                            name="telephoneNumber"
                             inputId="telephone-field"
                             inputLabel="Telefoonnummer"
                             placeholder="Telefoonnummer"
