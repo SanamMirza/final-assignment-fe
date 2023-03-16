@@ -32,6 +32,7 @@ function Verhuizing() {
 
     const formSubmit = async (data) => {
         console.log(data)
+        console.log("test")
         toggleError(false);
         toggleLoading(true);
         const jwt = localStorage.getItem('token');
@@ -57,7 +58,6 @@ function Verhuizing() {
             console.log(data, formData)
             reset();
             setShowPopUp(true);
-            // setFile(null);
             setPreviewUrl("");
 
         } catch(error) {
@@ -114,9 +114,9 @@ function Verhuizing() {
                         <FormInput
                             type="text"
                             name="address"
-                            inputId="street-field"
+                            inputId="address-field"
                             inputLabel="Straat"
-                            placeholder="Straat"
+                            placeholder="Straat en huisnummer"
                             validationRules={{
                                 required: "Straat is verplicht",
                                 minLength: {
@@ -129,23 +129,7 @@ function Verhuizing() {
                         />
                         <FormInput
                             type="text"
-                            name="address"
-                            inputId="houseNumber-field"
-                            inputLabel="Huisnummer"
-                            placeholder="Huisnummer"
-                            validationRules={{
-                                required: "Huisnummer is verplicht",
-                                minLength: {
-                                    value: 1,
-                                    message: "Huisnummer moet minimaal 1 karakter bevatten"
-                                }
-                            }}
-                            register={register}
-                            errors={errors}
-                        />
-                        <FormInput
-                            type="text"
-                            name="address"
+                            name="zipCode"
                             inputId="zipcode-field"
                             inputLabel="Postcode"
                             placeholder="Postcode"
@@ -155,22 +139,11 @@ function Verhuizing() {
                                     value: postcodeRegex,
                                     message: "Ongeldig postcode"
                                 }
-                            }}
+                        }}
                             register={register}
                             errors={errors}
                         />
-                        <FormInput
-                            type="text"
-                            name="address"
-                            inputId="city-field"
-                            inputLabel="Plaats"
-                            placeholder="Plaats"
-                            validationRules={{
-                                required: "Plaatsnaam is verplicht"
-                            }}
-                            register={register}
-                            errors={errors}
-                        />
+
                         <FormInput
                             type="email"
                             name="email"
@@ -205,6 +178,8 @@ function Verhuizing() {
                                     type="submit"
                                     children="Versturen"
                                 />
+
+
                         {showPopUp && (
                             <PopUp
                                 title="Uw formulier is verzonden!"
@@ -222,48 +197,3 @@ function Verhuizing() {
 
 
 export default Verhuizing;
-
-
-
-
-
-
-// async function sendDoc(e) {
-//     e.preventDefault()
-//     const formData = new FormData();
-//     formData.append("file", file);
-//     const jwt = localStorage.getItem('token');
-//     const decodedToken = jwt_decode(jwt);
-//     const id = decodedToken.sub;
-//
-//     try {
-//         const response = await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
-//             {
-//                 headers: {
-//                     "Content-Type": "multipart/form-data",
-//                     "Authorization": `Bearer ${jwt}`,
-//                 },
-//             })
-//         toggleAddSuccess(true)
-//     } catch (e) {
-//         console.error(e)
-//     }
-// }
-
-
-
-
-
-    {/*<form onSubmit={sendDoc}>*/}
-    {/*    <p>Upload hier uw huurovereneenkomst of koopakte</p>*/}
-    {/*    <label htmlFor="doc-upload">*/}
-    {/*        Kies uw bestand:*/}
-    {/*        <input type="file" name="doc-field" id="doc-upload" onChange={handleDoc}/>*/}
-    {/*    </label>*/}
-    {/*    <button className="button" type="submit" value="Submit">*/}
-    {/*        Versturen*/}
-    {/*    </button>*/}
-    {/*    {addSuccess === true && <p>Formulier is verzonden!</p>}*/}
-    {/*</form>*/}
-{/*</form>*/}
-{/*<form onSubmit={handleSubmit(sendDoc)}>*/}
