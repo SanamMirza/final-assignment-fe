@@ -86,7 +86,7 @@ function Register() {
                     <div className="horizontal-row">
                         <FormInput
                             type="text"
-                            name="street"
+                            name="address"
                             inputId="street-field"
                             inputLabel="Straat"
                             placeholder="Straat"
@@ -102,7 +102,7 @@ function Register() {
                         />
                         <FormInput
                             type="text"
-                            name="houseNumber"
+                            name="address"
                             inputId="houseNumber-field"
                             inputLabel="Huisnummer"
                             placeholder="Huisnummer"
@@ -120,7 +120,7 @@ function Register() {
                     <div className="horizontal-row">
                         <FormInput
                             type="text"
-                            name="zipcode"
+                            name="zipCode"
                             inputId="zipcode-field"
                             inputLabel="Postcode"
                             placeholder="Postcode"
