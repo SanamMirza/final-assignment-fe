@@ -2,22 +2,26 @@ import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {AuthContext} from "../../context/AuthContext";
 import './Account.css';
-import {FaPen, FaSave, FaTrash} from "react-icons/fa";
+import {FaArrowAltCircleLeft, FaArrowAltCircleRight, FaEdit, FaPen, FaSave, FaTrash} from "react-icons/fa";
 import jwt_decode from "jwt-decode";
+import PopUp from "../../component/pop-up-message/PopUp";
+import FormInput from "../../component/form-field/FormInput";
 
 
 
 function Account() {
-    const [subject, setSubject] = useState("");
     const [users, setUsers] = useState([]);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
     const [modifySuccess, setModifySuccess] = useState(false);
     const storedToken = localStorage.getItem('token');
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
-    const [update, toggleUpdate] = useState(false);
+    const [idAppointment, setIdAppointment] = useState("");
+    const [showPopUp, setShowPopUp] = useState(false);
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
+    const [cancel, setCancel] = useState(false);
+    const [password, setPassword] = useState("");
 
     const {user} = useContext(AuthContext);
 
@@ -51,12 +55,39 @@ function Account() {
     }, [])
 
 
-
-    async function userModifyAppointment(idAppointment, data) {
-        setSubject(subject);
-        toggleUpdate(true);
+    async function changePassword(username) {
+        toggleError(false);
+        toggleLoading(true);
         try {
-            const result = await axios.put(`http://localhost:8081/appointments/${idAppointment}`, data, {
+            const response = await axios.put(`http://localhost:8081/users/${username}`, {
+                password: password,
+            },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedToken}`
+                    }
+            });
+            setPassword(response.data);
+
+        }
+        catch(error) {
+            console.error(error);
+            toggleError(true);
+        }
+        toggleLoading(false);
+    }
+
+
+
+    async function userModifyAppointment(idAppointment) {
+
+        try {
+            const result = await axios.put(`http://localhost:8081/appointments/${idAppointment}`, {
+                appointmentDate: date,
+                appointmentTime: time,
+            },
+            {
 
                 headers: {
                     "Content-Type": "application/json",
@@ -64,9 +95,15 @@ function Account() {
                 }
             })
 
-            console.log(result.data)
-            console.log(`Appointment with id ${idAppointment} has been modified`)
-            setModifySuccess(true)
+            console.log(result.data);
+            console.log(`Appointment with id ${idAppointment} has been modified`);
+            setModifySuccess(true);
+            setShowPopUp(true);
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
+
+
         } catch (error) {
             console.error(error);
         }
@@ -85,6 +122,7 @@ function Account() {
             console.log(result.data)
             console.log(`Appointment with id ${idAppointment} has been deleted`)
             setDeleteSuccess(true)
+            setShowPopUp(true);
         } catch (error) {
             console.error(error);
         }
@@ -111,7 +149,17 @@ function Account() {
         }
     }
 
+    function handleClose() {
+        setShowPopUp(false);
+    }
 
+    function handleCancel() {
+        setCancel(true);
+    }
+
+    if (cancel) {
+        return <h4>Annulering voltooid</h4>
+    }
 
     return (
         <>
@@ -124,11 +172,20 @@ function Account() {
                     <img src="https://cdn-icons-png.flaticon.com/512/6522/6522516.png" className="login-pfp-account" alt="template-profile-picture" />
                     <div className="content">
                     <h3>Uw gegevens</h3>
-                    <h3>Voornaam: <span>{user.firstName}</span></h3>
-                    <h3>Achternaam: <span>{user.lastName}</span></h3>
-                    <h3>Adres: <span>{user.address}</span></h3>
-                    <h3>Telefoonnummer: <span>{user.telephoneNumber}</span></h3>
-                    <h3>Email: <span>{user.email}</span></h3>
+                    Naam: <span>{user.firstName} {user.lastName}</span> <br/>
+                    Adres: <span>{user.address}</span> <br/>
+                    Telefoonnummer: <span>{user.telephoneNumber}</span> <br/>
+                    Email: <span>{user.email}</span> <br/>
+                    Gebruikersnaam: <span>{user.username}</span> <br/>
+                    Wachtwoord wijzigen {user === password ? (
+                            <input
+                                type="password"
+                                name="password"
+                                value={password}
+                                onChange={(event)=> setPassword(event.target.value)}
+                            />) :
+                        <FaEdit onClick={(e) => setPassword(password)}/>}
+
                     <table>
                     <thead>
                     <tr>
@@ -139,51 +196,50 @@ function Account() {
                     </tr>
                     </thead>
                         <tbody>
-                            {users.map(user => (
-                            user.appointments.map(appointment => (
-                            <tr key={appointment.id}>
+                            {user.appointments.map((appointment) => (
+                                <tr key={appointment.id}>
                                 <td>{appointment.subject + " "}</td>
-                                <td>{update ?  (<select className="date-selection"
-                                                       name="appointment-date"
-                                                        placeholder={date}
-                                                       id="date"
-                                                       value={date}
-                                                       onChange={(event) => setDate(event.target.value)}
+                                <td>{appointment.id === idAppointment ?  (<select className="date-selection"
+                                                                                  name="appointment-date"
+                                                                                  placeholder={date}
+                                                                                  id="date"
+                                                                                  value={date}
+                                                                                  onChange={(event) => setDate(event.target.value)}
                                 >
-                                    <option value="2023-04-03">
+                                    <option value="03-04-2023">
                                         03-04-2023
                                     </option>
-                                    <option value="2023-04-04">
+                                    <option value="04-04-2023">
                                         04-04-2023
                                     </option>
-                                    <option value="2023-04-05">
+                                    <option value="05-04-2023">
                                         05-04-2023
                                     </option>
-                                    <option value="2023-04-06">
+                                    <option value="06-04-2023">
                                         06-04-2023
                                     </option>
-                                    <option value="2023-04-07">
+                                    <option value="07-04-2023">
                                         07-04-2023
                                     </option>
-                                    <option value="2023-04-10">
+                                    <option value="10-04-2023">
                                         10-04-2023
                                     </option>
-                                    <option value="2023-04-11">
+                                    <option value="11-04-2023">
                                         11-04-2023
                                     </option>
-                                    <option value="2023-04-12">
+                                    <option value="12-04-2023">
                                         12-04-2023
                                     </option>
-                                    <option value="2023-04-13">
+                                    <option value="13-04-2023">
                                         13-04-2023
                                     </option>
                                 </select>) : appointment.appointmentDate + " "}</td>
-                            <td>{update ? (<select className="time-selection"
-                                                   name="appointment-time"
-                                                   placeholder={time}
-                                                   id="time"
-                                                   value={time}
-                                                   onChange={(event) => setTime(event.target.value)}
+                            <td>{appointment.id === idAppointment ? (<select className="time-selection"
+                                                                             name="appointment-time"
+                                                                             placeholder={time}
+                                                                             id="time"
+                                                                             value={time}
+                                                                             onChange={(event) => setTime(event.target.value)}
                             >
                                 <option value="09:00-10:00">
                                     09:00-10:00
@@ -208,13 +264,14 @@ function Account() {
                                 </option>
                             </select>) : appointment.appointmentTime}</td>
                             <td><FaTrash onClick={(e) => userDeleteAppointment(appointment.id)}> </FaTrash>
-                            <FaPen onClick={(e) => toggleUpdate(!update)} />
-                            <FaSave onClick={()=> userModifyAppointment(appointment.id)}>Save</FaSave></td></tr>))))
-                            }
+                            <FaPen onClick={(e) => setIdAppointment(appointment.id)} />
+                            <FaSave onClick={(e)=> userModifyAppointment(appointment.id)}> </FaSave>
+                            <FaArrowAltCircleLeft onClick={()=> window.location.reload()}/></td>
+                            </tr>))}
                         </tbody>
                     </table>
-                        {deleteSuccess === true && <p><strong>Afspraak is verwijderd.{loading}</strong></p>}
-                        {modifySuccess === true && <p><strong>Afspraak is gewijzigd.{loading}</strong></p>}
+                        {deleteSuccess === true && <h4><strong>Uw afspraak is verwijderd.{loading}</strong></h4>}
+                        {modifySuccess === true && <h4><strong>Uw afspraak is gewijzigd. De pagina wordt verversd! {loading}</strong></h4>}
                         <table>
                             <thead>
                             <tr>
@@ -232,6 +289,12 @@ function Account() {
                                 ))}
                             </tbody>
                         </table>
+                        {showPopUp && (
+                            <PopUp
+                                title="Uw Afspraak is gewijzigd!"
+                                onClose={handleClose}
+                            />
+                        )}
 
                     </div>
                 </section>
