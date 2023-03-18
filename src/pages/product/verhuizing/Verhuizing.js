@@ -28,6 +28,8 @@ function Verhuizing() {
         const uploadedFile = e.target.files[0];
         setFile(uploadedFile);
         setPreviewUrl(URL.createObjectURL(uploadedFile));
+        console.log(e.target.files[0]);
+        console.log(uploadedFile)
     }
 
     const formSubmit = async (data) => {
@@ -39,9 +41,12 @@ function Verhuizing() {
         const decodedToken = jwt_decode(jwt);
         const id = decodedToken.sub;
 
+        const formData = new FormData();
+        formData.append("file", file);
+        console.log(formData);
+        console.log(file);
+
         try {
-            const formData = new FormData();
-            formData.append("file", file);
             await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
                   {
                         headers: {
@@ -162,15 +167,16 @@ function Verhuizing() {
                         />
                         <div>
                             <p>Upload hier uw huurovereneenkomst of koopakte</p>
-                        <FormInput
-                            type="file"
-                            name="file"
-                            inputId="document"
-                            inputLabel="document"
-                            register={register}
-                            errors={errors}
-                            onChange={handleDoc}
-                        />
+                        {/*<FormInput*/}
+                        {/*    type="file"*/}
+                        {/*    name="file"*/}
+                        {/*    // inputId="document"*/}
+                        {/*    // inputLabel="document"*/}
+                        {/*    register={register}*/}
+                        {/*    // errors={errors}*/}
+                        {/*    onChange={handleDoc}*/}
+                        {/*/>*/}
+                            <input type="file" onChange={handleDoc}/>
                             {previewUrl && (<img src={previewUrl} alt="Preview" style={{maxWidth: "100px"}}/> )}
                         </div>
                                 <Button
