@@ -1,16 +1,17 @@
 import React, {useContext, useEffect, useState} from 'react';
-import axios from "axios";
-import {AuthContext} from "../../context/AuthContext";
 import './Account.css';
-import {FaArrowAltCircleLeft, FaArrowAltCircleRight, FaEdit, FaPen, FaSave, FaTrash} from "react-icons/fa";
+import axios from "axios";
 import jwt_decode from "jwt-decode";
+import {AuthContext} from "../../context/AuthContext";
 import PopUp from "../../component/pop-up-message/PopUp";
-import FormInput from "../../component/form-field/FormInput";
+import {FaArrowAltCircleLeft, FaEdit, FaPen, FaSave, FaTrash} from "react-icons/fa";
 
 
 
 function Account() {
     const [users, setUsers] = useState([]);
+    const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState('');
     const [deleteSuccess, setDeleteSuccess] = useState(false);
     const [modifySuccess, setModifySuccess] = useState(false);
     const storedToken = localStorage.getItem('token');
@@ -18,8 +19,6 @@ function Account() {
     const [loading, toggleLoading] = useState(false);
     const [idAppointment, setIdAppointment] = useState("");
     const [showPopUp, setShowPopUp] = useState(false);
-    const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState('');
     const [cancel, setCancel] = useState(false);
     const [password, setPassword] = useState("");
 
@@ -206,31 +205,31 @@ function Account() {
                                                                                   value={date}
                                                                                   onChange={(event) => setDate(event.target.value)}
                                 >
-                                    <option value="03-04-2023">
+                                    <option value="2023-04-03">
                                         03-04-2023
                                     </option>
-                                    <option value="04-04-2023">
+                                    <option value="2023-04-04">
                                         04-04-2023
                                     </option>
-                                    <option value="05-04-2023">
+                                    <option value="2023-04-05">
                                         05-04-2023
                                     </option>
-                                    <option value="06-04-2023">
+                                    <option value="2023-04-06">
                                         06-04-2023
                                     </option>
-                                    <option value="07-04-2023">
+                                    <option value="2023-04-07">
                                         07-04-2023
                                     </option>
-                                    <option value="10-04-2023">
+                                    <option value="2023-04-10">
                                         10-04-2023
                                     </option>
-                                    <option value="11-04-2023">
+                                    <option value="2023-04-11">
                                         11-04-2023
                                     </option>
-                                    <option value="12-04-2023">
+                                    <option value="2023-04-12">
                                         12-04-2023
                                     </option>
-                                    <option value="13-04-2023">
+                                    <option value="2023-04-13">
                                         13-04-2023
                                     </option>
                                 </select>) : appointment.appointmentDate + " "}</td>
@@ -241,25 +240,25 @@ function Account() {
                                                                              value={time}
                                                                              onChange={(event) => setTime(event.target.value)}
                             >
-                                <option value="09:00-10:00">
+                                <option value="09:00">
                                     09:00-10:00
                                 </option>
-                                <option value="10:00-11:00">
+                                <option value="10:00">
                                     10:00-11:00
                                 </option>
-                                <option value="11:00-12:00">
+                                <option value="11:00">
                                     11:00-12:00
                                 </option>
-                                <option value="12:00-13:00">
+                                <option value="12:00">
                                     12:00-13:00
                                 </option>
-                                <option value="13:00-14:00">
+                                <option value="13:00">
                                     13:00-14:00
                                 </option>
-                                <option value="14:00-15:00">
+                                <option value="14:00">
                                     14:00-15:00
                                 </option>
-                                <option value="15:00-16:00">
+                                <option value="15:00">
                                     15:00-16:00
                                 </option>
                             </select>) : appointment.appointmentTime}</td>
