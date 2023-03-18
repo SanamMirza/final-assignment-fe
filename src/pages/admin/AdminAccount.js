@@ -4,7 +4,7 @@ import {AuthContext} from "../../context/AuthContext";
 import './AdminAcoount.css';
 import '../../assets/remove-rubbish-svgrepo-com.svg';
 import jwt_decode from "jwt-decode";
-import {FaEdit, FaPen, FaTrash, FaTrashAlt} from "react-icons/fa";
+import {FaEdit, FaPen, FaSave, FaTrash, FaTrashAlt} from "react-icons/fa";
 import appointment from "../appointment/Appointment";
 
 
@@ -13,8 +13,11 @@ import appointment from "../appointment/Appointment";
 function AdminAccount() {
     const [users, setUsers] = useState([]);
     const [loading, toggleLoading] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState('');
     const [error, toggleError] = useState(false);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
+    const [idAppointment, setIdAppointment] = useState("");
     const [expandedRow, setExpandedRow] = useState(null);
     const {isAuth, user} = useContext(AuthContext);
     const storedToken = localStorage.getItem('token');
@@ -29,10 +32,11 @@ function AdminAccount() {
             toggleLoading(true);
 
             try {
-                const result = await axios.get(`http://localhost:8081/accounts`);
-                const filteredUsers = result.data.filter(user => user.authority !== "ADMIN");
+                const result = await axios.get(`http://localhost:8081/accounts`)
+                const filteredUsers = result.data.filter((user) => user.authorities.includes("USER" ));
+
                 setUsers(filteredUsers);
-                console.log(filteredUsers)
+                console.log(result.data);
 
             } catch (error) {
                 console.error(error);
@@ -64,23 +68,27 @@ function AdminAccount() {
         }
     }
 
-    async function modifyAppointment(idAppointment) {
+    async function adminModifyAppointment(idAppointment) {
         console.log(idAppointment)
         try {
             const result = await axios.put(`http://localhost:8081/appointments/${idAppointment}`, {
-                // appointmentDate: appointmentDate,
-                // appointmentTime: appointmentTime,
-                // subject: subject,
+                appointmentDate: date,
+                appointmentTime: time,
+                },
+                {
 
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${storedToken}`
-                }
-            })
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedToken}`
+                    }
+                });
 
             console.log(result.data)
             console.log(`Appointment with id ${idAppointment} has been modified`)
-            setDeleteSuccess(true)
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         } catch (error) {
             console.error(error);
         }
@@ -109,9 +117,9 @@ function AdminAccount() {
 
 
 
-    const toggleRow = (rowIndex) => {
-        setExpandedRow(expandedRow === rowIndex ? null : rowIndex);
-    }
+    // const toggleRow = (rowIndex) => {
+    //     setExpandedRow(expandedRow === rowIndex ? null : rowIndex);
+    // }
 
 
 
@@ -145,7 +153,7 @@ function AdminAccount() {
                             <td>{user.lastName}</td>
                             <td>{user.username}</td>
                             <td>{user.telephoneNumber}</td>
-                            <td>{user.address}</td>
+                            <td>{user.address}, {user.zipCode}</td>
                             <td>
                             {user.appointments.map((appointment) => (
                                 <div key={appointment.id}>{appointment.subject}</div>
@@ -153,19 +161,90 @@ function AdminAccount() {
                             </td>
                             <td>
                                 {user.appointments.map((appointment) => (
-                                    <div key={appointment.id}>{appointment.appointmentDate}</div>
+                                    <div key={appointment.id}>
+                                        {appointment.id === idAppointment ?  (<select className="date-selection"
+                                                                                      name="appointment-date"
+                                                                                      placeholder={date}
+                                                                                      id="date"
+                                                                                      value={date}
+                                                                                      onChange={(event) => setDate(event.target.value)}
+                                            >
+                                            <option value="">
+                                                Selecteer een datum
+                                            </option>
+                                                <option value="2023-04-03">
+                                                    03-04-2023
+                                                </option>
+                                                <option value="2023-04-04">
+                                                    04-04-2023
+                                                </option>
+                                                <option value="2023-04-05">
+                                                    05-04-2023
+                                                </option>
+                                                <option value="2023-04-06">
+                                                    06-04-2023
+                                                </option>
+                                                <option value="2023-04-07">
+                                                    07-04-2023
+                                                </option>
+                                                <option value="2023-04-10">
+                                                    10-04-2023
+                                                </option>
+                                                <option value="2023-04-11">
+                                                    11-04-2023
+                                                </option>
+                                                <option value="2023-04-12">
+                                                    12-04-2023
+                                                </option>
+                                                <option value="2023-04-13">
+                                                    13-04-2023
+                                                </option>
+                                            </select>) : appointment.appointmentDate}</div>
                                 ))}
                             </td>
                             <td>
                                 {user.appointments.map((appointment) => (
-                                    <div key={appointment.id}>{appointment.appointmentTime}</div>
+                                    <div key={appointment.id}>
+                                        {appointment.id === idAppointment ? (<select className="time-selection"
+                                                                                     name="appointment-time"
+                                                                                     placeholder={time}
+                                                                                     id="time"
+                                                                                     value={time}
+                                                                                     onChange={(event) => setTime(event.target.value)}
+                                            >
+                                            <option value="">
+                                                Selecteer een tijd
+                                            </option>
+                                                <option value="09:00">
+                                                    09:00-10:00
+                                                </option>
+                                                <option value="10:00">
+                                                    10:00-11:00
+                                                </option>
+                                                <option value="11:00">
+                                                    11:00-12:00
+                                                </option>
+                                                <option value="12:00">
+                                                    12:00-13:00
+                                                </option>
+                                                <option value="13:00">
+                                                    13:00-14:00
+                                                </option>
+                                                <option value="14:00">
+                                                    14:00-15:00
+                                                </option>
+                                                <option value="15:00">
+                                                    15:00-16:00
+                                                </option>
+                                            </select>) : appointment.appointmentTime}</div>
                             ))}
                             </td>
                             <td>
                                 {user.appointments.map((appointment) => (
-                                    <div>
+                                    <div key={appointment.id}>
                                     <FaTrash onClick={() => deleteAppointment(appointment.id)} />
-                                    <FaEdit onClick={() => modifyAppointment(appointment.id)} />
+                                    <FaEdit onClick={() => setIdAppointment(appointment.id)} />
+                                    <FaSave onClick={(e)=> adminModifyAppointment(appointment.id)} />
                                     </div>
                             ))}
                             </td>
@@ -189,14 +268,7 @@ function AdminAccount() {
 
 
 
-{/*   return <button type="button" className="delete"*/
-}
-{/*       onClick={(e)=>deleteApp(e,appointment.id)}*/
-}
-{/*       > delete </button>*/
-}
-{/*   })}</td>*/  // <button key={index} type="button" className="delete" onClick={() => modifyAppointment(appointment.id)}>wijzigen</button> })}
-}
+
 
 
 export default AdminAccount;
