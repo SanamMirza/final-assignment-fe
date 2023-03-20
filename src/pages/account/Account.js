@@ -4,22 +4,23 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import {AuthContext} from "../../context/AuthContext";
 import PopUp from "../../component/pop-up-message/PopUp";
-import {FaArrowAltCircleLeft, FaEdit, FaPen, FaSave, FaTrash} from "react-icons/fa";
+import {FaArrowAltCircleLeft, FaArrowLeft, FaEdit, FaPen, FaSave, FaTrash} from "react-icons/fa";
+import Button from "../../component/button/Button";
+import {useForm} from "react-hook-form";
+import FormInput from "../../component/form-field/FormInput";
 
 
 
 function Account() {
+    const {handleSubmit, reset} = useForm();
     const [users, setUsers] = useState([]);
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
-    const [deleteSuccess, setDeleteSuccess] = useState(false);
-    const [modifySuccess, setModifySuccess] = useState(false);
     const storedToken = localStorage.getItem('token');
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [idAppointment, setIdAppointment] = useState("");
     const [showPopUp, setShowPopUp] = useState(false);
-    const [cancel, setCancel] = useState(false);
     const [password, setPassword] = useState("");
 
     const {user} = useContext(AuthContext);
@@ -28,7 +29,6 @@ function Account() {
 
 
     useEffect(()=>{
-
 
         async function fetchPrivateData() {
             toggleError(false);
@@ -54,20 +54,25 @@ function Account() {
     }, [])
 
 
-    async function changePassword(username) {
+    async function changePassword() {
         toggleError(false);
         toggleLoading(true);
         try {
-            const response = await axios.put(`http://localhost:8081/users/${username}`, {
+            const response = await axios.put(`http://localhost:8081/users/${user.username}`, {
+                isAuth: user,
                 password: password,
             },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
+            {
+                headers: {
+                    "Content-Type": "application/json",
                         Authorization: `Bearer ${storedToken}`
-                    }
-            });
+                }
+            }
+        );
             setPassword(response.data);
+            console.log(`Password has been changed`);
+            reset();
+            setShowPopUp(true);
 
         }
         catch(error) {
@@ -96,7 +101,6 @@ function Account() {
 
             console.log(result.data);
             console.log(`Appointment with id ${idAppointment} has been modified`);
-            setModifySuccess(true);
             setShowPopUp(true);
             setTimeout(() => {
                 window.location.reload();
@@ -120,8 +124,10 @@ function Account() {
 
             console.log(result.data)
             console.log(`Appointment with id ${idAppointment} has been deleted`)
-            setDeleteSuccess(true)
             setShowPopUp(true);
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
         } catch (error) {
             console.error(error);
         }
@@ -148,17 +154,8 @@ function Account() {
         }
     }
 
-    function handleClose() {
-        setShowPopUp(false);
-    }
 
-    function handleCancel() {
-        setCancel(true);
-    }
 
-    if (cancel) {
-        return <h4>Annulering voltooid</h4>
-    }
 
     return (
         <>
@@ -176,14 +173,27 @@ function Account() {
                     Telefoonnummer: <span>{user.telephoneNumber}</span> <br/>
                     Email: <span>{user.email}</span> <br/>
                     Gebruikersnaam: <span>{user.username}</span> <br/>
-                    Wachtwoord wijzigen {user === password ? (
+                    Wachtwoord wijzigen <FaEdit onClick={(e) => setPassword(password)}/>
+                        <form onSubmit={handleSubmit(changePassword)}>
                             <input
                                 type="password"
-                                name="password"
                                 value={password}
-                                onChange={(event)=> setPassword(event.target.value)}
-                            />) :
-                        <FaEdit onClick={(e) => setPassword(password)}/>}
+                                placeholder="Wachtwoord"
+                                id="password"
+                                name={password}
+                                // register={register}
+                                onChange={(e)=> setPassword(e.target.value)}
+                            />
+                            <Button className="button" type="button" onClick={() => changePassword(password)}>Wijzig wachtwoord</Button>
+                            {showPopUp && (
+                                <PopUp
+                                    title="Uw wachtwoord is gewijzigd!"
+                                    onClose={() => setShowPopUp(false)}
+                                />
+                            )}
+                            {loading}
+                        </form>
+
 
                     <table>
                     <thead>
@@ -198,79 +208,91 @@ function Account() {
                             {user.appointments.map((appointment) => (
                                 <tr key={appointment.id}>
                                 <td>{appointment.subject + " "}</td>
-                                <td>{appointment.id === idAppointment ?  (<select className="date-selection"
-                                                                                  name="appointment-date"
-                                                                                  placeholder={date}
-                                                                                  id="date"
-                                                                                  value={date}
-                                                                                  onChange={(event) => setDate(event.target.value)}
-                                >
-                                    <option value="2023-04-03">
-                                        03-04-2023
-                                    </option>
-                                    <option value="2023-04-04">
-                                        04-04-2023
-                                    </option>
-                                    <option value="2023-04-05">
-                                        05-04-2023
-                                    </option>
-                                    <option value="2023-04-06">
-                                        06-04-2023
-                                    </option>
-                                    <option value="2023-04-07">
-                                        07-04-2023
-                                    </option>
-                                    <option value="2023-04-10">
-                                        10-04-2023
-                                    </option>
-                                    <option value="2023-04-11">
-                                        11-04-2023
-                                    </option>
-                                    <option value="2023-04-12">
-                                        12-04-2023
-                                    </option>
-                                    <option value="2023-04-13">
-                                        13-04-2023
-                                    </option>
-                                </select>) : appointment.appointmentDate + " "}</td>
-                            <td>{appointment.id === idAppointment ? (<select className="time-selection"
-                                                                             name="appointment-time"
-                                                                             placeholder={time}
-                                                                             id="time"
-                                                                             value={time}
-                                                                             onChange={(event) => setTime(event.target.value)}
-                            >
-                                <option value="09:00">
-                                    09:00-10:00
-                                </option>
-                                <option value="10:00">
-                                    10:00-11:00
-                                </option>
-                                <option value="11:00">
-                                    11:00-12:00
-                                </option>
-                                <option value="12:00">
-                                    12:00-13:00
-                                </option>
-                                <option value="13:00">
-                                    13:00-14:00
-                                </option>
-                                <option value="14:00">
-                                    14:00-15:00
-                                </option>
-                                <option value="15:00">
-                                    15:00-16:00
-                                </option>
-                            </select>) : appointment.appointmentTime}</td>
+                                        <td>{appointment.id === idAppointment ? (<select className="date-selection"
+                                                                                         name="appointment-date"
+                                                                                         placeholder={date}
+                                                                                         id="date"
+                                                                                         value={date}
+                                                                                         onChange={(event) => setDate(event.target.value)}
+                                        >
+                                            <option value="">
+                                                Selecteer een datum
+                                            </option>
+                                            <option value="2023-04-03">
+                                                03-04-2023
+                                            </option>
+                                            <option value="2023-04-04">
+                                                04-04-2023
+                                            </option>
+                                            <option value="2023-04-05">
+                                                05-04-2023
+                                            </option>
+                                            <option value="2023-04-06">
+                                                06-04-2023
+                                            </option>
+                                            <option value="2023-04-07">
+                                                07-04-2023
+                                            </option>
+                                            <option value="2023-04-10">
+                                                10-04-2023
+                                            </option>
+                                            <option value="2023-04-11">
+                                                11-04-2023
+                                            </option>
+                                            <option value="2023-04-12">
+                                                12-04-2023
+                                            </option>
+                                            <option value="2023-04-13">
+                                                13-04-2023
+                                            </option>
+                                        </select>) : appointment.appointmentDate + " "}</td>
+                                        <td>{appointment.id === idAppointment ? (<select className="time-selection"
+                                        name="appointment-time"
+                                        placeholder={time}
+                                        id="time"
+                                        value={time}
+                                        onChange={(event) => setTime(event.target.value)}
+                                        >
+                                        <option value="">
+                                        Selecteer een tijd
+                                        </option>
+                                        <option value="09:00">
+                                        09:00-10:00
+                                        </option>
+                                        <option value="10:00">
+                                        10:00-11:00
+                                        </option>
+                                        <option value="11:00">
+                                        11:00-12:00
+                                        </option>
+                                        <option value="12:00">
+                                        12:00-13:00
+                                        </option>
+                                        <option value="13:00">
+                                        13:00-14:00
+                                        </option>
+                                        <option value="14:00">
+                                        14:00-15:00
+                                        </option>
+                                        <option value="15:00">
+                                        15:00-16:00
+                                        </option>
+                                        </select>) : appointment.appointmentTime}</td>
                             <td><FaTrash onClick={(e) => userDeleteAppointment(appointment.id)}> </FaTrash>
-                            <FaPen onClick={(e) => setIdAppointment(appointment.id)} />
+                            <FaEdit onClick={(e) => setIdAppointment(appointment.id)} />
                             <FaSave onClick={(e)=> userModifyAppointment(appointment.id)}> </FaSave>
-                            <FaArrowAltCircleLeft onClick={()=> window.location.reload()}/></td>
+                            <FaArrowLeft onClick={() => setIdAppointment(0)} />
+                            </td>
                             </tr>))}
                         </tbody>
                     </table>
-                        {deleteSuccess === true && <h4><strong>Uw afspraak is verwijderd.{loading}</strong></h4>}
-                        {modifySuccess === true && <h4><strong>Uw afspraak is gewijzigd. De pagina wordt verversd! {loading}</strong></h4>}
+                        {showPopUp && (
+                            <PopUp
+                                title="Uw Afspraak is gewijzigd/verwijderd! De pagina wordt nu ververst!"
+                                onClose={() => setShowPopUp(false)}
+                            />
+                        )}
+                        {loading}
                         <table>
                             <thead>
                             <tr>
@@ -278,23 +300,14 @@ function Account() {
                             </tr>
                             </thead>
                             <tbody>
-                            {users.map(user =>(
-                                user.fileUploads.map(file => (
+                            {user.fileUploads.map(file => (
                                     <tr key={file.id}>
                                         <td>{file.fileName + " "}
-                                            <button onClick={()=> downloadMyDocument(file.fileName)}>Download</button></td>
+                                            <Button type="button" className="button" onClick={()=> downloadMyDocument(file.fileName)}>Download</Button></td>
                                     </tr>
-                                ))
                                 ))}
                             </tbody>
                         </table>
-                        {showPopUp && (
-                            <PopUp
-                                title="Uw Afspraak is gewijzigd!"
-                                onClose={handleClose}
-                            />
-                        )}
-
                     </div>
                 </section>
             }
