@@ -6,7 +6,7 @@ import {ReactComponent as Menu} from '../../assets/menu-icon.svg';
 
 
 function Nav() {
-    const {isAuth, logout} = useContext(AuthContext)
+    const {isAuth, user, logout} = useContext(AuthContext)
     const [dropDown, setDropDown] = useState(false)
 
 
@@ -41,16 +41,12 @@ function Nav() {
                                 Home
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to="/admin" className={({isActive}) => isActive ? "link--active" : "default"}>
-                                Admin
-                            </NavLink>
-                        </li>
+                        {(isAuth && user.authority === "ADMIN") &&
                         <li>
                             <NavLink to="/adminaccount" className={({isActive}) => isActive ? "link--active" : "default"}>
                                 Admin Account
                             </NavLink>
-                        </li>
+                        </li>}
 
                         {isAuth ?
                             <button type="button"

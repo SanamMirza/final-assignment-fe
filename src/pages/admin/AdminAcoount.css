@@ -1,3 +1,16 @@
+.admin {
+    margin-left: 40px;
+    margin-right: 20px;
+    overflow: auto;
+}
+
+.admin-container {
+    height: 100%;
+}
+
+tbody, td {
+    position: relative;
+}
 
 table, td, th {
     border: 1px solid darkcyan;
@@ -22,28 +35,18 @@ table {
     border-collapse: collapse;
     width: 100%;
     margin: 20px 0;
+    overflow: hidden;
 }
 
 .table-date {
     min-width: 100px;
 }
 
-.delete{
-    margin-top: 10px;
-    width: 100px;
-    height: 20px;
-    background-color: #f16724 !important;
-    color: white !important;
+.let-op {
+    color: red;
 }
 
 
-.table-none{
-    display: none;
-}
-
-.table-row{
-    display: table-row;
-}
 
 
 

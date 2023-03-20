@@ -1,9 +1,10 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import './Paspoort.css';
 
 function Paspoort() {
     return (
-        <div>
+        <div className="passport-page">
             <h1>Paspoort aanvragen</h1>
             <p>Vraag een paspoort of identiteitskaart aan bij de gemeente waarin u woont.</p>
             <p>Bij de afspraak moet u zelf aanwezig zijn.</p>
@@ -12,12 +13,22 @@ function Paspoort() {
 
             <h2>Kosten 2023</h2>
                 <p>De kosten voor een Nederlands paspoort zijn:</p>
-                <p>voor personen tot 18 jaar: € 58,85</p>
-                <p>voor personen van 18 jaar en ouder: € 77,85</p>
+            <ul>
+                <li><p>voor personen tot 18 jaar: € 58,85</p></li>
+                <li><p>voor personen van 18 jaar en ouder: € 77,85</p></li>
+            </ul>
+
                 <p>De kosten voor een Nederlandse identiteitskaart zijn:</p>
-                <p>voor personen tot 18 jaar: € 37,95</p>
-                <p>voor personen van 18 jaar en ouder: € 70,35</p>
-                <p>Wilt u met spoed een paspoort of identiteitskaart aanvragen? Dan betaalt u € 53,00 extra.</p>
+            <ul>
+                <li><p>voor personen tot 18 jaar: € 37,95</p></li>
+                <li><p>voor personen van 18 jaar en ouder: € 70,35</p></li>
+            </ul>
+
+
+            <p>Wilt u met spoed een paspoort of identiteitskaart aanvragen?</p>
+            <ul>
+            <li><p>Dan betaalt u € 53,00 extra.</p></li>
+            </ul>
 
             <p>Klik <Link to="/appointment">hier</Link> om een afspraak in te plannen.</p>
         </div>

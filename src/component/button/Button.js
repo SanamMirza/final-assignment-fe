@@ -1,12 +1,15 @@
 import React from 'react';
+import './Button.css';
 
-function Button({children}) {
+function Button({type, className, onClick, value, disabled, children}) {
     return (
         <button
-        type="submit"
-        className="button"
-        value="button"
-        > {children}
+        type={type}
+        className={className}
+        onClick={onClick}
+        value={value}
+        disabled={disabled}>
+            {children}
         </button>
     );
 }

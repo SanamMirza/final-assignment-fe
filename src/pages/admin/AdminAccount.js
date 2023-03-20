@@ -4,17 +4,24 @@ import {AuthContext} from "../../context/AuthContext";
 import './AdminAcoount.css';
 import '../../assets/remove-rubbish-svgrepo-com.svg';
 import jwt_decode from "jwt-decode";
-import {FaPen} from "react-icons/fa";
+import {FaEdit, FaSave, FaTrash} from "react-icons/fa";
+import Button from "../../component/button/Button";
+import PopUp from "../../component/pop-up-message/PopUp";
+
+
 
 
 
 function AdminAccount() {
     const [users, setUsers] = useState([]);
-    // const [modifyAppointment, setModifyAppointment] = useState(false);
+    const [showUsers, setShowUsers] = useState(
+        localStorage.getItem('showUsers') === 'true');
     const [loading, toggleLoading] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState('');
     const [error, toggleError] = useState(false);
-    const [deleteSuccess, setDeleteSuccess] = useState(false);
-    const [showFoldOut, setShowFoldOut] = useState(false);
+    const [idAppointment, setIdAppointment] = useState("");
+    const [showPopUp, setShowPopUp] = useState(false);
     const {isAuth, user} = useContext(AuthContext);
     const storedToken = localStorage.getItem('token');
 
@@ -27,10 +34,12 @@ function AdminAccount() {
             toggleLoading(true);
 
             try {
-                const result = await axios.get(`http://localhost:8081/accounts`);
+                const result = await axios.get(`http://localhost:8081/accounts`)
+                const filteredUsers = result.data.filter((user) => user.authorities.includes("USER"));
 
-                setUsers(result.data);
-                console.log(result.data)
+                setUsers(filteredUsers);
+                console.log(result.data);
+
             } catch (error) {
                 console.error(error);
                 toggleError(true);
@@ -55,29 +64,40 @@ function AdminAccount() {
 
             console.log(result.data)
             console.log(`Appointment with id ${idAppointment} has been deleted`)
-            setDeleteSuccess(true)
+
+            setShowPopUp(true);
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+
         } catch (error) {
             console.error(error);
         }
     }
 
-    async function modifyAppointment(idAppointment) {
+    async function adminModifyAppointment(idAppointment) {
         console.log(idAppointment)
         try {
             const result = await axios.put(`http://localhost:8081/appointments/${idAppointment}`, {
-                // appointmentDate: appointmentDate,
-                // appointmentTime: appointmentTime,
-                // subject: subject,
+                    appointmentDate: date,
+                    appointmentTime: time,
+                },
+                {
 
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${storedToken}`
-                }
-            })
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedToken}`
+                    }
+                });
 
             console.log(result.data)
             console.log(`Appointment with id ${idAppointment} has been modified`)
-            setDeleteSuccess(true)
+            setShowPopUp(true);
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+
         } catch (error) {
             console.error(error);
         }
@@ -85,7 +105,7 @@ function AdminAccount() {
 
     async function downloadDoc(fileName) {
         const jwt = localStorage.getItem('token');
-        const decodedToken = jwt_decode(jwt);
+        // const decodedToken = jwt_decode(jwt);
 
 
         try {
@@ -97,26 +117,59 @@ function AdminAccount() {
                     },
                 })
             console.log(response.data)
-            console.log(`download ${fileName} gelukt`)
+            console.log(`download ${fileName} successful`)
 
         } catch (e) {
             console.error(e)
         }
     }
 
+    useEffect(() => {
+        localStorage.setItem('showUsers', showUsers);
+    }, [showUsers]);
 
 
-    // function handleFoldOut() {
-    //     setShowFoldOut(!showFoldOut);
-    // }
+
+    function handleShow() {
+        setShowUsers(!showUsers);
+    }
+
+    function handleClose() {
+        setShowPopUp(false);
+    }
 
 
     return (
-        <div>
-            <h1>Adminpage</h1>
+        <div className="admin">
+            <div className="admin-container">
+            <h1> Welkom {user.username} !</h1>
             <section>
-                <h2>Users</h2>
-                <h3>Overzicht van users</h3>
+                <h2>Overzicht van users</h2>
+
+                <p>Klik op de knop "Overzicht van users" om de user gegevens op te halen</p>
+                <p> Acties : </p>
+                <ul>
+                    <p>U kunt de tijden en datum van de afspraken wijzigen met <FaEdit/> icoon</p>
+                    <p>De wijzigingen dient u op te slaan met <FaSave/> icoon</p>
+                    <p>De afspraken kunnen ook verwijderd worden met <FaTrash/> icoon </p>
+                </ul>
+
+                <p>Documenten : De documenten van de users kunnen gedownload worden.</p>
+
+                <p className="let-op">Let op! Nadat een afspraak is gewijzgd of verwijderd, zal de pagina verversd worden!</p>
+
+                <p>De NAW gegevens en de documenten van de users mag niet door Admin gewijzigd of verwijderd worden. Dit dient de user zelf te doen via de users account.</p>
+
+
+
+
+                <Button
+                    type="button"
+                    onClick={handleShow}
+                    className="button">
+                    {showUsers ? 'Sluiten' : 'Overzicht van users'}
+                </Button>
+                {showUsers &&
                 <table>
                     <thead>
                     <tr>
@@ -128,45 +181,136 @@ function AdminAccount() {
                         <th>Afspraak</th>
                         <th className="table-date">Datum afspraak</th>
                         <th>Tijd afspraak</th>
-                        <th>Verwijderen afspraak</th>
+                        <th>Acties</th>
                         <th>Documenten</th>
+
                     </tr>
                     </thead>
                     <tbody>
-
-                    {users.map((user, index) => {
-                        return <tr key={index}>
+                    {users.map((user) => (
+                        <tr key={user.id}>
                             <td>{user.firstName}</td>
                             <td>{user.lastName}</td>
-                            {/*<td><button type="button"*/}
-                            {/*            onClick={handleFoldOut}>Show More</button></td>*/}
-                            {/*   <div className={showFoldOut ? "table-row" : "table-none"}>*/}
                             <td>{user.username}</td>
                             <td>{user.telephoneNumber}</td>
-                            <td>{user.address}</td>
-                            <td>{user.appointments.map((appointment, index) => {
-                                return <p key={index}> {appointment.subject + " "}</p>
-                            })} </td>
-                            <td>{user.appointments.map((appointment, index) => {
-                                return <p key={index}>{appointment.appointmentDate + " "}</p>
-                            })} </td>
-                            <td>{user.appointments.map((appointment, index) => {
-                                return <p key={index}>{appointment.appointmentTime + " "}</p>
-                            })} </td>
-                            <td> {user.appointments.map((appointment, index) => {
-                                return <button key={index} type="button" className="delete"
-                                               onClick={(e) => deleteAppointment(appointment.id)}
-                                > delete </button>
-                            })} </td> <td><p><FaPen onClick={modifyAppointment}/></p></td>
-                            <td> {user.fileUploads.map((fileUpload, index) => {
-                                return <p key={index}> {fileUpload.fileName} </p>
-                            })} {user.fileUploads.map((fileUpload, index) => { return <button key={index} type="button" className="delete" onClick={() => downloadDoc(fileUpload.fileName) }>download</button> })}</td>
+                            <td>{user.address}, {user.zipCode}</td>
+                            <td>
+                            {user.appointments.map((appointment) => (
+                                <div key={appointment.id}>{appointment.subject}</div>
+                            ))}
+                            </td>
+                            <td>
+                                {user.appointments.map((appointment) => (
+                                    <div key={appointment.id}>
+                                        {appointment.id === idAppointment ?  (<select className="date-selection"
+                                                                                      name="appointment-date"
+                                                                                      placeholder={date}
+                                                                                      id="date"
+                                                                                      value={date}
+                                                                                      onChange={(event) => setDate(event.target.value)}
+                                            >
+                                            <option value="">
+                                                Selecteer een datum
+                                            </option>
+                                                <option value="2023-04-03">
+                                                    03-04-2023
+                                                </option>
+                                                <option value="2023-04-04">
+                                                    04-04-2023
+                                                </option>
+                                                <option value="2023-04-05">
+                                                    05-04-2023
+                                                </option>
+                                                <option value="2023-04-06">
+                                                    06-04-2023
+                                                </option>
+                                                <option value="2023-04-07">
+                                                    07-04-2023
+                                                </option>
+                                                <option value="2023-04-10">
+                                                    10-04-2023
+                                                </option>
+                                                <option value="2023-04-11">
+                                                    11-04-2023
+                                                </option>
+                                                <option value="2023-04-12">
+                                                    12-04-2023
+                                                </option>
+                                                <option value="2023-04-13">
+                                                    13-04-2023
+                                                </option>
+                                            </select>) : appointment.appointmentDate}</div>
+                                ))}
+                            </td>
+                            <td>
+                                {user.appointments.map((appointment) => (
+                                    <div key={appointment.id}>
+                                        {appointment.id === idAppointment ? (<select className="time-selection"
+                                                                                     name="appointment-time"
+                                                                                     placeholder={time}
+                                                                                     id="time"
+                                                                                     value={time}
+                                                                                     onChange={(event) => setTime(event.target.value)}
+                                            >
+                                            <option value="">
+                                                Selecteer een tijd
+                                            </option>
+                                                <option value="09:00">
+                                                    09:00-10:00
+                                                </option>
+                                                <option value="10:00">
+                                                    10:00-11:00
+                                                </option>
+                                                <option value="11:00">
+                                                    11:00-12:00
+                                                </option>
+                                                <option value="12:00">
+                                                    12:00-13:00
+                                                </option>
+                                                <option value="13:00">
+                                                    13:00-14:00
+                                                </option>
+                                                <option value="14:00">
+                                                    14:00-15:00
+                                                </option>
+                                                <option value="15:00">
+                                                    15:00-16:00
+                                                </option>
+                                            </select>) : appointment.appointmentTime}</div>
+                            ))}
+                            </td>
+                            <td>
+                                {user.appointments.map((appointment) => (
+                                    <div key={appointment.id}>
+                                    <FaTrash onClick={() => deleteAppointment(appointment.id)} />
+                                    <FaEdit onClick={() => setIdAppointment(appointment.id)} />
+                                    <FaSave onClick={(e)=> adminModifyAppointment(appointment.id)} />
+                                    </div>
+                            ))}
+                            </td>
+                            {showPopUp && (
+                                <PopUp
+                                    title="De wijzigingen worden opgeslagen!
+                                    De pagina wordt nu verversd!"
+                                    onClose={handleClose}
+                                />
+                            )}
+                            <td>
+                            {user.fileUploads.map(file => (
+                                        <div key={file.id}>
+                                            <div>{file.fileName + " "}
+                                                <Button type="button" className="button" onClick={()=> downloadDoc(file.fileName)}>Download</Button></div>
+                                        </div>
+                                    ))}
+                            </td>
                         </tr>
-                    })}
+                        ))}
                     </tbody>
-                </table>
-                {deleteSuccess === true && <p>Afspraak is verwijderd.{loading}</p>}
+                </table>}
+
+                <p>Klaar met werken? Vergeet niet alles netjes af te sluiten & uit te loggen. (ivm gevoelige informtie)😉!  </p>
             </section>
+        </div>
         </div>
 
     );
@@ -174,28 +318,7 @@ function AdminAccount() {
 }
 
 
-{/*<td>{user.appointments.map((appointment)=>{*/
-}
-{/*   return appointment.appointmentDate + " "*/
-}
-{/*   })}</td>*/
-}
-{/*<td>{user.appointments.map((appointment)=>{*/
-}
-{/*   return appointment.appointmentTime + " "*/
-}
-{/*   })}</td>*/
-}
-{/*<td>{user.appointments.map((appointment)=>{*/
-}
-{/*   return <button type="button" className="delete"*/
-}
-{/*       onClick={(e)=>deleteApp(e,appointment.id)}*/
-}
-{/*       > delete </button>*/
-}
-{/*   })}</td>*/  // <button key={index} type="button" className="delete" onClick={() => modifyAppointment(appointment.id)}>wijzigen</button> })}
-}
+
 
 
 export default AdminAccount;

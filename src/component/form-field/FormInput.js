@@ -2,7 +2,7 @@ import React from 'react';
 import './FormInput';
 
 
-function FormInput({inputLabel, type, inputId, placeholder, name, validationRules, register, errors}) {
+function FormInput({inputLabel, type, inputId, placeholder, name, validationRules, onChange, register, errors}) {
     return (
         <>
             <label htmlFor={inputId}>
@@ -10,9 +10,8 @@ function FormInput({inputLabel, type, inputId, placeholder, name, validationRule
                 <input
                     type={type}
                     id={inputId}
-                    name={name}
                     placeholder={placeholder}
-                    {...register(inputId, validationRules)}/>
+                    {...register(name, validationRules, onChange)}/>
             </label>
             {errors[inputId] && <h6>{errors[inputId].message}</h6>}
         </>

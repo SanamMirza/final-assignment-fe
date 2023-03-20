@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import './Overzicht.css';
 
 function Overzicht() {
 
 
 
     return (
-        <div>
+        <div className="overview">
             <h1>Overzicht Producten en Diensten</h1>
             <h2>
                 <ul>
