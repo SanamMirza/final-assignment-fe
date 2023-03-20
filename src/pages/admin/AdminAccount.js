@@ -1,27 +1,29 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {AuthContext} from "../../context/AuthContext";
 import './AdminAcoount.css';
 import '../../assets/remove-rubbish-svgrepo-com.svg';
 import jwt_decode from "jwt-decode";
-import {FaEdit, FaPen, FaSave, FaTrash, FaTrashAlt} from "react-icons/fa";
-import appointment from "../appointment/Appointment";
+import {FaEdit, FaSave, FaTrash} from "react-icons/fa";
+import Button from "../../component/button/Button";
+import PopUp from "../../component/pop-up-message/PopUp";
+
 
 
 
 
 function AdminAccount() {
     const [users, setUsers] = useState([]);
+    const [showUsers, setShowUsers] = useState(
+        localStorage.getItem('showUsers') === 'true');
     const [loading, toggleLoading] = useState(false);
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
     const [error, toggleError] = useState(false);
-    const [deleteSuccess, setDeleteSuccess] = useState(false);
     const [idAppointment, setIdAppointment] = useState("");
-    const [expandedRow, setExpandedRow] = useState(null);
+    const [showPopUp, setShowPopUp] = useState(false);
     const {isAuth, user} = useContext(AuthContext);
     const storedToken = localStorage.getItem('token');
-
 
 
     useEffect(() => {
@@ -33,7 +35,7 @@ function AdminAccount() {
 
             try {
                 const result = await axios.get(`http://localhost:8081/accounts`)
-                const filteredUsers = result.data.filter((user) => user.authorities.includes("USER" ));
+                const filteredUsers = result.data.filter((user) => user.authorities.includes("USER"));
 
                 setUsers(filteredUsers);
                 console.log(result.data);
@@ -62,7 +64,12 @@ function AdminAccount() {
 
             console.log(result.data)
             console.log(`Appointment with id ${idAppointment} has been deleted`)
-            setDeleteSuccess(true)
+
+            setShowPopUp(true);
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+
         } catch (error) {
             console.error(error);
         }
@@ -72,8 +79,8 @@ function AdminAccount() {
         console.log(idAppointment)
         try {
             const result = await axios.put(`http://localhost:8081/appointments/${idAppointment}`, {
-                appointmentDate: date,
-                appointmentTime: time,
+                    appointmentDate: date,
+                    appointmentTime: time,
                 },
                 {
 
@@ -85,10 +92,12 @@ function AdminAccount() {
 
             console.log(result.data)
             console.log(`Appointment with id ${idAppointment} has been modified`)
+            setShowPopUp(true);
 
             setTimeout(() => {
                 window.location.reload();
             }, 2000);
+
         } catch (error) {
             console.error(error);
         }
@@ -96,7 +105,7 @@ function AdminAccount() {
 
     async function downloadDoc(fileName) {
         const jwt = localStorage.getItem('token');
-        const decodedToken = jwt_decode(jwt);
+        // const decodedToken = jwt_decode(jwt);
 
 
         try {
@@ -115,21 +124,52 @@ function AdminAccount() {
         }
     }
 
+    useEffect(() => {
+        localStorage.setItem('showUsers', showUsers);
+    }, [showUsers]);
 
 
-    // const toggleRow = (rowIndex) => {
-    //     setExpandedRow(expandedRow === rowIndex ? null : rowIndex);
-    // }
 
+    function handleShow() {
+        setShowUsers(!showUsers);
+    }
+
+    function handleClose() {
+        setShowPopUp(false);
+    }
 
 
     return (
         <div className="admin">
             <div className="admin-container">
-            <h1>Admin account</h1>
+            <h1> Welkom {user.username} !</h1>
             <section>
-                <h2>Users</h2>
-                <h3>Overzicht van users</h3>
+                <h2>Overzicht van users</h2>
+
+                <p>Klik op de knop "Overzicht van users" om de user gegevens op te halen</p>
+                <p> Acties : </p>
+                <ul>
+                    <p>U kunt de tijden en datum van de afspraken wijzigen met <FaEdit/> icoon</p>
+                    <p>De wijzigingen dient u op te slaan met <FaSave/> icoon</p>
+                    <p>De afspraken kunnen ook verwijderd worden met <FaTrash/> icoon </p>
+                </ul>
+
+                <p>Documenten : De documenten van de users kunnen gedownload worden.</p>
+
+                <p className="let-op">Let op! Nadat een afspraak is gewijzgd of verwijderd, zal de pagina verversd worden!</p>
+
+                <p>De NAW gegevens en de documenten van de users mag niet door Admin gewijzigd of verwijderd worden. Dit dient de user zelf te doen via de users account.</p>
+
+
+
+
+                <Button
+                    type="button"
+                    onClick={handleShow}
+                    className="button">
+                    {showUsers ? 'Sluiten' : 'Overzicht van users'}
+                </Button>
+                {showUsers &&
                 <table>
                     <thead>
                     <tr>
@@ -248,16 +288,27 @@ function AdminAccount() {
                                     </div>
                             ))}
                             </td>
+                            {showPopUp && (
+                                <PopUp
+                                    title="De wijzigingen worden opgeslagen!
+                                    De pagina wordt nu verversd!"
+                                    onClose={handleClose}
+                                />
+                            )}
                             <td>
-                                {user.fileUploads.map((file) => (
-                                    <div key={file.id}>{file.fileName}</div>
-                                ))}
+                            {user.fileUploads.map(file => (
+                                        <div key={file.id}>
+                                            <div>{file.fileName + " "}
+                                                <Button type="button" className="button" onClick={()=> downloadDoc(file.fileName)}>Download</Button></div>
+                                        </div>
+                                    ))}
                             </td>
                         </tr>
                         ))}
                     </tbody>
-                </table>
-                {deleteSuccess === true && <p>Afspraak is verwijderd.{loading}</p>}
+                </table>}
+
+                <p>Klaar met werken? Vergeet niet alles netjes af te sluiten & uit te loggen. (ivm gevoelige informtie)😉!  </p>
             </section>
         </div>
         </div>
@@ -270,36 +321,4 @@ function AdminAccount() {
 
 
 
-
 export default AdminAccount;
-
-/*{users.map((user, index) => {
-    return <tr key={index}>
-        <td>{user.firstName}</td>
-        <td>{user.lastName}</td>
-        <td>{user.username}</td>
-        <td>{user.telephoneNumber}</td>
-        <td>{user.address}</td>
-        <td>{user.appointments.map((appointment, index) => {
-            return <p key={index}>{appointment.subject + " "}</p>
-        })}</td>
-        <td>{user.appointments.map((appointment, index) => {
-            return <p key={index}>{appointment.appointmentDate + " "}</p>
-        })}</td>
-        <td>{user.appointments.map((appointment, index) => {
-            return <p key={index}>{appointment.appointmentTime + " "}</p>
-        })}</td>
-        <td> {user.appointments.map((appointment, index) => {
-            return <button key={index} type="button" className="delete"
-                           onClick={(e) => deleteAppointment(appointment.id)}
-            > delete </button>
-        })} </td>
-        <td><p><FaPen onClick={modifyAppointment}/></p></td>
-        <td> {user.fileUploads.map((fileUpload, index) => {
-            return <p key={index}> {fileUpload.fileName} </p>
-        })} {user.fileUploads.map((fileUpload, index) => {
-            return <button key={index} type="button" className="delete"
-                           onClick={() => downloadDoc(fileUpload.fileName)}>download</button>
-        })}</td>
-    </tr>
-})}*/
