@@ -33,6 +33,10 @@ label > input{
     height: 30px;
 }
 
+.address-row {
+    width: 482px;
+}
+
 .horizontal-row{
     display: flex;
     flex-direction: row;
