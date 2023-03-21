@@ -18,7 +18,6 @@ function Verhuizing() {
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState("");
     const {isAuth, user} = useContext(AuthContext);
-    // const storedToken = localStorage.getItem('token');
 
 
     const postcodeRegex = /^\d{4}[a-zA-Z]{2}$/;
@@ -31,17 +30,17 @@ function Verhuizing() {
     }
 
     const formSubmit = async (data) => {
-        console.log(data)
-        console.log("test")
         toggleError(false);
         toggleLoading(true);
         const jwt = localStorage.getItem('token');
         const decodedToken = jwt_decode(jwt);
         const id = decodedToken.sub;
 
+        const formData = new FormData();
+        formData.append("file", file);
+
+
         try {
-            const formData = new FormData();
-            formData.append("file", file);
             await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
                   {
                         headers: {
@@ -55,7 +54,6 @@ function Verhuizing() {
                     "Authorization": `Bearer ${jwt}`,
                 }});
 
-            console.log(data, formData)
             reset();
             setShowPopUp(true);
             setPreviewUrl("");
@@ -67,9 +65,6 @@ function Verhuizing() {
         toggleLoading(false);
     }
 
-    function handleClose() {
-        setShowPopUp(false);
-    }
 
             return (
                 <main className="outer-container">
@@ -162,15 +157,8 @@ function Verhuizing() {
                         />
                         <div>
                             <p>Upload hier uw huurovereneenkomst of koopakte</p>
-                        <FormInput
-                            type="file"
-                            name="file"
-                            inputId="document"
-                            inputLabel="document"
-                            register={register}
-                            errors={errors}
-                            onChange={handleDoc}
-                        />
+
+                            <input type="file" onChange={handleDoc}/>
                             {previewUrl && (<img src={previewUrl} alt="Preview" style={{maxWidth: "100px"}}/> )}
                         </div>
                                 <Button
@@ -183,9 +171,10 @@ function Verhuizing() {
                         {showPopUp && (
                             <PopUp
                                 title="Uw formulier is verzonden!"
-                                onClose={handleClose}
+                                onClose={() => setShowPopUp(false)}
                             />
                        )}
+                        {loading}
                             </form>
                     </section>
                         :
