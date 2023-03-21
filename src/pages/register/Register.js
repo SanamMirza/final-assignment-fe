@@ -6,10 +6,11 @@ import '../../component/form-field/FormInput';
 import FormInput from "../../component/form-field/FormInput";
 import {useForm} from 'react-hook-form';
 import Button from "../../component/button/Button";
+import PopUp from "../../component/pop-up-message/PopUp";
 
 function Register() {
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onBlur"});
-    const [registerSuccess, toggleRegisterSuccess] = useState(false);
+    const [showPopUp, setShowPopUp] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [error, toggleError] = useState(false);
     const navigate = useNavigate();
@@ -20,16 +21,13 @@ function Register() {
 
 
     async function registerUser(data) {
-        console.log(data)
         toggleError(false);
         toggleLoading(true);
 
-        console.log('ERRORS', errors)
-
         try {
             const result = await axios.post(`http://localhost:8081/users`, data);
-            console.log(result);
-            toggleRegisterSuccess(true);
+
+            setShowPopUp(true);
 
             setTimeout(() => {
                 navigate('/login');
@@ -83,13 +81,13 @@ function Register() {
                             errors={errors}
                         />
                     </div>
-                    <div className="horizontal-row">
+                    <div className="address-row">
                         <FormInput
                             type="text"
-                            name="street"
-                            inputId="street-field"
+                            name="address"
+                            inputId="address-field"
                             inputLabel="Straat"
-                            placeholder="Straat"
+                            placeholder="Straat en huisnummer"
                             validationRules={{
                                 required: "Straat is verplicht",
                                 minLength: {
@@ -99,28 +97,13 @@ function Register() {
                             }}
                             register={register}
                             errors={errors}
-                        />
-                        <FormInput
-                            type="text"
-                            name="houseNumber"
-                            inputId="houseNumber-field"
-                            inputLabel="Huisnummer"
-                            placeholder="Huisnummer"
-                            validationRules={{
-                                required: "Huisnummer is verplicht",
-                                minLength: {
-                                    value: 1,
-                                    message: "Huisnummer moet minimaal 1 karakter bevatten"
-                                }
-                            }}
-                            register={register}
-                            errors={errors}
-                        />
+                            />
+
                     </div>
                     <div className="horizontal-row">
                         <FormInput
                             type="text"
-                            name="zipcode"
+                            name="zipCode"
                             inputId="zipcode-field"
                             inputLabel="Postcode"
                             placeholder="Postcode"
@@ -134,9 +117,10 @@ function Register() {
                             register={register}
                             errors={errors}
                         />
+
                         <FormInput
                             type="text"
-                            name="telephone"
+                            name="telephoneNumber"
                             inputId="telephone-field"
                             inputLabel="Telefoonnummer"
                             placeholder="Telefoonnummer"
@@ -200,7 +184,14 @@ function Register() {
                         type="submit"
                         children="Registreren"
                     />
-                    {registerSuccess === true && <h5>Registreren is gelukt. Je wordt nu doorgestuurd naar de inlog pagina.{loading}</h5>}
+
+                    {showPopUp && (
+                        <PopUp
+                            title="Registreren is gelukt! Je wordt nu doorgestuurd naar de inlog pagina."
+                            onClose={() => setShowPopUp(false)}
+                        />
+                    )}
+                    {loading}
                     {error && <h5 className="error">Dit account bestaat al. Probeer een ander emailadres</h5>}
                 </form>
                 <p>Heb je al een account? Je kunt je <Link to="/login">hier</Link> inloggen.</p>

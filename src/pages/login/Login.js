@@ -6,27 +6,25 @@ import {Link, useNavigate} from "react-router-dom";
 import FormInput from "../../component/form-field/FormInput";
 import {useForm} from "react-hook-form";
 import Button from "../../component/button/Button";
+import PopUp from "../../component/pop-up-message/PopUp";
 
 
 function Login() {
     const {register, handleSubmit, formState : {errors}} = useForm({mode: "onBlur"});
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
-    const [loginSuccess, toggleLoginSuccess] = useState(false);
+    const [showPopUp, setShowPopUp] = useState(false);
     const {login, isAuth} = useContext(AuthContext)
-    const navigate = useNavigate();
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     async function handleLogin(data) {
-        console.log(data);
-        console.log('ERRORS', errors)
         toggleError(false);
         toggleLoading(true);
         try {
             const response = await axios.post('http://localhost:8081/authenticate', data);
-            toggleLoginSuccess(true);
 
+            setShowPopUp(true);
             login(response.data.jwt);
 
 
@@ -89,13 +87,20 @@ function Login() {
                     register={register}
                     errors={errors}
                 />
-                {error && <h5 className="error-melding">Combinatie van gebruikersnaam en wachtwoord is onjuist</h5> }
                 <Button
                     className="button"
                     type="submit"
                     children="Inloggen"
                 />
-                {loginSuccess === true && <h5>Registreren is gelukt. Je wordt nu doorgestuurd naar de inlog pagina.{loading}</h5>}
+                {showPopUp && (
+                    <PopUp
+                        title="Inloggen is gelukt! U wordt nu doorgestuurd naar uw Account."
+                        onClose={() => setShowPopUp(false)}
+                    />
+                )}
+                {loading}
+                {error && <h5 className="error-melding">Combinatie van gebruikersnaam en wachtwoord is onjuist</h5> }
+
                 <p>Heb je nog geen account? <Link to="/register"> Registreer</Link> je dan eerst.</p>
             </form>}
 
