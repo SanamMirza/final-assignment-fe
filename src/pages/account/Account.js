@@ -1,13 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './Account.css';
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 import {AuthContext} from "../../context/AuthContext";
 import PopUp from "../../component/pop-up-message/PopUp";
-import {FaArrowAltCircleLeft, FaArrowLeft, FaEdit, FaPen, FaSave, FaTrash} from "react-icons/fa";
+import {FaArrowLeft, FaEdit, FaSave, FaTrash} from "react-icons/fa";
 import Button from "../../component/button/Button";
 import {useForm} from "react-hook-form";
-import FormInput from "../../component/form-field/FormInput";
 
 
 
@@ -16,12 +14,13 @@ function Account() {
     const [users, setUsers] = useState([]);
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
-    const storedToken = localStorage.getItem('token');
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [idAppointment, setIdAppointment] = useState("");
     const [showPopUp, setShowPopUp] = useState(false);
     const [password, setPassword] = useState("");
+    const [showPasswordField, setShowPasswordField ] = useState(false);
+    const storedToken = localStorage.getItem('token');
 
     const {user} = useContext(AuthContext);
 
@@ -134,16 +133,13 @@ function Account() {
     }
 
     async function downloadMyDocument(fileName) {
-        const token = localStorage.getItem('token');
-        const decodedToken = jwt_decode(token);
-
 
         try {
             const response = await axios.get(`http://localhost:8081/docs/downloadFromDB/${fileName}`,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
-                        "Authorization": `Bearer ${token}`,
+                        "Authorization": `Bearer ${storedToken}`,
                     },
                 })
             console.log(response.data)
@@ -153,7 +149,6 @@ function Account() {
             console.error(e)
         }
     }
-
 
 
 
@@ -173,26 +168,31 @@ function Account() {
                     Telefoonnummer: <span>{user.telephoneNumber}</span> <br/>
                     Email: <span>{user.email}</span> <br/>
                     Gebruikersnaam: <span>{user.username}</span> <br/>
-                    Wachtwoord wijzigen <FaEdit onClick={(e) => setPassword(password)}/>
-                        <form onSubmit={handleSubmit(changePassword)}>
-                            <input
-                                type="password"
-                                value={password}
-                                placeholder="Wachtwoord"
-                                id="password"
-                                name={password}
-                                // register={register}
-                                onChange={(e)=> setPassword(e.target.value)}
-                            />
-                            <Button className="button" type="button" onClick={() => changePassword(password)}>Wijzig wachtwoord</Button>
-                            {showPopUp && (
-                                <PopUp
-                                    title="Uw wachtwoord is gewijzigd!"
-                                    onClose={() => setShowPopUp(false)}
+                    Wachtwoord wijzigen
+                        {showPasswordField ?
+                            <form onSubmit={handleSubmit(changePassword)}>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    placeholder="Wachtwoord"
+                                    id="password"
+                                    name={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
-                            )}
-                            {loading}
-                        </form>
+                                <Button className="button" type="button" onClick={() => changePassword(password)}>Wijzig
+                                    wachtwoord</Button>
+                                {showPopUp && (
+                                    <PopUp
+                                        title="Uw wachtwoord is gewijzigd!"
+                                        onClose={() => setShowPopUp(false)}
+                                    />
+                                )}
+                                {loading}
+
+                            </form>:
+                            <FaEdit onClick={(e) => setShowPasswordField(true)}/>}
+                            <FaArrowLeft onClick={()=> setShowPasswordField(false)}/>
+
 
 
                     <table>
@@ -210,7 +210,6 @@ function Account() {
                                 <td>{appointment.subject + " "}</td>
                                         <td>{appointment.id === idAppointment ? (<select className="date-selection"
                                                                                          name="appointment-date"
-                                                                                         placeholder={date}
                                                                                          id="date"
                                                                                          value={date}
                                                                                          onChange={(event) => setDate(event.target.value)}
@@ -248,7 +247,6 @@ function Account() {
                                         </select>) : appointment.appointmentDate + " "}</td>
                                         <td>{appointment.id === idAppointment ? (<select className="time-selection"
                                         name="appointment-time"
-                                        placeholder={time}
                                         id="time"
                                         value={time}
                                         onChange={(event) => setTime(event.target.value)}
