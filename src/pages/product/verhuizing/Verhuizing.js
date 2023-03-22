@@ -134,7 +134,7 @@ function Verhuizing() {
                                     value: postcodeRegex,
                                     message: "Ongeldig postcode"
                                 }
-                            }}
+                        }}
                             register={register}
                             errors={errors}
                         />
