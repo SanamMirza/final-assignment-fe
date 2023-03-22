@@ -174,15 +174,15 @@ function Verhuizing() {
                                 onClose={() => setShowPopUp(false)}
                             />
                         )}
-                        {loading}
-                    </form>
-                </section>
-                :
-                <p>U dient ingelogd te zijn om uw verhuizing door te geven. Klik <Link to="/login">hier</Link> om in te loggen</p>
-            }
-        </main>
-    );
-}
+                         {loading}
+                            </form>
+                    </section>
+                        :
+                        <p>U dient ingelogd te zijn om uw verhuizing door te geven. Klik <Link to="/login">hier</Link> om in te loggen</p>
+                    }
+                </main>
+            );
+        }
 
 
 export default Verhuizing;
