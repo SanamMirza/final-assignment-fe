@@ -161,11 +161,11 @@ function Verhuizing() {
                             <input type="file" onChange={handleDoc}/>
                             {previewUrl && (<img src={previewUrl} alt="Preview" style={{maxWidth: "100px"}}/> )}
                         </div>
-                        <Button
-                            className="button"
-                            type="submit"
-                            children="Versturen"
-                        />
+                                <Button
+                                    className="button"
+                                    type="submit"
+                                    children="Versturen"
+                                />
 
 
                         {showPopUp && (
