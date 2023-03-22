@@ -173,8 +173,8 @@ function Verhuizing() {
                                 title="Uw formulier is verzonden!"
                                 onClose={() => setShowPopUp(false)}
                             />
-                        )}
-                         {loading}
+                       )}
+                        {loading}
                             </form>
                     </section>
                         :
