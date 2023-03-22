@@ -42,12 +42,12 @@ function Verhuizing() {
 
         try {
             await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
-                  {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                            "Authorization": `Bearer ${jwt}`,
-                            },
-                  });
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${jwt}`,
+                    },
+                });
             await axios.put(`http://localhost:8081/accounts/${user.id}`, data, {
                 headers: {
                     "Content-Type": "application/json",
@@ -66,13 +66,13 @@ function Verhuizing() {
     }
 
 
-            return (
-                <main className="outer-container">
-                    <h1>Verhuizing</h1>
-                    <img src="https://media.istockphoto.com/id/1288083160/vector/happy-family-moving-into-new-house-flat-vector-illustration.jpg?s=170667a&w=0&k=20&c=6Q9wfa-kTLMxk6O_8D1pTmyaBDQzTbICXpSv7TtWo3g=" alt="verhuizing"/>
-                    <h2>Geef hier uw verhuizing door</h2>
-                    {isAuth ?
-                    <section className="inner-container">
+    return (
+        <main className="outer-container">
+            <h1>Verhuizing</h1>
+            <img src="https://media.istockphoto.com/id/1288083160/vector/happy-family-moving-into-new-house-flat-vector-illustration.jpg?s=170667a&w=0&k=20&c=6Q9wfa-kTLMxk6O_8D1pTmyaBDQzTbICXpSv7TtWo3g=" alt="verhuizing"/>
+            <h2>Geef hier uw verhuizing door</h2>
+            {isAuth ?
+                <section className="inner-container">
                     <form onSubmit={handleSubmit(formSubmit)}>
                         <FormInput
                             type="text"
