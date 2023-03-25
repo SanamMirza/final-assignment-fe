@@ -1,36 +1,32 @@
 import React, {useContext, useState} from 'react';
 import axios from "axios";
 import './Appointment.css';
-import jwt_decode from "jwt-decode";
 import {AuthContext} from "../../context/AuthContext";
 import {Link} from "react-router-dom";
 import Button from "../../component/button/Button";
 import PopUp from "../../component/pop-up-message/PopUp";
 import {useForm} from "react-hook-form";
+import ErrorMessage from "../../component/error/ErrorMessage";
 
 
 function Appointment() {
     const { reset } = useForm();
     const [showPopUp, setShowPopUp] = useState(false);
-    const [subject, setSubject] = useState("1001");
+    const [subject, setSubject] = useState("");
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('');
-    const [appointments, setAppointments] = useState("")
     const [loading, toggleLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, toggleError] = useState(false);
 
 
     const {isAuth, user} = useContext(AuthContext);
 
 
-
-
         async function appointmentSubmit(e) {
             e.preventDefault();
-            console.log(subject, date, time);
             const jwt = localStorage.getItem('token');
 
-            setError(false);
+            toggleError(false);
             toggleLoading(true);
             try {
                 const result = await axios.post(`http://localhost:8081/appointments/${user.username}/${subject}`, {
@@ -43,21 +39,18 @@ function Appointment() {
                     "Authorization": `Bearer ${jwt}`,
                 }});
 
-            setAppointments(result.data)
-                reset();
+                reset(setSubject);
+                reset(setTime);
+                reset(setDate);
                 setShowPopUp(true);
 
         } catch (error) {
         console.error(error);
-        setError(true)
+        toggleError(true)
     }
         toggleLoading(false);
     }
 
-
-    function handleClose() {
-            setShowPopUp(false);
-    }
 
 
 
@@ -75,20 +68,21 @@ function Appointment() {
                                         value={subject}
                                         onChange={(event) => setSubject(event.target.value)}
                                 >
+                                    <option value="">Selecteer uw aanvraag</option>
                                     <option value="1001">
                                         Passpoort/ID aanvragen
                                     </option>
-                                    <option value="1005">
-                                        Verhuizing doorgeven
+                                    <option value="1002">
+                                        Parkeervergunning aanvragen
                                     </option>
-                                    <option value="1004">
+                                    <option value="1003">
                                         Subsidie aanvragen
                                     </option>
                                     <option value="1004">
                                         Toeslagen aanvragen(woon, energie etc)
                                     </option>
-                                    <option value="1002">
-                                        Parkeervergunning aanvragen
+                                    <option value="1005">
+                                        Verhuizing doorgeven
                                     </option>
                                 </select>
                             </label>
@@ -100,25 +94,26 @@ function Appointment() {
                                         value={time}
                                         onChange={(event) => setTime(event.target.value)}
                                 >
-                                    <option value="09:00-10:00">
+                                    <option value="">Selecteer een tijd</option>
+                                    <option value="09:00">
                                         09:00-10:00
                                     </option>
-                                    <option value="10:00-11:00">
+                                    <option value="10:00">
                                         10:00-11:00
                                     </option>
-                                    <option value="11:00-12:00">
+                                    <option value="11:00">
                                         11:00-12:00
                                     </option>
-                                    <option value="12:00-13:00">
+                                    <option value="12:00">
                                         12:00-13:00
                                     </option>
-                                    <option value="13:00-14:00">
+                                    <option value="13:00">
                                         13:00-14:00
                                     </option>
-                                    <option value="14:00-15:00">
+                                    <option value="14:00">
                                         14:00-15:00
                                     </option>
-                                    <option value="15:00-16:00">
+                                    <option value="15:00">
                                         15:00-16:00
                                     </option>
                                 </select>
@@ -131,6 +126,7 @@ function Appointment() {
                                         value={date}
                                         onChange={(event) => setDate(event.target.value)}
                                 >
+                                    <option value="">Selecteer een datum</option>
                                     <option value="2023-04-03">
                                         03-04-2023
                                     </option>
@@ -168,9 +164,16 @@ function Appointment() {
                             {showPopUp && (
                                 <PopUp
                                     title="Uw afspraak is gemaakt!"
-                                    onClose={handleClose}
+                                    onClose={() => setShowPopUp(false)}
                                     />
                                 )}
+                            {error && (
+                                <ErrorMessage
+                                    title="Error"
+                                    text="Er ging iets fout, probeer het nog een keer!"
+                                    onClose={() => toggleError(false) }
+                                />
+                            )} {loading}
                         </form>
                     :
                     <>

@@ -2,11 +2,12 @@ import React, {useContext, useState} from 'react';
 import {AuthContext} from "../../context/AuthContext";
 import axios from "axios";
 import './Login.css'
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import FormInput from "../../component/form-field/FormInput";
 import {useForm} from "react-hook-form";
 import Button from "../../component/button/Button";
 import PopUp from "../../component/pop-up-message/PopUp";
+import ErrorMessage from "../../component/error/ErrorMessage";
 
 
 function Login() {
@@ -38,7 +39,7 @@ function Login() {
 
     return (
         <main className="login-container">
-            <img src="https://cdn-icons-png.flaticon.com/512/6522/6522516.png" className="login-pfp" alt="template-profile-picture" />
+            <img src="https://cdn-icons-png.flaticon.com/512/6522/6522516.png" className="login-pfp" alt="template-profile" />
             <h1>Inloggen</h1>
             {isAuth ? <p>U bent al ingelogd</p>
                 :
@@ -99,8 +100,13 @@ function Login() {
                     />
                 )}
                 {loading}
-                {error && <h5 className="error-melding">Combinatie van gebruikersnaam en wachtwoord is onjuist</h5> }
-
+                {error && (
+                    <ErrorMessage
+                        title="Error"
+                        text="Combinatie van gebruikersnaam en wachtwoord is onjuist."
+                        onClose={() => toggleError(false) }
+                    />
+                )}
                 <p>Heb je nog geen account? <Link to="/register"> Registreer</Link> je dan eerst.</p>
             </form>}
 

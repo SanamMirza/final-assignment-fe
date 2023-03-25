@@ -10,8 +10,6 @@ function Nav() {
     const [dropDown, setDropDown] = useState(false)
 
 
-
-
         function handleDropDown() {
             setDropDown(!dropDown);
         }
@@ -55,7 +53,7 @@ function Nav() {
                                 Log uit
                             </button>
                             :
-                            <div>
+                            <ul>
                             <li>
                                 <NavLink to="/login" className={({isActive}) => isActive ? "link--active" : "default"}>
                                     Log in
@@ -66,7 +64,7 @@ function Nav() {
                             Registreren
                             </NavLink>
                             </li>
-                            </div>}
+                            </ul>}
 
                         {isAuth &&
                         <li>

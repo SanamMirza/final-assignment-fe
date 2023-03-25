@@ -1,7 +1,7 @@
 import './Parkeervergunning.css';
+import Button from "../../../component/button/Button";
 
 function Parkeervergunning() {
-
 
     return (
         <div className="parking">
@@ -12,7 +12,10 @@ function Parkeervergunning() {
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, assumenda blanditiis consectetur corporis delectus ducimus enim eos, esse et eum ipsa ipsum laboriosam libero magni molestiae nam necessitatibus obcaecati odio odit possimus quas quasi qui quia sequi, sint tempora unde ut vero voluptate voluptatem. Dolorum inventore itaque laboriosam nam quaerat quasi quidem quos reiciendis! A atque cupiditate, delectus dicta dignissimos dolore ducimus ea eius enim error et, illum iste iure molestias nostrum officia optio pariatur placeat quibusdam quod reprehenderit repudiandae sapiente sed similique sit sunt tempore temporibus unde vero, voluptatibus. Excepturi non quod sapiente sed veritatis voluptatem? Aliquam aut blanditiis consequatur corporis cumque et itaque, magnam odit quae velit. A aperiam assumenda consectetur consequatur culpa dolore doloribus dolorum ea earum est eum ex, excepturi exercitationem facere fuga harum id iusto laudantium magnam maxime nam natus nisi numquam odio omnis perferendis porro provident quas quasi quia quibusdam quis ratione rerum suscipit tempora ullam unde. Deserunt doloribus error et expedita illo in nisi sint. A consequuntur cupiditate excepturi facere harum minima porro vel? Ad adipisci alias architecto culpa dicta dignissimos dolore doloribus ducimus modi molestiae molestias odio quae suscipit tempora, vitae! Accusantium enim in ipsam modi obcaecati pariatur quae quas voluptas voluptate.</p>
 
             Download hier uw aanvraag formulier.
-            <button className="button" type="submit">Download</button>
+            <Button className="button"
+                    type="button"
+            >Download
+            </Button>
 
 
         </div>

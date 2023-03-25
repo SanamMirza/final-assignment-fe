@@ -8,7 +8,7 @@ function Button({type, className, onClick, value, disabled, children}) {
         className={className}
         onClick={onClick}
         value={value}
-        disabled={disabled}>
+        >
             {children}
         </button>
     );

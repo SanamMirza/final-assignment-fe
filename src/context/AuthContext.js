@@ -40,7 +40,6 @@ function AuthContextProvider ({children}) {
     }, []);
 
     function login(jwt) {
-        console.log( "De gebruiker is ingelogd 🔓" )
         localStorage.setItem('token', jwt);
         const decodedToken = jwt_decode(jwt);
 
@@ -52,7 +51,7 @@ function AuthContextProvider ({children}) {
             const response = await axios.get(`http://localhost:8081/users/${id}`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
+                    "Authorization": `Bearer ${jwt}`,
                 },
             });
             setAuth({
@@ -64,6 +63,7 @@ function AuthContextProvider ({children}) {
                         authority: response.data.authorities[0].authority,
                         lastName: response.data.accountDto.lastName,
                         address: response.data.accountDto.address,
+                        zipCode: response.data.accountDto.zipCode,
                         telephoneNumber: response.data.accountDto.telephoneNumber,
                         email: response.data.email,
                         appointments: response.data.accountDto.appointments,
@@ -77,7 +77,6 @@ function AuthContextProvider ({children}) {
             if (redirect) {
                 navigate(redirect)
             }
-            console.log(response)
         }
         catch (error) {
             console.error(error);
@@ -91,7 +90,6 @@ function AuthContextProvider ({children}) {
 
 
     function logout() {
-        console.log( "De gebruiker is uitgelogd 🔒" )
         localStorage.removeItem('token')
         setAuth({
             ...auth,

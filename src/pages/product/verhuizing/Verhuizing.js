@@ -8,6 +8,7 @@ import FormInput from "../../../component/form-field/FormInput";
 import {useForm} from "react-hook-form";
 import Button from "../../../component/button/Button";
 import PopUp from "../../../component/pop-up-message/PopUp";
+import ErrorMessage from "../../../component/error/ErrorMessage";
 
 
 function Verhuizing() {
@@ -21,6 +22,7 @@ function Verhuizing() {
 
 
     const postcodeRegex = /^\d{4}[a-zA-Z]{2}$/;
+    const telefoonRegex = /^[0-9]{10}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     function handleDoc(e) {
@@ -140,6 +142,23 @@ function Verhuizing() {
                         />
 
                         <FormInput
+                            type="text"
+                            name="telephoneNumber"
+                            inputId="telephone-field"
+                            inputLabel="Telefoonnummer"
+                            placeholder="Telefoonnummer"
+                            validationRules={{
+                                required: "Telefoonnummer is verplicht",
+                                pattern: {
+                                    value: telefoonRegex,
+                                    message: "Ongeldig telefoonnummer"
+                                }
+                            }}
+                            register={register}
+                            errors={errors}
+                        />
+
+                        <FormInput
                             type="email"
                             name="email"
                             inputId="email-field"
@@ -157,9 +176,17 @@ function Verhuizing() {
                         />
                         <div>
                             <p>Upload hier uw huurovereneenkomst of koopakte</p>
-
-                            <input type="file" onChange={handleDoc}/>
-                            {previewUrl && (<img src={previewUrl} alt="Preview" style={{maxWidth: "100px"}}/> )}
+                            <label htmlFor="file">
+                            <input
+                                type="file"
+                                name="file"
+                                onChange={handleDoc}/>
+                            </label>
+                            <label htmlFor="preview-file">
+                            {previewUrl && (
+                                <img src={previewUrl} alt="Preview" style={{maxWidth: "100px"}}/>
+                            )}
+                            </label>
                         </div>
                                 <Button
                                     className="button"
@@ -167,13 +194,19 @@ function Verhuizing() {
                                     children="Versturen"
                                 />
 
-
                         {showPopUp && (
                             <PopUp
                                 title="Uw formulier is verzonden!"
                                 onClose={() => setShowPopUp(false)}
                             />
                        )}
+                        {error && (
+                            <ErrorMessage
+                                title="Error"
+                                text="Er ging iets fout, probeer het nog een keer!"
+                                onClose={() => toggleError(false) }
+                            />
+                        )}
                         {loading}
                             </form>
                     </section>

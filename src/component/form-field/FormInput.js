@@ -13,7 +13,7 @@ function FormInput({inputLabel, type, inputId, placeholder, name, validationRule
                     placeholder={placeholder}
                     {...register(name, validationRules, onChange)}/>
             </label>
-            {errors[inputId] && <h6>{errors[inputId].message}</h6>}
+            {errors[name] && <h6>{errors[name].message}</h6>}
         </>
     );
 }

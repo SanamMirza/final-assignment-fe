@@ -1,5 +1,5 @@
 import './App.css';
-import {Link, Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {useContext} from "react";
 import {AuthContext} from "./context/AuthContext";
 import Nav from './component/nav/Nav';
@@ -19,6 +19,7 @@ import Melding from "./pages/melding/Melding";
 import Bestuur from "./pages/bestuur/Bestuur";
 import Contact from "./pages/contact-form/Contact";
 import AdminAccount from "./pages/admin/AdminAccount";
+import PageNotFound from "./pages/page-not-found/PageNotFound";
 
 
 
@@ -35,10 +36,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/register" element={<Register/>}/>
-        <Route path="/login" element={<div className="page"><Login/></div>}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/appointment" element={<Appointment/>}/>
-        <Route path="/appointment/id/edit" element={isAuth ? <Appointment/> : <Navigate to="/login" />}/>
-        <Route path="/account" element={isAuth ? <Account/> : <Navigate to="/"/>}/>
+        <Route path="/account" element={isAuth ? <Account/> : <Navigate to="/login"/>}/>
         <Route path="/product/paspoort" element={<Paspoort/>}/>
         <Route path="/product/verhuizing" element={<Verhuizing/>}/>
         <Route path="/product/parkeervergunning" element={<Parkeervergunning/>}/>
@@ -49,6 +49,7 @@ function App() {
         <Route path="/bestuur" element={<Bestuur/>}/>
         <Route path="/contact" element={<Contact/>}/>
         <Route path="/adminaccount" element={<AdminAccount/>}/>
+        <Route path="*" element={<PageNotFound/>}/>
       </Routes>
 
 

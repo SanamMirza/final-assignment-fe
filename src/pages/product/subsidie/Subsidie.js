@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import './Subsidie.css';
 
-function Subsidie(props) {
+function Subsidie() {
     return (
         <div className="benefit-page">
             <h1>Subsidie</h1>

@@ -5,6 +5,7 @@ import FormInput from "../../component/form-field/FormInput";
 import {useForm} from "react-hook-form";
 import Button from "../../component/button/Button";
 import PopUp from "../../component/pop-up-message/PopUp";
+import ErrorMessage from "../../component/error/ErrorMessage";
 
 
 function Contact() {
@@ -17,14 +18,11 @@ function Contact() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     async function handleContactForm(data) {
-        console.log(data);
         toggleError(false);
         toggleLoading(true);
 
         try {
             const response = await axios.post('http://localhost:8081/contact', data);
-
-            console.log(response.data)
 
             reset();
             setShowPopUp(true)
@@ -37,9 +35,6 @@ function Contact() {
         toggleLoading(false)
     }
 
-    function handleClose() {
-        setShowPopUp(false);
-    }
 
     return (
         <>
@@ -128,9 +123,18 @@ function Contact() {
                 {showPopUp && (
                     <PopUp
                         title="Uw formulier is verzonden!"
-                        onClose={handleClose}
+                        onClose={() => setShowPopUp(false)}
                     />
                    )}
+                {error && (
+                    <ErrorMessage
+                        title="Error"
+                        text="Er ging iets fout, probeer het nog een keer!"
+                        onClose={() => toggleError(false) }
+                    />
+                )}
+                {loading}
+
             </form>
         </main>
             </>

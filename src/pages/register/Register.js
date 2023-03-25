@@ -7,6 +7,7 @@ import FormInput from "../../component/form-field/FormInput";
 import {useForm} from 'react-hook-form';
 import Button from "../../component/button/Button";
 import PopUp from "../../component/pop-up-message/PopUp";
+import ErrorMessage from "../../component/error/ErrorMessage";
 
 function Register() {
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onBlur"});
@@ -191,8 +192,13 @@ function Register() {
                             onClose={() => setShowPopUp(false)}
                         />
                     )}
-                    {loading}
-                    {error && <h5 className="error">Dit account bestaat al. Probeer een ander emailadres</h5>}
+                    {error && (
+                        <ErrorMessage
+                            title="Error"
+                            text="Dit account bestaat al. Probeer een ander emailadres."
+                            onClose={() => toggleError(false) }
+                        />
+                    )} {loading}
                 </form>
                 <p>Heb je al een account? Je kunt je <Link to="/login">hier</Link> inloggen.</p>
             </main>

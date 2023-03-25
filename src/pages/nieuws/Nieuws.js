@@ -1,7 +1,7 @@
 import React from 'react';
 import './Nieuws.css';
 
-function Nieuws(props) {
+function Nieuws() {
     return (
         <div className="news-page">
             <h1>Nieuws</h1>

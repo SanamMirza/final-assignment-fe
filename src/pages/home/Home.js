@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import axios from "axios";
+import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import '../../component/nav/Nav'
 import './Home.css'
@@ -7,20 +6,7 @@ import Button from "../../component/button/Button";
 
 
 function Home() {
-    const [search, setSearch] = useState();
-
-
-    useEffect(() => {
-        async function fetchData() {
-          try {
-              const result = await axios.get('http://localhost:3000/');
-          }
-          catch(error) {
-              console.error(error);
-          }
-        }
-        void fetchData
-    }, [])
+    const [search, setSearch] = useState("");
 
     function handleSearch(e) {
         setSearch(e.target.value);
@@ -36,7 +22,8 @@ function Home() {
                     <input className="search-bar"
                            type="text"
                            placeholder="Zoek..."
-                           value={search} onChange={handleSearch}/>
+                           value={search} onChange={handleSearch}
+                        />
                     <Button
                         className="search-button"
                         type="button"

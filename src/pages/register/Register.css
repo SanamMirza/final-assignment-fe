@@ -34,7 +34,9 @@ label > input{
 }
 
 .address-row {
-    width: 482px;
+    width: 684px;
+    display: flex;
+    flex-direction: row;
 }
 
 .horizontal-row{

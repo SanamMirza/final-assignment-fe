@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600&display=swap');
+
 
 body {
    font-family: "Poppins", sans-serif;
@@ -19,21 +19,6 @@ body {
    justify-content: space-around;
 }
 
-/*.outer-container{*/
-/*   display: flex;*/
-/*   flex-wrap: wrap;*/
-/*   flex-direction: column;*/
-/*   justify-content: center;*/
-/*   align-items: center;*/
-
-/*}*/
-
-/*fieldset {*/
-/*   border: solid 1px #ccc;*/
-/*   min-width: 200px;*/
-/*   margin: 20px;*/
-/*   border-radius: 8px;*/
-/*}*/
 
 form {
    display: flex;

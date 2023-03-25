@@ -1,7 +1,7 @@
 import React from 'react';
 import './Bestuur.css';
 
-function Bestuur(props) {
+function Bestuur() {
     return (
         <div className="management">
             <h1>Bestuur en Organisatie</h1>

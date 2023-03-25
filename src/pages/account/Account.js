@@ -6,6 +6,7 @@ import PopUp from "../../component/pop-up-message/PopUp";
 import {FaArrowLeft, FaEdit, FaSave, FaTrash} from "react-icons/fa";
 import Button from "../../component/button/Button";
 import {useForm} from "react-hook-form";
+import ErrorMessage from "../../component/error/ErrorMessage";
 
 
 
@@ -19,6 +20,7 @@ function Account() {
     const [idAppointment, setIdAppointment] = useState("");
     const [showPopUp, setShowPopUp] = useState(false);
     const [password, setPassword] = useState("");
+    const [passwordSuccess, setPasswordSuccess] = useState(false);
     const [showPasswordField, setShowPasswordField ] = useState(false);
     const storedToken = localStorage.getItem('token');
 
@@ -37,7 +39,7 @@ function Account() {
                 const response = await axios.get('http://localhost:8081/accounts', {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${storedToken}`
+                        "Authorization": `Bearer ${storedToken}`
                     },
                 });
                 setUsers(response.data);
@@ -64,15 +66,16 @@ function Account() {
             {
                 headers: {
                     "Content-Type": "application/json",
-                        Authorization: `Bearer ${storedToken}`
+                    "Authorization": `Bearer ${storedToken}`
                 }
             }
         );
             setPassword(response.data);
-            console.log(`Password has been changed`);
             reset();
-            setShowPopUp(true);
-
+            setPasswordSuccess(true);
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         }
         catch(error) {
             console.error(error);
@@ -84,6 +87,8 @@ function Account() {
 
 
     async function userModifyAppointment(idAppointment) {
+        toggleError(false);
+        toggleLoading(true);
 
         try {
             const result = await axios.put(`http://localhost:8081/appointments/${idAppointment}`, {
@@ -94,12 +99,10 @@ function Account() {
 
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${storedToken}`
+                    "Authorization": `Bearer ${storedToken}`
                 }
             })
 
-            console.log(result.data);
-            console.log(`Appointment with id ${idAppointment} has been modified`);
             setShowPopUp(true);
             setTimeout(() => {
                 window.location.reload();
@@ -108,48 +111,55 @@ function Account() {
 
         } catch (error) {
             console.error(error);
+            toggleError(true);
         }
+        toggleLoading(false);
     }
 
     async function userDeleteAppointment(idAppointment) {
+        toggleError(false);
+        toggleLoading(true);
 
         try {
             const result = await axios.delete(`http://localhost:8081/appointments/${idAppointment}`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${storedToken}`
+                    "Authorization": `Bearer ${storedToken}`
                 }
             })
 
-            console.log(result.data)
-            console.log(`Appointment with id ${idAppointment} has been deleted`)
             setShowPopUp(true);
             setTimeout(() => {
                 window.location.reload();
             }, 3000);
+
         } catch (error) {
             console.error(error);
+            toggleError(true);
         }
     }
 
     async function downloadMyDocument(fileName) {
+        toggleError(false);
+        toggleLoading(true);
 
         try {
-            const response = await axios.get(`http://localhost:8081/docs/downloadFromDB/${fileName}`,
+            const response = await axios.get(`http://localhost:8081/docs/downloadFrom/${fileName}`,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         "Authorization": `Bearer ${storedToken}`,
                     },
                 })
-            console.log(response.data)
-            console.log(`download ${fileName} gelukt`)
+        //Deze log moet er staan om het document in de console te zien.
+            console.log(response.data);
 
         } catch (e) {
             console.error(e)
+            toggleError(true);
         }
+        toggleLoading(false);
     }
-
 
 
     return (
@@ -160,7 +170,7 @@ function Account() {
                 <section className="private-container">
                     <h1>Mijn Account</h1>
                     <h1>Welkom <span>{user.username}</span></h1>
-                    <img src="https://cdn-icons-png.flaticon.com/512/6522/6522516.png" className="login-pfp-account" alt="template-profile-picture" />
+                    <img src="https://cdn-icons-png.flaticon.com/512/6522/6522516.png" className="login-pfp-account" alt="template-profile"/>
                     <div className="content">
                     <h3>Uw gegevens</h3>
                     Naam: <span>{user.firstName} {user.lastName}</span> <br/>
@@ -179,40 +189,41 @@ function Account() {
                                     name={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
+                                {passwordSuccess && (
+                                    <div className="password-message">
+                                    <span className="password-message-close"
+                                          onClick={() => setPasswordSuccess(false)}> x </span>
+                                        <h2 className="password-message-title">Wachtwoord is gewijzigd!</h2>
+                                    </div>
+                                )}
                                 <Button className="button" type="button" onClick={() => changePassword(password)}>Wijzig
                                     wachtwoord</Button>
-                                {showPopUp && (
-                                    <PopUp
-                                        title="Uw wachtwoord is gewijzigd!"
-                                        onClose={() => setShowPopUp(false)}
-                                    />
-                                )}
+
                                 {loading}
 
                             </form>:
                             <FaEdit onClick={(e) => setShowPasswordField(true)}/>}
                             <FaArrowLeft onClick={()=> setShowPasswordField(false)}/>
-
-
-
                     <table>
                     <thead>
                     <tr>
                         <th>Mijn afspraken:</th>
                         <th>Datum:</th>
                         <th>Tijd:</th>
-                        <th>Delete:</th>
+                        <th>Acties:</th>
                     </tr>
                     </thead>
                         <tbody>
                             {user.appointments.map((appointment) => (
                                 <tr key={appointment.id}>
                                 <td>{appointment.subject + " "}</td>
-                                        <td>{appointment.id === idAppointment ? (<select className="date-selection"
-                                                                                         name="appointment-date"
-                                                                                         id="date"
-                                                                                         value={date}
-                                                                                         onChange={(event) => setDate(event.target.value)}
+                                        <td>{appointment.id === idAppointment ? (
+                                            <select
+                                                className="date-selection"
+                                                name="appointment-date"
+                                                id="date"
+                                                value={date}
+                                                onChange={(event) => setDate(event.target.value)}
                                         >
                                             <option value="">
                                                 Selecteer een datum
@@ -245,11 +256,13 @@ function Account() {
                                                 13-04-2023
                                             </option>
                                         </select>) : appointment.appointmentDate + " "}</td>
-                                        <td>{appointment.id === idAppointment ? (<select className="time-selection"
-                                        name="appointment-time"
-                                        id="time"
-                                        value={time}
-                                        onChange={(event) => setTime(event.target.value)}
+                                        <td>{appointment.id === idAppointment ? (
+                                            <select
+                                                className="time-selection"
+                                                name="appointment-time"
+                                                id="time"
+                                                value={time}
+                                                onChange={(event) => setTime(event.target.value)}
                                         >
                                         <option value="">
                                         Selecteer een tijd
@@ -304,6 +317,13 @@ function Account() {
                                             <Button type="button" className="button" onClick={()=> downloadMyDocument(file.fileName)}>Download</Button></td>
                                     </tr>
                                 ))}
+                            {error && (
+                                <ErrorMessage
+                                    title="Error"
+                                    text="Er ging iets fout, probeer het nog een keer!"
+                                    onClose={() => toggleError(false) }
+                                />
+                            )}
                             </tbody>
                         </table>
                     </div>
