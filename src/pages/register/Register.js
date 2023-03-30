@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import './Register.css';
@@ -8,12 +8,14 @@ import {useForm} from 'react-hook-form';
 import Button from "../../component/button/Button";
 import PopUp from "../../component/pop-up-message/PopUp";
 import ErrorMessage from "../../component/error/ErrorMessage";
+import {AuthContext} from "../../context/AuthContext";
 
 function Register() {
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onBlur"});
     const [showPopUp, setShowPopUp] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [error, toggleError] = useState(false);
+    const {isAuth} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const postcodeRegex = /^\d{4}[a-zA-Z]{2}$/;
@@ -47,6 +49,8 @@ function Register() {
             <main className="register-container">
                 <img className="register-icon" src="https://as2.ftcdn.net/v2/jpg/01/95/70/73/1000_F_195707316_wGdiWMFQxeFcRqi8YiG3V3pp3KvI3MQp.jpg" alt="register-icon"/>
                 <h1>Registreren</h1>
+                {isAuth ? <p>U bent al geregistreerd</p>
+                    :
                 <form onSubmit={handleSubmit(registerUser)} className="registration-form">
                     <div className="horizontal-row">
                         <FormInput
@@ -199,8 +203,8 @@ function Register() {
                             onClose={() => toggleError(false) }
                         />
                     )} {loading}
-                </form>
-                <p>Heb je al een account? Je kunt je <Link to="/login">hier</Link> inloggen.</p>
+                    <p>Heb je al een account? Je kunt je <Link to="/login">hier</Link> inloggen.</p>
+                </form>}
             </main>
     );
 }

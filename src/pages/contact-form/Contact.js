@@ -22,7 +22,7 @@ function Contact() {
         toggleLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:8081/contact', data);
+            const response = await axios.post('http://localhost:8081/contacts', data);
 
             reset();
             setShowPopUp(true)

@@ -3,6 +3,13 @@ import {AuthContext} from "../../context/AuthContext";
 import {Link, NavLink} from "react-router-dom";
 import './Nav.css'
 import {ReactComponent as Menu} from '../../assets/menu-icon.svg';
+import {
+    FaAddressBook,
+    FaPen,
+    FaSignOutAlt,
+    FaUser,
+    FaUsers
+} from "react-icons/fa";
 
 
 function Nav() {
@@ -42,7 +49,7 @@ function Nav() {
                         {(isAuth && user.authority === "ADMIN") &&
                         <li>
                             <NavLink to="/adminaccount" className={({isActive}) => isActive ? "link--active" : "default"}>
-                                Admin Account
+                                Admin Account <FaUsers/>
                             </NavLink>
                         </li>}
 
@@ -50,18 +57,18 @@ function Nav() {
                             <button type="button"
                                     onClick={logout}
                             >
-                                Log uit
+                                Log uit <FaSignOutAlt/>
                             </button>
                             :
                             <ul>
                             <li>
                                 <NavLink to="/login" className={({isActive}) => isActive ? "link--active" : "default"}>
-                                    Log in
+                                    Log in <FaUser/>
                                 </NavLink>
                             </li>
                             <li>
                             <NavLink to="/register" className={({isActive}) => isActive ? "link--active" : "default"}>
-                            Registreren
+                                Registreren <FaPen/>
                             </NavLink>
                             </li>
                             </ul>}
@@ -69,7 +76,7 @@ function Nav() {
                         {isAuth &&
                         <li>
                           <NavLink to="/account" className={({isActive}) => isActive ? "link--active" : "default"}>
-                            mijn Account
+                            mijn Account <FaAddressBook/>
                           </NavLink>
                         </li>}
 

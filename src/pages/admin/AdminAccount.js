@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {AuthContext} from "../../context/AuthContext";
 import './AdminAcoount.css';
-import {FaEdit, FaSave, FaTrash} from "react-icons/fa";
+import {FaEdit, FaSave, FaTrash, FaUsers} from "react-icons/fa";
 import Button from "../../component/button/Button";
 import PopUp from "../../component/pop-up-message/PopUp";
 import ErrorMessage from "../../component/error/ErrorMessage";
@@ -155,7 +155,7 @@ function AdminAccount() {
                     className="button"
                 >
                     {showUsers ? 'Sluiten' : 'Overzicht van users'}
-                </Button>
+                    <FaUsers/></Button>
                 {showUsers &&
                 <table>
                     <thead>
@@ -182,7 +182,7 @@ function AdminAccount() {
                             <td>{user.address}, {user.zipCode}</td>
                             <td>
                                 {user.appointments.map((appointment) => (
-                                <span key={appointment.id}>{appointment.subject}</span>
+                                <span key={appointment.id}>{appointment.subject + " "}</span>
                             ))}
                             </td>
                             <td>
@@ -227,7 +227,7 @@ function AdminAccount() {
                                                 <option value="2023-04-13">
                                                     13-04-2023
                                                 </option>
-                                            </select>) : appointment.appointmentDate}</span>
+                                            </select>) : appointment.appointmentDate + " "}</span>
                                 ))}
                             </td>
                             <td>
@@ -266,7 +266,7 @@ function AdminAccount() {
                                                 <option value="15:00">
                                                     15:00-16:00
                                                 </option>
-                                            </select>) : appointment.appointmentTime}</span>
+                                            </select>) : appointment.appointmentTime + " "}</span>
                             ))}
                             </td>
                             <td>
@@ -293,7 +293,7 @@ function AdminAccount() {
                 {showPopUp && (
                     <PopUp
                         title="De wijzigingen worden opgeslagen!
-                                    De pagina wordt nu verversd!"
+                                    De pagina wordt nu ververst!"
                         onClose={() => setShowPopUp(false)}
                     />
                 )}

@@ -3,10 +3,19 @@ import './Account.css';
 import axios from "axios";
 import {AuthContext} from "../../context/AuthContext";
 import PopUp from "../../component/pop-up-message/PopUp";
-import {FaArrowLeft, FaEdit, FaSave, FaTrash} from "react-icons/fa";
+import {
+    FaArrowLeft,
+    FaEdit,
+    FaSave,
+    FaTrash
+} from "react-icons/fa";
 import Button from "../../component/button/Button";
 import {useForm} from "react-hook-form";
 import ErrorMessage from "../../component/error/ErrorMessage";
+import jwt_decode from "jwt-decode";
+import {IoReload} from "react-icons/io5";
+
+
 
 
 
@@ -22,6 +31,8 @@ function Account() {
     const [password, setPassword] = useState("");
     const [passwordSuccess, setPasswordSuccess] = useState(false);
     const [showPasswordField, setShowPasswordField ] = useState(false);
+    const [file, setFile] = useState([]);
+    const [previewUrl, setPreviewUrl] = useState("");
     const storedToken = localStorage.getItem('token');
 
     const {user} = useContext(AuthContext);
@@ -84,8 +95,39 @@ function Account() {
         toggleLoading(false);
     }
 
+    function handleDoc(e) {
+        const uploadedFile = e.target.files[0];
+        setFile(uploadedFile);
+        setPreviewUrl(URL.createObjectURL(uploadedFile));
+    }
 
+    async function uploadDoc() {
+        toggleError(false);
+        toggleLoading(true);
+        const jwt = localStorage.getItem('token');
+        const decodedToken = jwt_decode(jwt);
+        const id = decodedToken.sub;
 
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+           const response = await axios.post(`http://localhost:8081/docs/single/upload/${id}`, formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${jwt}`,
+                    },
+                });
+
+            setFile(response.data);
+
+        } catch(error) {
+            console.error(error);
+            toggleError(true);
+        }
+        toggleLoading(false);
+    }
     async function userModifyAppointment(idAppointment) {
         toggleError(false);
         toggleLoading(true);
@@ -139,6 +181,8 @@ function Account() {
         }
     }
 
+
+
     async function downloadMyDocument(fileName) {
         toggleError(false);
         toggleLoading(true);
@@ -174,7 +218,7 @@ function Account() {
                     <div className="content">
                     <h3>Uw gegevens</h3>
                     Naam: <span>{user.firstName} {user.lastName}</span> <br/>
-                    Adres: <span>{user.address}</span> <br/>
+                    Adres: <span>{user.address}, {user.zipCode}</span> <br/>
                     Telefoonnummer: <span>{user.telephoneNumber}</span> <br/>
                     Email: <span>{user.email}</span> <br/>
                     Gebruikersnaam: <span>{user.username}</span> <br/>
@@ -193,7 +237,7 @@ function Account() {
                                     <div className="password-message">
                                     <span className="password-message-close"
                                           onClick={() => setPasswordSuccess(false)}> x </span>
-                                        <h2 className="password-message-title">Wachtwoord is gewijzigd!</h2>
+                                        <h2 className="password-message-title">Wachtwoord is gewijzigd! De pagina wordt nu ververst.</h2>
                                     </div>
                                 )}
                                 <Button className="button" type="button" onClick={() => changePassword(password)}>Wijzig
@@ -204,6 +248,27 @@ function Account() {
                             </form>:
                             <FaEdit onClick={(e) => setShowPasswordField(true)}/>}
                             <FaArrowLeft onClick={()=> setShowPasswordField(false)}/>
+                        <legend>
+                            <h4>Upload hier uw documenten</h4>
+                            <form onSubmit={uploadDoc}>
+                            <label htmlFor="file">
+                                <input
+                                    type="file"
+                                    name="file"
+                                    onChange={handleDoc}/>
+                            </label>
+                            <label htmlFor="preview-file">
+                                {previewUrl && (
+                                    <img src={previewUrl} alt="Preview" style={{maxWidth: "100px"}}/>
+                                )}
+                            </label>
+                                <Button
+                                    className="button"
+                                    type="submit"
+                                    children="Versturen"
+                                />
+                        </form>
+                        </legend>
                     <table>
                     <thead>
                     <tr>
@@ -326,6 +391,8 @@ function Account() {
                             )}
                             </tbody>
                         </table>
+                        <h5>Heb je een afspraak gemaakt en zie je deze nog niet onder "mijn afspraken"?</h5>
+                           <h5>Je kunt proberen om de pagina opnieuw te laden. <IoReload onClick={()=> window.location.reload()}/></h5>
                     </div>
                 </section>
             }
