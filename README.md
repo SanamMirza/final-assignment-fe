@@ -14,7 +14,7 @@ OPDRACHTEN KANAAL IN TEAMS
 Broncode Links in Github
 
 Frontend
-https://github.com/SanamMirza/final-assignment-fe/edit/main
+https://github.com/SanamMirza/final-assignment-fe
 
 Backend
 https://github.com/SanamMirza/final-assignment-be
